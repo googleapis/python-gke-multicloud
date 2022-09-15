@@ -44,7 +44,10 @@ from google.cloud.gke_multicloud_v1.types import azure_resources
 from google.cloud.gke_multicloud_v1.types import azure_service
 from google.longrunning import operations_pb2  # type: ignore
 
-from .base import AzureClustersTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .base import (
+    AzureClustersTransport,
+    DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO,
+)
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -186,7 +189,12 @@ class AzureClustersRestInterceptor:
 
 
     """
-    def pre_create_azure_client(self, request: azure_service.CreateAzureClientRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[azure_service.CreateAzureClientRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_create_azure_client(
+        self,
+        request: azure_service.CreateAzureClientRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[azure_service.CreateAzureClientRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for create_azure_client
 
         Override in a subclass to manipulate the request or metadata
@@ -194,7 +202,9 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_create_azure_client(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    def post_create_azure_client(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_azure_client
 
         Override in a subclass to manipulate the response
@@ -202,7 +212,12 @@ class AzureClustersRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_create_azure_cluster(self, request: azure_service.CreateAzureClusterRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[azure_service.CreateAzureClusterRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_create_azure_cluster(
+        self,
+        request: azure_service.CreateAzureClusterRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[azure_service.CreateAzureClusterRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for create_azure_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -210,7 +225,9 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_create_azure_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    def post_create_azure_cluster(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_azure_cluster
 
         Override in a subclass to manipulate the response
@@ -218,7 +235,12 @@ class AzureClustersRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_create_azure_node_pool(self, request: azure_service.CreateAzureNodePoolRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[azure_service.CreateAzureNodePoolRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_create_azure_node_pool(
+        self,
+        request: azure_service.CreateAzureNodePoolRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[azure_service.CreateAzureNodePoolRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for create_azure_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -226,7 +248,9 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_create_azure_node_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    def post_create_azure_node_pool(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_azure_node_pool
 
         Override in a subclass to manipulate the response
@@ -234,7 +258,12 @@ class AzureClustersRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_delete_azure_client(self, request: azure_service.DeleteAzureClientRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[azure_service.DeleteAzureClientRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_delete_azure_client(
+        self,
+        request: azure_service.DeleteAzureClientRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[azure_service.DeleteAzureClientRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for delete_azure_client
 
         Override in a subclass to manipulate the request or metadata
@@ -242,7 +271,9 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_azure_client(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    def post_delete_azure_client(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_azure_client
 
         Override in a subclass to manipulate the response
@@ -250,7 +281,12 @@ class AzureClustersRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_delete_azure_cluster(self, request: azure_service.DeleteAzureClusterRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[azure_service.DeleteAzureClusterRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_delete_azure_cluster(
+        self,
+        request: azure_service.DeleteAzureClusterRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[azure_service.DeleteAzureClusterRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for delete_azure_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -258,7 +294,9 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_azure_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    def post_delete_azure_cluster(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_azure_cluster
 
         Override in a subclass to manipulate the response
@@ -266,7 +304,12 @@ class AzureClustersRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_delete_azure_node_pool(self, request: azure_service.DeleteAzureNodePoolRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[azure_service.DeleteAzureNodePoolRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_delete_azure_node_pool(
+        self,
+        request: azure_service.DeleteAzureNodePoolRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[azure_service.DeleteAzureNodePoolRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for delete_azure_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -274,7 +317,9 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_azure_node_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    def post_delete_azure_node_pool(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_azure_node_pool
 
         Override in a subclass to manipulate the response
@@ -282,7 +327,14 @@ class AzureClustersRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_generate_azure_access_token(self, request: azure_service.GenerateAzureAccessTokenRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[azure_service.GenerateAzureAccessTokenRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_generate_azure_access_token(
+        self,
+        request: azure_service.GenerateAzureAccessTokenRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        azure_service.GenerateAzureAccessTokenRequest, Sequence[Tuple[str, str]]
+    ]:
         """Pre-rpc interceptor for generate_azure_access_token
 
         Override in a subclass to manipulate the request or metadata
@@ -290,7 +342,9 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_generate_azure_access_token(self, response: azure_service.GenerateAzureAccessTokenResponse) -> azure_service.GenerateAzureAccessTokenResponse:
+    def post_generate_azure_access_token(
+        self, response: azure_service.GenerateAzureAccessTokenResponse
+    ) -> azure_service.GenerateAzureAccessTokenResponse:
         """Post-rpc interceptor for generate_azure_access_token
 
         Override in a subclass to manipulate the response
@@ -298,7 +352,12 @@ class AzureClustersRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_get_azure_client(self, request: azure_service.GetAzureClientRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[azure_service.GetAzureClientRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_get_azure_client(
+        self,
+        request: azure_service.GetAzureClientRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[azure_service.GetAzureClientRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_azure_client
 
         Override in a subclass to manipulate the request or metadata
@@ -306,7 +365,9 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_azure_client(self, response: azure_resources.AzureClient) -> azure_resources.AzureClient:
+    def post_get_azure_client(
+        self, response: azure_resources.AzureClient
+    ) -> azure_resources.AzureClient:
         """Post-rpc interceptor for get_azure_client
 
         Override in a subclass to manipulate the response
@@ -314,7 +375,12 @@ class AzureClustersRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_get_azure_cluster(self, request: azure_service.GetAzureClusterRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[azure_service.GetAzureClusterRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_get_azure_cluster(
+        self,
+        request: azure_service.GetAzureClusterRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[azure_service.GetAzureClusterRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_azure_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -322,7 +388,9 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_azure_cluster(self, response: azure_resources.AzureCluster) -> azure_resources.AzureCluster:
+    def post_get_azure_cluster(
+        self, response: azure_resources.AzureCluster
+    ) -> azure_resources.AzureCluster:
         """Post-rpc interceptor for get_azure_cluster
 
         Override in a subclass to manipulate the response
@@ -330,7 +398,12 @@ class AzureClustersRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_get_azure_node_pool(self, request: azure_service.GetAzureNodePoolRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[azure_service.GetAzureNodePoolRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_get_azure_node_pool(
+        self,
+        request: azure_service.GetAzureNodePoolRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[azure_service.GetAzureNodePoolRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_azure_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -338,7 +411,9 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_azure_node_pool(self, response: azure_resources.AzureNodePool) -> azure_resources.AzureNodePool:
+    def post_get_azure_node_pool(
+        self, response: azure_resources.AzureNodePool
+    ) -> azure_resources.AzureNodePool:
         """Post-rpc interceptor for get_azure_node_pool
 
         Override in a subclass to manipulate the response
@@ -346,7 +421,12 @@ class AzureClustersRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_get_azure_server_config(self, request: azure_service.GetAzureServerConfigRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[azure_service.GetAzureServerConfigRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_get_azure_server_config(
+        self,
+        request: azure_service.GetAzureServerConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[azure_service.GetAzureServerConfigRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_azure_server_config
 
         Override in a subclass to manipulate the request or metadata
@@ -354,7 +434,9 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_azure_server_config(self, response: azure_resources.AzureServerConfig) -> azure_resources.AzureServerConfig:
+    def post_get_azure_server_config(
+        self, response: azure_resources.AzureServerConfig
+    ) -> azure_resources.AzureServerConfig:
         """Post-rpc interceptor for get_azure_server_config
 
         Override in a subclass to manipulate the response
@@ -362,7 +444,12 @@ class AzureClustersRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_list_azure_clients(self, request: azure_service.ListAzureClientsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[azure_service.ListAzureClientsRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_list_azure_clients(
+        self,
+        request: azure_service.ListAzureClientsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[azure_service.ListAzureClientsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_azure_clients
 
         Override in a subclass to manipulate the request or metadata
@@ -370,7 +457,9 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_list_azure_clients(self, response: azure_service.ListAzureClientsResponse) -> azure_service.ListAzureClientsResponse:
+    def post_list_azure_clients(
+        self, response: azure_service.ListAzureClientsResponse
+    ) -> azure_service.ListAzureClientsResponse:
         """Post-rpc interceptor for list_azure_clients
 
         Override in a subclass to manipulate the response
@@ -378,7 +467,12 @@ class AzureClustersRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_list_azure_clusters(self, request: azure_service.ListAzureClustersRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[azure_service.ListAzureClustersRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_list_azure_clusters(
+        self,
+        request: azure_service.ListAzureClustersRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[azure_service.ListAzureClustersRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_azure_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -386,7 +480,9 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_list_azure_clusters(self, response: azure_service.ListAzureClustersResponse) -> azure_service.ListAzureClustersResponse:
+    def post_list_azure_clusters(
+        self, response: azure_service.ListAzureClustersResponse
+    ) -> azure_service.ListAzureClustersResponse:
         """Post-rpc interceptor for list_azure_clusters
 
         Override in a subclass to manipulate the response
@@ -394,7 +490,12 @@ class AzureClustersRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_list_azure_node_pools(self, request: azure_service.ListAzureNodePoolsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[azure_service.ListAzureNodePoolsRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_list_azure_node_pools(
+        self,
+        request: azure_service.ListAzureNodePoolsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[azure_service.ListAzureNodePoolsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_azure_node_pools
 
         Override in a subclass to manipulate the request or metadata
@@ -402,7 +503,9 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_list_azure_node_pools(self, response: azure_service.ListAzureNodePoolsResponse) -> azure_service.ListAzureNodePoolsResponse:
+    def post_list_azure_node_pools(
+        self, response: azure_service.ListAzureNodePoolsResponse
+    ) -> azure_service.ListAzureNodePoolsResponse:
         """Post-rpc interceptor for list_azure_node_pools
 
         Override in a subclass to manipulate the response
@@ -410,7 +513,12 @@ class AzureClustersRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_update_azure_cluster(self, request: azure_service.UpdateAzureClusterRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[azure_service.UpdateAzureClusterRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_update_azure_cluster(
+        self,
+        request: azure_service.UpdateAzureClusterRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[azure_service.UpdateAzureClusterRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for update_azure_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -418,7 +526,9 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_update_azure_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    def post_update_azure_cluster(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_azure_cluster
 
         Override in a subclass to manipulate the response
@@ -426,7 +536,12 @@ class AzureClustersRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_update_azure_node_pool(self, request: azure_service.UpdateAzureNodePoolRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[azure_service.UpdateAzureNodePoolRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_update_azure_node_pool(
+        self,
+        request: azure_service.UpdateAzureNodePoolRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[azure_service.UpdateAzureNodePoolRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for update_azure_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -434,7 +549,9 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_update_azure_node_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    def post_update_azure_node_pool(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_azure_node_pool
 
         Override in a subclass to manipulate the response
@@ -469,55 +586,56 @@ class AzureClustersRestTransport(AzureClustersTransport):
     library's source repository. Thank you!
     """
 
-    def __init__(self, *,
-            host: str = 'gkemulticloud.googleapis.com',
-            credentials: ga_credentials.Credentials=None,
-            credentials_file: str=None,
-            scopes: Sequence[str]=None,
-            client_cert_source_for_mtls: Callable[[
-                ], Tuple[bytes, bytes]]=None,
-            quota_project_id: Optional[str]=None,
-            client_info: gapic_v1.client_info.ClientInfo=DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool]=False,
-            url_scheme: str='https',
-            interceptor: Optional[AzureClustersRestInterceptor] = None,
-            api_audience: Optional[str] = None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        host: str = "gkemulticloud.googleapis.com",
+        credentials: ga_credentials.Credentials = None,
+        credentials_file: str = None,
+        scopes: Sequence[str] = None,
+        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        url_scheme: str = "https",
+        interceptor: Optional[AzureClustersRestInterceptor] = None,
+        api_audience: Optional[str] = None,
+    ) -> None:
         """Instantiate the transport.
 
-       NOTE: This REST transport functionality is currently in a beta
-       state (preview). We welcome your feedback via a GitHub issue in
-       this library's repository. Thank you!
+        NOTE: This REST transport functionality is currently in a beta
+        state (preview). We welcome your feedback via a GitHub issue in
+        this library's repository. Thank you!
 
-        Args:
-            host (Optional[str]):
-                 The hostname to connect to.
-            credentials (Optional[google.auth.credentials.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify the application to the service; if none
-                are specified, the client will attempt to ascertain the
-                credentials from the environment.
+         Args:
+             host (Optional[str]):
+                  The hostname to connect to.
+             credentials (Optional[google.auth.credentials.Credentials]): The
+                 authorization credentials to attach to requests. These
+                 credentials identify the application to the service; if none
+                 are specified, the client will attempt to ascertain the
+                 credentials from the environment.
 
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
-                certificate to configure mutual TLS HTTP channel. It is ignored
-                if ``channel`` is provided.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                The client info used to send a user-agent string along with
-                API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you are developing
-                your own client library.
-            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
-                be used for service account credentials.
-            url_scheme: the protocol scheme for the API endpoint.  Normally
-                "https", but for testing or local servers,
-                "http" can be specified.
+             credentials_file (Optional[str]): A file with credentials that can
+                 be loaded with :func:`google.auth.load_credentials_from_file`.
+                 This argument is ignored if ``channel`` is provided.
+             scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                 ignored if ``channel`` is provided.
+             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
+                 certificate to configure mutual TLS HTTP channel. It is ignored
+                 if ``channel`` is provided.
+             quota_project_id (Optional[str]): An optional project to use for billing
+                 and quota.
+             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                 The client info used to send a user-agent string along with
+                 API requests. If ``None``, then default info will be used.
+                 Generally, you only need to set this if you are developing
+                 your own client library.
+             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                 be used for service account credentials.
+             url_scheme: the protocol scheme for the API endpoint.  Normally
+                 "https", but for testing or local servers,
+                 "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -525,7 +643,9 @@ class AzureClustersRestTransport(AzureClustersTransport):
         # credentials object
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
@@ -536,10 +656,11 @@ class AzureClustersRestTransport(AzureClustersTransport):
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience
+            api_audience=api_audience,
         )
         self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST)
+            self._credentials, default_host=self.DEFAULT_HOST
+        )
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -556,41 +677,44 @@ class AzureClustersRestTransport(AzureClustersTransport):
         # Only create a new client if we do not already have one.
         if self._operations_client is None:
             http_options: Dict[str, List[Dict[str, str]]] = {
-                'google.longrunning.Operations.CancelOperation': [
+                "google.longrunning.Operations.CancelOperation": [
                     {
-                        'method': 'post',
-                        'uri': '/v1/{name=projects/*/locations/*/operations/*}:cancel',
-                        'body': '*',
+                        "method": "post",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
+                        "body": "*",
                     },
                 ],
-                'google.longrunning.Operations.DeleteOperation': [
+                "google.longrunning.Operations.DeleteOperation": [
                     {
-                        'method': 'delete',
-                        'uri': '/v1/{name=projects/*/locations/*/operations/*}',
+                        "method": "delete",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
                     },
                 ],
-                'google.longrunning.Operations.GetOperation': [
+                "google.longrunning.Operations.GetOperation": [
                     {
-                        'method': 'get',
-                        'uri': '/v1/{name=projects/*/locations/*/operations/*}',
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
                     },
                 ],
-                'google.longrunning.Operations.ListOperations': [
+                "google.longrunning.Operations.ListOperations": [
                     {
-                        'method': 'get',
-                        'uri': '/v1/{name=projects/*/locations/*}/operations',
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*}/operations",
                     },
                 ],
             }
 
             rest_transport = operations_v1.OperationsRestTransport(
-                    host=self._host,
-                    # use the credentials which are saved
-                    credentials=self._credentials,
-                    scopes=self._scopes,
-                    http_options=http_options)
+                host=self._host,
+                # use the credentials which are saved
+                credentials=self._credentials,
+                scopes=self._scopes,
+                http_options=http_options,
+            )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
+            self._operations_client = operations_v1.AbstractOperationsClient(
+                transport=rest_transport
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -599,19 +723,26 @@ class AzureClustersRestTransport(AzureClustersTransport):
         def __hash__(self):
             return hash("CreateAzureClient")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-            "azureClientId" : "",        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+            "azureClientId": "",
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: azure_service.CreateAzureClientRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> operations_pb2.Operation:
+        def __call__(
+            self,
+            request: azure_service.CreateAzureClientRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the create azure client method over HTTP.
 
             Args:
@@ -633,44 +764,49 @@ class AzureClustersRestTransport(AzureClustersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{parent=projects/*/locations/*}/azureClients',
-                'body': 'azure_client',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/azureClients",
+                    "body": "azure_client",
+                },
             ]
-            request, metadata = self._interceptor.pre_create_azure_client(request, metadata)
+            request, metadata = self._interceptor.pre_create_azure_client(
+                request, metadata
+            )
             pb_request = azure_service.CreateAzureClientRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                including_default_value_fields=False,
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-
-            # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
-            ))
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -687,19 +823,26 @@ class AzureClustersRestTransport(AzureClustersTransport):
         def __hash__(self):
             return hash("CreateAzureCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-            "azureClusterId" : "",        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+            "azureClusterId": "",
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: azure_service.CreateAzureClusterRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> operations_pb2.Operation:
+        def __call__(
+            self,
+            request: azure_service.CreateAzureClusterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the create azure cluster method over HTTP.
 
             Args:
@@ -721,44 +864,49 @@ class AzureClustersRestTransport(AzureClustersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{parent=projects/*/locations/*}/azureClusters',
-                'body': 'azure_cluster',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/azureClusters",
+                    "body": "azure_cluster",
+                },
             ]
-            request, metadata = self._interceptor.pre_create_azure_cluster(request, metadata)
+            request, metadata = self._interceptor.pre_create_azure_cluster(
+                request, metadata
+            )
             pb_request = azure_service.CreateAzureClusterRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                including_default_value_fields=False,
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-
-            # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
-            ))
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -775,19 +923,26 @@ class AzureClustersRestTransport(AzureClustersTransport):
         def __hash__(self):
             return hash("CreateAzureNodePool")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-            "azureNodePoolId" : "",        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+            "azureNodePoolId": "",
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: azure_service.CreateAzureNodePoolRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> operations_pb2.Operation:
+        def __call__(
+            self,
+            request: azure_service.CreateAzureNodePoolRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the create azure node pool method over HTTP.
 
             Args:
@@ -809,44 +964,49 @@ class AzureClustersRestTransport(AzureClustersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{parent=projects/*/locations/*/azureClusters/*}/azureNodePools',
-                'body': 'azure_node_pool',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*/azureClusters/*}/azureNodePools",
+                    "body": "azure_node_pool",
+                },
             ]
-            request, metadata = self._interceptor.pre_create_azure_node_pool(request, metadata)
+            request, metadata = self._interceptor.pre_create_azure_node_pool(
+                request, metadata
+            )
             pb_request = azure_service.CreateAzureNodePoolRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                including_default_value_fields=False,
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-
-            # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
-            ))
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -863,19 +1023,24 @@ class AzureClustersRestTransport(AzureClustersTransport):
         def __hash__(self):
             return hash("DeleteAzureClient")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: azure_service.DeleteAzureClientRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> operations_pb2.Operation:
+        def __call__(
+            self,
+            request: azure_service.DeleteAzureClientRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the delete azure client method over HTTP.
 
             Args:
@@ -897,35 +1062,40 @@ class AzureClustersRestTransport(AzureClustersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'delete',
-                'uri': '/v1/{name=projects/*/locations/*/azureClients/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/azureClients/*}",
+                },
             ]
-            request, metadata = self._interceptor.pre_delete_azure_client(request, metadata)
+            request, metadata = self._interceptor.pre_delete_azure_client(
+                request, metadata
+            )
             pb_request = azure_service.DeleteAzureClientRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -942,19 +1112,24 @@ class AzureClustersRestTransport(AzureClustersTransport):
         def __hash__(self):
             return hash("DeleteAzureCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: azure_service.DeleteAzureClusterRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> operations_pb2.Operation:
+        def __call__(
+            self,
+            request: azure_service.DeleteAzureClusterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the delete azure cluster method over HTTP.
 
             Args:
@@ -976,35 +1151,40 @@ class AzureClustersRestTransport(AzureClustersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'delete',
-                'uri': '/v1/{name=projects/*/locations/*/azureClusters/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/azureClusters/*}",
+                },
             ]
-            request, metadata = self._interceptor.pre_delete_azure_cluster(request, metadata)
+            request, metadata = self._interceptor.pre_delete_azure_cluster(
+                request, metadata
+            )
             pb_request = azure_service.DeleteAzureClusterRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1021,19 +1201,24 @@ class AzureClustersRestTransport(AzureClustersTransport):
         def __hash__(self):
             return hash("DeleteAzureNodePool")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: azure_service.DeleteAzureNodePoolRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> operations_pb2.Operation:
+        def __call__(
+            self,
+            request: azure_service.DeleteAzureNodePoolRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the delete azure node pool method over HTTP.
 
             Args:
@@ -1055,35 +1240,40 @@ class AzureClustersRestTransport(AzureClustersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'delete',
-                'uri': '/v1/{name=projects/*/locations/*/azureClusters/*/azureNodePools/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/azureClusters/*/azureNodePools/*}",
+                },
             ]
-            request, metadata = self._interceptor.pre_delete_azure_node_pool(request, metadata)
+            request, metadata = self._interceptor.pre_delete_azure_node_pool(
+                request, metadata
+            )
             pb_request = azure_service.DeleteAzureNodePoolRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1100,69 +1290,79 @@ class AzureClustersRestTransport(AzureClustersTransport):
         def __hash__(self):
             return hash("GenerateAzureAccessToken")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: azure_service.GenerateAzureAccessTokenRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> azure_service.GenerateAzureAccessTokenResponse:
+        def __call__(
+            self,
+            request: azure_service.GenerateAzureAccessTokenRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> azure_service.GenerateAzureAccessTokenResponse:
             r"""Call the generate azure access
-        token method over HTTP.
+            token method over HTTP.
 
-            Args:
-                request (~.azure_service.GenerateAzureAccessTokenRequest):
-                    The request object. Request message for
-                ``AzureClusters.GenerateAzureAccessToken`` method.
+                Args:
+                    request (~.azure_service.GenerateAzureAccessTokenRequest):
+                        The request object. Request message for
+                    ``AzureClusters.GenerateAzureAccessToken`` method.
 
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
 
-            Returns:
-                ~.azure_service.GenerateAzureAccessTokenResponse:
-                    Response message for
-                ``AzureClusters.GenerateAzureAccessToken`` method.
+                Returns:
+                    ~.azure_service.GenerateAzureAccessTokenResponse:
+                        Response message for
+                    ``AzureClusters.GenerateAzureAccessToken`` method.
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{azure_cluster=projects/*/locations/*/azureClusters/*}:generateAzureAccessToken',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{azure_cluster=projects/*/locations/*/azureClusters/*}:generateAzureAccessToken",
+                },
             ]
-            request, metadata = self._interceptor.pre_generate_azure_access_token(request, metadata)
+            request, metadata = self._interceptor.pre_generate_azure_access_token(
+                request, metadata
+            )
             pb_request = azure_service.GenerateAzureAccessTokenRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1181,19 +1381,24 @@ class AzureClustersRestTransport(AzureClustersTransport):
         def __hash__(self):
             return hash("GetAzureClient")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: azure_service.GetAzureClientRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> azure_resources.AzureClient:
+        def __call__(
+            self,
+            request: azure_service.GetAzureClientRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> azure_resources.AzureClient:
             r"""Call the get azure client method over HTTP.
 
             Args:
@@ -1228,35 +1433,40 @@ class AzureClustersRestTransport(AzureClustersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=projects/*/locations/*/azureClients/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/azureClients/*}",
+                },
             ]
-            request, metadata = self._interceptor.pre_get_azure_client(request, metadata)
+            request, metadata = self._interceptor.pre_get_azure_client(
+                request, metadata
+            )
             pb_request = azure_service.GetAzureClientRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1275,19 +1485,24 @@ class AzureClustersRestTransport(AzureClustersTransport):
         def __hash__(self):
             return hash("GetAzureCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: azure_service.GetAzureClusterRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> azure_resources.AzureCluster:
+        def __call__(
+            self,
+            request: azure_service.GetAzureClusterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> azure_resources.AzureCluster:
             r"""Call the get azure cluster method over HTTP.
 
             Args:
@@ -1306,35 +1521,40 @@ class AzureClustersRestTransport(AzureClustersTransport):
                     An Anthos cluster running on Azure.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=projects/*/locations/*/azureClusters/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/azureClusters/*}",
+                },
             ]
-            request, metadata = self._interceptor.pre_get_azure_cluster(request, metadata)
+            request, metadata = self._interceptor.pre_get_azure_cluster(
+                request, metadata
+            )
             pb_request = azure_service.GetAzureClusterRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1353,19 +1573,24 @@ class AzureClustersRestTransport(AzureClustersTransport):
         def __hash__(self):
             return hash("GetAzureNodePool")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: azure_service.GetAzureNodePoolRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> azure_resources.AzureNodePool:
+        def __call__(
+            self,
+            request: azure_service.GetAzureNodePoolRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> azure_resources.AzureNodePool:
             r"""Call the get azure node pool method over HTTP.
 
             Args:
@@ -1384,35 +1609,40 @@ class AzureClustersRestTransport(AzureClustersTransport):
                     An Anthos node pool running on Azure.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=projects/*/locations/*/azureClusters/*/azureNodePools/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/azureClusters/*/azureNodePools/*}",
+                },
             ]
-            request, metadata = self._interceptor.pre_get_azure_node_pool(request, metadata)
+            request, metadata = self._interceptor.pre_get_azure_node_pool(
+                request, metadata
+            )
             pb_request = azure_service.GetAzureNodePoolRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1431,19 +1661,24 @@ class AzureClustersRestTransport(AzureClustersTransport):
         def __hash__(self):
             return hash("GetAzureServerConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: azure_service.GetAzureServerConfigRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> azure_resources.AzureServerConfig:
+        def __call__(
+            self,
+            request: azure_service.GetAzureServerConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> azure_resources.AzureServerConfig:
             r"""Call the get azure server config method over HTTP.
 
             Args:
@@ -1466,35 +1701,40 @@ class AzureClustersRestTransport(AzureClustersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=projects/*/locations/*/azureServerConfig}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/azureServerConfig}",
+                },
             ]
-            request, metadata = self._interceptor.pre_get_azure_server_config(request, metadata)
+            request, metadata = self._interceptor.pre_get_azure_server_config(
+                request, metadata
+            )
             pb_request = azure_service.GetAzureServerConfigRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1513,19 +1753,24 @@ class AzureClustersRestTransport(AzureClustersTransport):
         def __hash__(self):
             return hash("ListAzureClients")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: azure_service.ListAzureClientsRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> azure_service.ListAzureClientsResponse:
+        def __call__(
+            self,
+            request: azure_service.ListAzureClientsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> azure_service.ListAzureClientsResponse:
             r"""Call the list azure clients method over HTTP.
 
             Args:
@@ -1546,35 +1791,40 @@ class AzureClustersRestTransport(AzureClustersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{parent=projects/*/locations/*}/azureClients',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/azureClients",
+                },
             ]
-            request, metadata = self._interceptor.pre_list_azure_clients(request, metadata)
+            request, metadata = self._interceptor.pre_list_azure_clients(
+                request, metadata
+            )
             pb_request = azure_service.ListAzureClientsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1593,19 +1843,24 @@ class AzureClustersRestTransport(AzureClustersTransport):
         def __hash__(self):
             return hash("ListAzureClusters")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: azure_service.ListAzureClustersRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> azure_service.ListAzureClustersResponse:
+        def __call__(
+            self,
+            request: azure_service.ListAzureClustersRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> azure_service.ListAzureClustersResponse:
             r"""Call the list azure clusters method over HTTP.
 
             Args:
@@ -1626,35 +1881,40 @@ class AzureClustersRestTransport(AzureClustersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{parent=projects/*/locations/*}/azureClusters',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/azureClusters",
+                },
             ]
-            request, metadata = self._interceptor.pre_list_azure_clusters(request, metadata)
+            request, metadata = self._interceptor.pre_list_azure_clusters(
+                request, metadata
+            )
             pb_request = azure_service.ListAzureClustersRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1673,19 +1933,24 @@ class AzureClustersRestTransport(AzureClustersTransport):
         def __hash__(self):
             return hash("ListAzureNodePools")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: azure_service.ListAzureNodePoolsRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> azure_service.ListAzureNodePoolsResponse:
+        def __call__(
+            self,
+            request: azure_service.ListAzureNodePoolsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> azure_service.ListAzureNodePoolsResponse:
             r"""Call the list azure node pools method over HTTP.
 
             Args:
@@ -1706,35 +1971,40 @@ class AzureClustersRestTransport(AzureClustersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{parent=projects/*/locations/*/azureClusters/*}/azureNodePools',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/azureClusters/*}/azureNodePools",
+                },
             ]
-            request, metadata = self._interceptor.pre_list_azure_node_pools(request, metadata)
+            request, metadata = self._interceptor.pre_list_azure_node_pools(
+                request, metadata
+            )
             pb_request = azure_service.ListAzureNodePoolsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1753,19 +2023,26 @@ class AzureClustersRestTransport(AzureClustersTransport):
         def __hash__(self):
             return hash("UpdateAzureCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-            "updateMask" : {},        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+            "updateMask": {},
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: azure_service.UpdateAzureClusterRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> operations_pb2.Operation:
+        def __call__(
+            self,
+            request: azure_service.UpdateAzureClusterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the update azure cluster method over HTTP.
 
             Args:
@@ -1787,44 +2064,49 @@ class AzureClustersRestTransport(AzureClustersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'patch',
-                'uri': '/v1/{azure_cluster.name=projects/*/locations/*/azureClusters/*}',
-                'body': 'azure_cluster',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{azure_cluster.name=projects/*/locations/*/azureClusters/*}",
+                    "body": "azure_cluster",
+                },
             ]
-            request, metadata = self._interceptor.pre_update_azure_cluster(request, metadata)
+            request, metadata = self._interceptor.pre_update_azure_cluster(
+                request, metadata
+            )
             pb_request = azure_service.UpdateAzureClusterRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                including_default_value_fields=False,
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-
-            # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
-            ))
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1841,19 +2123,26 @@ class AzureClustersRestTransport(AzureClustersTransport):
         def __hash__(self):
             return hash("UpdateAzureNodePool")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-            "updateMask" : {},        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+            "updateMask": {},
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: azure_service.UpdateAzureNodePoolRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> operations_pb2.Operation:
+        def __call__(
+            self,
+            request: azure_service.UpdateAzureNodePoolRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the update azure node pool method over HTTP.
 
             Args:
@@ -1875,44 +2164,49 @@ class AzureClustersRestTransport(AzureClustersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'patch',
-                'uri': '/v1/{azure_node_pool.name=projects/*/locations/*/azureClusters/*/azureNodePools/*}',
-                'body': 'azure_node_pool',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{azure_node_pool.name=projects/*/locations/*/azureClusters/*/azureNodePools/*}",
+                    "body": "azure_node_pool",
+                },
             ]
-            request, metadata = self._interceptor.pre_update_azure_node_pool(request, metadata)
+            request, metadata = self._interceptor.pre_update_azure_node_pool(
+                request, metadata
+            )
             pb_request = azure_service.UpdateAzureNodePoolRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                including_default_value_fields=False,
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-
-            # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
-            ))
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1926,132 +2220,147 @@ class AzureClustersRestTransport(AzureClustersTransport):
             return resp
 
     @property
-    def create_azure_client(self) -> Callable[
-            [azure_service.CreateAzureClientRequest],
-            operations_pb2.Operation]:
+    def create_azure_client(
+        self,
+    ) -> Callable[[azure_service.CreateAzureClientRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateAzureClient(self._session, self._host, self._interceptor) # type: ignore
+        return self._CreateAzureClient(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_azure_cluster(self) -> Callable[
-            [azure_service.CreateAzureClusterRequest],
-            operations_pb2.Operation]:
+    def create_azure_cluster(
+        self,
+    ) -> Callable[[azure_service.CreateAzureClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateAzureCluster(self._session, self._host, self._interceptor) # type: ignore
+        return self._CreateAzureCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_azure_node_pool(self) -> Callable[
-            [azure_service.CreateAzureNodePoolRequest],
-            operations_pb2.Operation]:
+    def create_azure_node_pool(
+        self,
+    ) -> Callable[[azure_service.CreateAzureNodePoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateAzureNodePool(self._session, self._host, self._interceptor) # type: ignore
+        return self._CreateAzureNodePool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_azure_client(self) -> Callable[
-            [azure_service.DeleteAzureClientRequest],
-            operations_pb2.Operation]:
+    def delete_azure_client(
+        self,
+    ) -> Callable[[azure_service.DeleteAzureClientRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteAzureClient(self._session, self._host, self._interceptor) # type: ignore
+        return self._DeleteAzureClient(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_azure_cluster(self) -> Callable[
-            [azure_service.DeleteAzureClusterRequest],
-            operations_pb2.Operation]:
+    def delete_azure_cluster(
+        self,
+    ) -> Callable[[azure_service.DeleteAzureClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteAzureCluster(self._session, self._host, self._interceptor) # type: ignore
+        return self._DeleteAzureCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_azure_node_pool(self) -> Callable[
-            [azure_service.DeleteAzureNodePoolRequest],
-            operations_pb2.Operation]:
+    def delete_azure_node_pool(
+        self,
+    ) -> Callable[[azure_service.DeleteAzureNodePoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteAzureNodePool(self._session, self._host, self._interceptor) # type: ignore
+        return self._DeleteAzureNodePool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def generate_azure_access_token(self) -> Callable[
-            [azure_service.GenerateAzureAccessTokenRequest],
-            azure_service.GenerateAzureAccessTokenResponse]:
+    def generate_azure_access_token(
+        self,
+    ) -> Callable[
+        [azure_service.GenerateAzureAccessTokenRequest],
+        azure_service.GenerateAzureAccessTokenResponse,
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateAzureAccessToken(self._session, self._host, self._interceptor) # type: ignore
+        return self._GenerateAzureAccessToken(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_azure_client(self) -> Callable[
-            [azure_service.GetAzureClientRequest],
-            azure_resources.AzureClient]:
+    def get_azure_client(
+        self,
+    ) -> Callable[[azure_service.GetAzureClientRequest], azure_resources.AzureClient]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetAzureClient(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetAzureClient(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_azure_cluster(self) -> Callable[
-            [azure_service.GetAzureClusterRequest],
-            azure_resources.AzureCluster]:
+    def get_azure_cluster(
+        self,
+    ) -> Callable[[azure_service.GetAzureClusterRequest], azure_resources.AzureCluster]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetAzureCluster(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetAzureCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_azure_node_pool(self) -> Callable[
-            [azure_service.GetAzureNodePoolRequest],
-            azure_resources.AzureNodePool]:
+    def get_azure_node_pool(
+        self,
+    ) -> Callable[
+        [azure_service.GetAzureNodePoolRequest], azure_resources.AzureNodePool
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetAzureNodePool(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetAzureNodePool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_azure_server_config(self) -> Callable[
-            [azure_service.GetAzureServerConfigRequest],
-            azure_resources.AzureServerConfig]:
+    def get_azure_server_config(
+        self,
+    ) -> Callable[
+        [azure_service.GetAzureServerConfigRequest], azure_resources.AzureServerConfig
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetAzureServerConfig(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetAzureServerConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_azure_clients(self) -> Callable[
-            [azure_service.ListAzureClientsRequest],
-            azure_service.ListAzureClientsResponse]:
+    def list_azure_clients(
+        self,
+    ) -> Callable[
+        [azure_service.ListAzureClientsRequest], azure_service.ListAzureClientsResponse
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListAzureClients(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListAzureClients(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_azure_clusters(self) -> Callable[
-            [azure_service.ListAzureClustersRequest],
-            azure_service.ListAzureClustersResponse]:
+    def list_azure_clusters(
+        self,
+    ) -> Callable[
+        [azure_service.ListAzureClustersRequest],
+        azure_service.ListAzureClustersResponse,
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListAzureClusters(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListAzureClusters(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_azure_node_pools(self) -> Callable[
-            [azure_service.ListAzureNodePoolsRequest],
-            azure_service.ListAzureNodePoolsResponse]:
+    def list_azure_node_pools(
+        self,
+    ) -> Callable[
+        [azure_service.ListAzureNodePoolsRequest],
+        azure_service.ListAzureNodePoolsResponse,
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListAzureNodePools(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListAzureNodePools(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_azure_cluster(self) -> Callable[
-            [azure_service.UpdateAzureClusterRequest],
-            operations_pb2.Operation]:
+    def update_azure_cluster(
+        self,
+    ) -> Callable[[azure_service.UpdateAzureClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateAzureCluster(self._session, self._host, self._interceptor) # type: ignore
+        return self._UpdateAzureCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_azure_node_pool(self) -> Callable[
-            [azure_service.UpdateAzureNodePoolRequest],
-            operations_pb2.Operation]:
+    def update_azure_node_pool(
+        self,
+    ) -> Callable[[azure_service.UpdateAzureNodePoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateAzureNodePool(self._session, self._host, self._interceptor) # type: ignore
+        return self._UpdateAzureNodePool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:
@@ -2061,6 +2370,4 @@ class AzureClustersRestTransport(AzureClustersTransport):
         self._session.close()
 
 
-__all__=(
-    'AzureClustersRestTransport',
-)
+__all__ = ("AzureClustersRestTransport",)
