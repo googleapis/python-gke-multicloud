@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -64,7 +75,7 @@ class AwsClustersClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[AwsClustersTransport]:
         """Returns an appropriate transport class.
 
@@ -388,7 +399,7 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AwsClustersTransport, None] = None,
+        transport: Optional[Union[str, AwsClustersTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -489,13 +500,13 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def create_aws_cluster(
         self,
-        request: Union[aws_service.CreateAwsClusterRequest, dict] = None,
+        request: Optional[Union[aws_service.CreateAwsClusterRequest, dict]] = None,
         *,
-        parent: str = None,
-        aws_cluster: aws_resources.AwsCluster = None,
-        aws_cluster_id: str = None,
+        parent: Optional[str] = None,
+        aws_cluster: Optional[aws_resources.AwsCluster] = None,
+        aws_cluster_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new
@@ -664,12 +675,12 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def update_aws_cluster(
         self,
-        request: Union[aws_service.UpdateAwsClusterRequest, dict] = None,
+        request: Optional[Union[aws_service.UpdateAwsClusterRequest, dict]] = None,
         *,
-        aws_cluster: aws_resources.AwsCluster = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        aws_cluster: Optional[aws_resources.AwsCluster] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates an
@@ -831,11 +842,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def get_aws_cluster(
         self,
-        request: Union[aws_service.GetAwsClusterRequest, dict] = None,
+        request: Optional[Union[aws_service.GetAwsClusterRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> aws_resources.AwsCluster:
         r"""Describes a specific
@@ -940,11 +951,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def list_aws_clusters(
         self,
-        request: Union[aws_service.ListAwsClustersRequest, dict] = None,
+        request: Optional[Union[aws_service.ListAwsClustersRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAwsClustersPager:
         r"""Lists all [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
@@ -1064,11 +1075,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def delete_aws_cluster(
         self,
-        request: Union[aws_service.DeleteAwsClusterRequest, dict] = None,
+        request: Optional[Union[aws_service.DeleteAwsClusterRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a specific
@@ -1205,10 +1216,12 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def generate_aws_access_token(
         self,
-        request: Union[aws_service.GenerateAwsAccessTokenRequest, dict] = None,
+        request: Optional[
+            Union[aws_service.GenerateAwsAccessTokenRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> aws_service.GenerateAwsAccessTokenResponse:
         r"""Generates a short-lived access token to authenticate to a given
@@ -1291,13 +1304,13 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def create_aws_node_pool(
         self,
-        request: Union[aws_service.CreateAwsNodePoolRequest, dict] = None,
+        request: Optional[Union[aws_service.CreateAwsNodePoolRequest, dict]] = None,
         *,
-        parent: str = None,
-        aws_node_pool: aws_resources.AwsNodePool = None,
-        aws_node_pool_id: str = None,
+        parent: Optional[str] = None,
+        aws_node_pool: Optional[aws_resources.AwsNodePool] = None,
+        aws_node_pool_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new
@@ -1463,12 +1476,12 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def update_aws_node_pool(
         self,
-        request: Union[aws_service.UpdateAwsNodePoolRequest, dict] = None,
+        request: Optional[Union[aws_service.UpdateAwsNodePoolRequest, dict]] = None,
         *,
-        aws_node_pool: aws_resources.AwsNodePool = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        aws_node_pool: Optional[aws_resources.AwsNodePool] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates an
@@ -1621,11 +1634,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def get_aws_node_pool(
         self,
-        request: Union[aws_service.GetAwsNodePoolRequest, dict] = None,
+        request: Optional[Union[aws_service.GetAwsNodePoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> aws_resources.AwsNodePool:
         r"""Describes a specific
@@ -1731,11 +1744,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def list_aws_node_pools(
         self,
-        request: Union[aws_service.ListAwsNodePoolsRequest, dict] = None,
+        request: Optional[Union[aws_service.ListAwsNodePoolsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAwsNodePoolsPager:
         r"""Lists all
@@ -1858,11 +1871,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def delete_aws_node_pool(
         self,
-        request: Union[aws_service.DeleteAwsNodePoolRequest, dict] = None,
+        request: Optional[Union[aws_service.DeleteAwsNodePoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a specific
@@ -1996,11 +2009,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def get_aws_server_config(
         self,
-        request: Union[aws_service.GetAwsServerConfigRequest, dict] = None,
+        request: Optional[Union[aws_service.GetAwsServerConfigRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> aws_resources.AwsServerConfig:
         r"""Returns information, such as supported AWS regions

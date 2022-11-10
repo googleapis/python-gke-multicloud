@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.gke_multicloud_v1.types import aws_resources
@@ -77,20 +79,20 @@ class CreateAwsClusterRequest(proto.Message):
             actually create the cluster.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    aws_cluster = proto.Field(
+    aws_cluster: aws_resources.AwsCluster = proto.Field(
         proto.MESSAGE,
         number=2,
         message=aws_resources.AwsCluster,
     )
-    aws_cluster_id = proto.Field(
+    aws_cluster_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -135,16 +137,16 @@ class UpdateAwsClusterRequest(proto.Message):
             -  ``logging_config``.
     """
 
-    aws_cluster = proto.Field(
+    aws_cluster: aws_resources.AwsCluster = proto.Field(
         proto.MESSAGE,
         number=1,
         message=aws_resources.AwsCluster,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=4,
         message=field_mask_pb2.FieldMask,
@@ -168,7 +170,7 @@ class GetAwsClusterRequest(proto.Message):
             for more details on GCP resource names.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -204,15 +206,15 @@ class ListAwsClustersRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -222,7 +224,7 @@ class ListAwsClustersResponse(proto.Message):
     r"""Response message for ``AwsClusters.ListAwsClusters`` method.
 
     Attributes:
-        aws_clusters (Sequence[google.cloud.gke_multicloud_v1.types.AwsCluster]):
+        aws_clusters (MutableSequence[google.cloud.gke_multicloud_v1.types.AwsCluster]):
             A list of
             [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
             resources in the specified GCP project and region region.
@@ -236,12 +238,12 @@ class ListAwsClustersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    aws_clusters = proto.RepeatedField(
+    aws_clusters: MutableSequence[aws_resources.AwsCluster] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=aws_resources.AwsCluster,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -285,19 +287,19 @@ class DeleteAwsClusterRequest(proto.Message):
             returned.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -338,20 +340,20 @@ class CreateAwsNodePoolRequest(proto.Message):
             actually create the node pool.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    aws_node_pool = proto.Field(
+    aws_node_pool: aws_resources.AwsNodePool = proto.Field(
         proto.MESSAGE,
         number=2,
         message=aws_resources.AwsNodePool,
     )
-    aws_node_pool_id = proto.Field(
+    aws_node_pool_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -391,16 +393,16 @@ class UpdateAwsNodePoolRequest(proto.Message):
             -  ``config.ssh_config.ec2_key_pair``.
     """
 
-    aws_node_pool = proto.Field(
+    aws_node_pool: aws_resources.AwsNodePool = proto.Field(
         proto.MESSAGE,
         number=1,
         message=aws_resources.AwsNodePool,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -424,7 +426,7 @@ class GetAwsNodePoolRequest(proto.Message):
             for more details on Google Cloud resource names.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -461,15 +463,15 @@ class ListAwsNodePoolsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -479,7 +481,7 @@ class ListAwsNodePoolsResponse(proto.Message):
     r"""Response message for ``AwsClusters.ListAwsNodePools`` method.
 
     Attributes:
-        aws_node_pools (Sequence[google.cloud.gke_multicloud_v1.types.AwsNodePool]):
+        aws_node_pools (MutableSequence[google.cloud.gke_multicloud_v1.types.AwsNodePool]):
             A list of
             [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
             resources in the specified ``AwsCluster``.
@@ -493,12 +495,12 @@ class ListAwsNodePoolsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    aws_node_pools = proto.RepeatedField(
+    aws_node_pools: MutableSequence[aws_resources.AwsNodePool] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=aws_resources.AwsNodePool,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -542,19 +544,19 @@ class DeleteAwsNodePoolRequest(proto.Message):
             be returned.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -578,7 +580,7 @@ class GetAwsServerConfigRequest(proto.Message):
             for more details on Google Cloud resource names.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -601,7 +603,7 @@ class GenerateAwsAccessTokenRequest(proto.Message):
             for more details on Google Cloud resource names.
     """
 
-    aws_cluster = proto.Field(
+    aws_cluster: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -619,11 +621,11 @@ class GenerateAwsAccessTokenResponse(proto.Message):
             will expire.
     """
 
-    access_token = proto.Field(
+    access_token: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    expiration_time = proto.Field(
+    expiration_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,

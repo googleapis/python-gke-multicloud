@@ -590,10 +590,10 @@ class AzureClustersRestTransport(AzureClustersTransport):
         self,
         *,
         host: str = "gkemulticloud.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
@@ -740,7 +740,7 @@ class AzureClustersRestTransport(AzureClustersTransport):
             request: azure_service.CreateAzureClientRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create azure client method over HTTP.
@@ -840,7 +840,7 @@ class AzureClustersRestTransport(AzureClustersTransport):
             request: azure_service.CreateAzureClusterRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create azure cluster method over HTTP.
@@ -940,7 +940,7 @@ class AzureClustersRestTransport(AzureClustersTransport):
             request: azure_service.CreateAzureNodePoolRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create azure node pool method over HTTP.
@@ -1038,7 +1038,7 @@ class AzureClustersRestTransport(AzureClustersTransport):
             request: azure_service.DeleteAzureClientRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete azure client method over HTTP.
@@ -1127,7 +1127,7 @@ class AzureClustersRestTransport(AzureClustersTransport):
             request: azure_service.DeleteAzureClusterRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete azure cluster method over HTTP.
@@ -1216,7 +1216,7 @@ class AzureClustersRestTransport(AzureClustersTransport):
             request: azure_service.DeleteAzureNodePoolRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete azure node pool method over HTTP.
@@ -1305,7 +1305,7 @@ class AzureClustersRestTransport(AzureClustersTransport):
             request: azure_service.GenerateAzureAccessTokenRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> azure_service.GenerateAzureAccessTokenResponse:
             r"""Call the generate azure access
@@ -1396,7 +1396,7 @@ class AzureClustersRestTransport(AzureClustersTransport):
             request: azure_service.GetAzureClientRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> azure_resources.AzureClient:
             r"""Call the get azure client method over HTTP.
@@ -1500,7 +1500,7 @@ class AzureClustersRestTransport(AzureClustersTransport):
             request: azure_service.GetAzureClusterRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> azure_resources.AzureCluster:
             r"""Call the get azure cluster method over HTTP.
@@ -1588,7 +1588,7 @@ class AzureClustersRestTransport(AzureClustersTransport):
             request: azure_service.GetAzureNodePoolRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> azure_resources.AzureNodePool:
             r"""Call the get azure node pool method over HTTP.
@@ -1676,7 +1676,7 @@ class AzureClustersRestTransport(AzureClustersTransport):
             request: azure_service.GetAzureServerConfigRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> azure_resources.AzureServerConfig:
             r"""Call the get azure server config method over HTTP.
@@ -1768,7 +1768,7 @@ class AzureClustersRestTransport(AzureClustersTransport):
             request: azure_service.ListAzureClientsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> azure_service.ListAzureClientsResponse:
             r"""Call the list azure clients method over HTTP.
@@ -1858,7 +1858,7 @@ class AzureClustersRestTransport(AzureClustersTransport):
             request: azure_service.ListAzureClustersRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> azure_service.ListAzureClustersResponse:
             r"""Call the list azure clusters method over HTTP.
@@ -1948,7 +1948,7 @@ class AzureClustersRestTransport(AzureClustersTransport):
             request: azure_service.ListAzureNodePoolsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> azure_service.ListAzureNodePoolsResponse:
             r"""Call the list azure node pools method over HTTP.
@@ -2040,7 +2040,7 @@ class AzureClustersRestTransport(AzureClustersTransport):
             request: azure_service.UpdateAzureClusterRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update azure cluster method over HTTP.
@@ -2140,7 +2140,7 @@ class AzureClustersRestTransport(AzureClustersTransport):
             request: azure_service.UpdateAzureNodePoolRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update azure node pool method over HTTP.

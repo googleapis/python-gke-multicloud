@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -64,7 +75,7 @@ class AzureClustersClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[AzureClustersTransport]:
         """Returns an appropriate transport class.
 
@@ -408,7 +419,7 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AzureClustersTransport, None] = None,
+        transport: Optional[Union[str, AzureClustersTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -509,13 +520,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
     def create_azure_client(
         self,
-        request: Union[azure_service.CreateAzureClientRequest, dict] = None,
+        request: Optional[Union[azure_service.CreateAzureClientRequest, dict]] = None,
         *,
-        parent: str = None,
-        azure_client: azure_resources.AzureClient = None,
-        azure_client_id: str = None,
+        parent: Optional[str] = None,
+        azure_client: Optional[azure_resources.AzureClient] = None,
+        azure_client_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new
@@ -692,11 +703,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
     def get_azure_client(
         self,
-        request: Union[azure_service.GetAzureClientRequest, dict] = None,
+        request: Optional[Union[azure_service.GetAzureClientRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> azure_resources.AzureClient:
         r"""Describes a specific
@@ -819,11 +830,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
     def list_azure_clients(
         self,
-        request: Union[azure_service.ListAzureClientsRequest, dict] = None,
+        request: Optional[Union[azure_service.ListAzureClientsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAzureClientsPager:
         r"""Lists all
@@ -945,11 +956,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
     def delete_azure_client(
         self,
-        request: Union[azure_service.DeleteAzureClientRequest, dict] = None,
+        request: Optional[Union[azure_service.DeleteAzureClientRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a specific
@@ -1087,13 +1098,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
     def create_azure_cluster(
         self,
-        request: Union[azure_service.CreateAzureClusterRequest, dict] = None,
+        request: Optional[Union[azure_service.CreateAzureClusterRequest, dict]] = None,
         *,
-        parent: str = None,
-        azure_cluster: azure_resources.AzureCluster = None,
-        azure_cluster_id: str = None,
+        parent: Optional[str] = None,
+        azure_cluster: Optional[azure_resources.AzureCluster] = None,
+        azure_cluster_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new
@@ -1260,12 +1271,12 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
     def update_azure_cluster(
         self,
-        request: Union[azure_service.UpdateAzureClusterRequest, dict] = None,
+        request: Optional[Union[azure_service.UpdateAzureClusterRequest, dict]] = None,
         *,
-        azure_cluster: azure_resources.AzureCluster = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        azure_cluster: Optional[azure_resources.AzureCluster] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates an
@@ -1413,11 +1424,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
     def get_azure_cluster(
         self,
-        request: Union[azure_service.GetAzureClusterRequest, dict] = None,
+        request: Optional[Union[azure_service.GetAzureClusterRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> azure_resources.AzureCluster:
         r"""Describes a specific
@@ -1523,11 +1534,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
     def list_azure_clusters(
         self,
-        request: Union[azure_service.ListAzureClustersRequest, dict] = None,
+        request: Optional[Union[azure_service.ListAzureClustersRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAzureClustersPager:
         r"""Lists all
@@ -1649,11 +1660,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
     def delete_azure_cluster(
         self,
-        request: Union[azure_service.DeleteAzureClusterRequest, dict] = None,
+        request: Optional[Union[azure_service.DeleteAzureClusterRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a specific
@@ -1791,10 +1802,12 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
     def generate_azure_access_token(
         self,
-        request: Union[azure_service.GenerateAzureAccessTokenRequest, dict] = None,
+        request: Optional[
+            Union[azure_service.GenerateAzureAccessTokenRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> azure_service.GenerateAzureAccessTokenResponse:
         r"""Generates a short-lived access token to authenticate to a given
@@ -1878,13 +1891,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
     def create_azure_node_pool(
         self,
-        request: Union[azure_service.CreateAzureNodePoolRequest, dict] = None,
+        request: Optional[Union[azure_service.CreateAzureNodePoolRequest, dict]] = None,
         *,
-        parent: str = None,
-        azure_node_pool: azure_resources.AzureNodePool = None,
-        azure_node_pool_id: str = None,
+        parent: Optional[str] = None,
+        azure_node_pool: Optional[azure_resources.AzureNodePool] = None,
+        azure_node_pool_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new
@@ -2049,12 +2062,12 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
     def update_azure_node_pool(
         self,
-        request: Union[azure_service.UpdateAzureNodePoolRequest, dict] = None,
+        request: Optional[Union[azure_service.UpdateAzureNodePoolRequest, dict]] = None,
         *,
-        azure_node_pool: azure_resources.AzureNodePool = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        azure_node_pool: Optional[azure_resources.AzureNodePool] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates an
@@ -2197,11 +2210,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
     def get_azure_node_pool(
         self,
-        request: Union[azure_service.GetAzureNodePoolRequest, dict] = None,
+        request: Optional[Union[azure_service.GetAzureNodePoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> azure_resources.AzureNodePool:
         r"""Describes a specific
@@ -2307,11 +2320,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
     def list_azure_node_pools(
         self,
-        request: Union[azure_service.ListAzureNodePoolsRequest, dict] = None,
+        request: Optional[Union[azure_service.ListAzureNodePoolsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAzureNodePoolsPager:
         r"""Lists all
@@ -2434,11 +2447,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
     def delete_azure_node_pool(
         self,
-        request: Union[azure_service.DeleteAzureNodePoolRequest, dict] = None,
+        request: Optional[Union[azure_service.DeleteAzureNodePoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a specific
@@ -2572,11 +2585,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
     def get_azure_server_config(
         self,
-        request: Union[azure_service.GetAzureServerConfigRequest, dict] = None,
+        request: Optional[
+            Union[azure_service.GetAzureServerConfigRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> azure_resources.AzureServerConfig:
         r"""Returns information, such as supported Azure regions
