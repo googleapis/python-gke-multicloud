@@ -27,14 +27,14 @@ from typing import (
     Type,
     Union,
 )
-import pkg_resources
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -43,16 +43,20 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.gke_multicloud_v1.services.azure_clusters import pagers
-from google.cloud.gke_multicloud_v1.types import azure_resources
-from google.cloud.gke_multicloud_v1.types import azure_service
-from google.cloud.gke_multicloud_v1.types import common_resources
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import AzureClustersTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import AzureClustersGrpcAsyncIOTransport
+
+from google.cloud.gke_multicloud_v1.services.azure_clusters import pagers
+from google.cloud.gke_multicloud_v1.types import (
+    azure_resources,
+    azure_service,
+    common_resources,
+)
+
 from .client import AzureClustersClient
+from .transports.base import DEFAULT_CLIENT_INFO, AzureClustersTransport
+from .transports.grpc_asyncio import AzureClustersGrpcAsyncIOTransport
 
 
 class AzureClustersAsyncClient:
