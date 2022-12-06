@@ -61,7 +61,6 @@ from google.cloud.gke_multicloud_v1.types import (
 from .transports.base import DEFAULT_CLIENT_INFO, AzureClustersTransport
 from .transports.grpc import AzureClustersGrpcTransport
 from .transports.grpc_asyncio import AzureClustersGrpcAsyncIOTransport
-from .transports.rest import AzureClustersRestTransport
 
 
 class AzureClustersClientMeta(type):
@@ -75,7 +74,6 @@ class AzureClustersClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[AzureClustersTransport]]
     _transport_registry["grpc"] = AzureClustersGrpcTransport
     _transport_registry["grpc_asyncio"] = AzureClustersGrpcAsyncIOTransport
-    _transport_registry["rest"] = AzureClustersRestTransport
 
     def get_transport_class(
         cls,
@@ -438,9 +436,6 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
             transport (Union[str, AzureClustersTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-                NOTE: "rest" transport functionality is currently in a
-                beta state (preview). We welcome your feedback via an
-                issue in this library's source repository.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
