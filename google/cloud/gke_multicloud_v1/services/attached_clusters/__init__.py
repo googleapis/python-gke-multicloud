@@ -13,20 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from typing import Dict, Type
-
-from .base import AwsClustersTransport
-from .grpc import AwsClustersGrpcTransport
-from .grpc_asyncio import AwsClustersGrpcAsyncIOTransport
-
-# Compile a registry of transports.
-_transport_registry = OrderedDict()  # type: Dict[str, Type[AwsClustersTransport]]
-_transport_registry["grpc"] = AwsClustersGrpcTransport
-_transport_registry["grpc_asyncio"] = AwsClustersGrpcAsyncIOTransport
+from .async_client import AttachedClustersAsyncClient
+from .client import AttachedClustersClient
 
 __all__ = (
-    "AwsClustersTransport",
-    "AwsClustersGrpcTransport",
-    "AwsClustersGrpcAsyncIOTransport",
+    "AttachedClustersClient",
+    "AttachedClustersAsyncClient",
 )

@@ -16,17 +16,17 @@
 from collections import OrderedDict
 from typing import Dict, Type
 
-from .base import AwsClustersTransport
-from .grpc import AwsClustersGrpcTransport
-from .grpc_asyncio import AwsClustersGrpcAsyncIOTransport
+from .base import AttachedClustersTransport
+from .grpc import AttachedClustersGrpcTransport
+from .grpc_asyncio import AttachedClustersGrpcAsyncIOTransport
 
 # Compile a registry of transports.
-_transport_registry = OrderedDict()  # type: Dict[str, Type[AwsClustersTransport]]
-_transport_registry["grpc"] = AwsClustersGrpcTransport
-_transport_registry["grpc_asyncio"] = AwsClustersGrpcAsyncIOTransport
+_transport_registry = OrderedDict()  # type: Dict[str, Type[AttachedClustersTransport]]
+_transport_registry["grpc"] = AttachedClustersGrpcTransport
+_transport_registry["grpc_asyncio"] = AttachedClustersGrpcAsyncIOTransport
 
 __all__ = (
-    "AwsClustersTransport",
-    "AwsClustersGrpcTransport",
-    "AwsClustersGrpcAsyncIOTransport",
+    "AttachedClustersTransport",
+    "AttachedClustersGrpcTransport",
+    "AttachedClustersGrpcAsyncIOTransport",
 )

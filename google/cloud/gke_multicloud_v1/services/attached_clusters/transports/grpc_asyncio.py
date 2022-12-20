@@ -23,18 +23,18 @@ from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.gke_multicloud_v1.types import aws_resources, aws_service
+from google.cloud.gke_multicloud_v1.types import attached_resources, attached_service
 
-from .base import DEFAULT_CLIENT_INFO, AwsClustersTransport
-from .grpc import AwsClustersGrpcTransport
+from .base import DEFAULT_CLIENT_INFO, AttachedClustersTransport
+from .grpc import AttachedClustersGrpcTransport
 
 
-class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
-    """gRPC AsyncIO backend transport for AwsClusters.
+class AttachedClustersGrpcAsyncIOTransport(AttachedClustersTransport):
+    """gRPC AsyncIO backend transport for AttachedClusters.
 
-    The AwsClusters API provides a single centrally managed
-    service to create and manage Anthos clusters that run on AWS
-    infrastructure.
+    The AttachedClusters API provides a single centrally managed
+    service to register and manage Anthos attached clusters that run
+    on customer's owned infrastructure.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -252,23 +252,24 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         return self._operations_client
 
     @property
-    def create_aws_cluster(
+    def create_attached_cluster(
         self,
     ) -> Callable[
-        [aws_service.CreateAwsClusterRequest], Awaitable[operations_pb2.Operation]
+        [attached_service.CreateAttachedClusterRequest],
+        Awaitable[operations_pb2.Operation],
     ]:
-        r"""Return a callable for the create aws cluster method over gRPC.
+        r"""Return a callable for the create attached cluster method over gRPC.
 
         Creates a new
-        [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster] resource
-        on a given GCP project and region.
+        [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
+        resource on a given GCP project and region.
 
         If successful, the response contains a newly created
         [Operation][google.longrunning.Operation] resource that can be
         described to track the status of the operation.
 
         Returns:
-            Callable[[~.CreateAwsClusterRequest],
+            Callable[[~.CreateAttachedClusterRequest],
                     Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -277,27 +278,28 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_aws_cluster" not in self._stubs:
-            self._stubs["create_aws_cluster"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AwsClusters/CreateAwsCluster",
-                request_serializer=aws_service.CreateAwsClusterRequest.serialize,
+        if "create_attached_cluster" not in self._stubs:
+            self._stubs["create_attached_cluster"] = self.grpc_channel.unary_unary(
+                "/google.cloud.gkemulticloud.v1.AttachedClusters/CreateAttachedCluster",
+                request_serializer=attached_service.CreateAttachedClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["create_aws_cluster"]
+        return self._stubs["create_attached_cluster"]
 
     @property
-    def update_aws_cluster(
+    def update_attached_cluster(
         self,
     ) -> Callable[
-        [aws_service.UpdateAwsClusterRequest], Awaitable[operations_pb2.Operation]
+        [attached_service.UpdateAttachedClusterRequest],
+        Awaitable[operations_pb2.Operation],
     ]:
-        r"""Return a callable for the update aws cluster method over gRPC.
+        r"""Return a callable for the update attached cluster method over gRPC.
 
         Updates an
-        [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster].
+        [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster].
 
         Returns:
-            Callable[[~.UpdateAwsClusterRequest],
+            Callable[[~.UpdateAttachedClusterRequest],
                     Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -306,28 +308,37 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_aws_cluster" not in self._stubs:
-            self._stubs["update_aws_cluster"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AwsClusters/UpdateAwsCluster",
-                request_serializer=aws_service.UpdateAwsClusterRequest.serialize,
+        if "update_attached_cluster" not in self._stubs:
+            self._stubs["update_attached_cluster"] = self.grpc_channel.unary_unary(
+                "/google.cloud.gkemulticloud.v1.AttachedClusters/UpdateAttachedCluster",
+                request_serializer=attached_service.UpdateAttachedClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["update_aws_cluster"]
+        return self._stubs["update_attached_cluster"]
 
     @property
-    def get_aws_cluster(
+    def import_attached_cluster(
         self,
     ) -> Callable[
-        [aws_service.GetAwsClusterRequest], Awaitable[aws_resources.AwsCluster]
+        [attached_service.ImportAttachedClusterRequest],
+        Awaitable[operations_pb2.Operation],
     ]:
-        r"""Return a callable for the get aws cluster method over gRPC.
+        r"""Return a callable for the import attached cluster method over gRPC.
 
-        Describes a specific
-        [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster] resource.
+        Imports creates a new
+        [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
+        resource by importing an existing Fleet Membership resource.
+
+        Attached Clusters created before the introduction of the Anthos
+        Multi-Cloud API can be imported through this method.
+
+        If successful, the response contains a newly created
+        [Operation][google.longrunning.Operation] resource that can be
+        described to track the status of the operation.
 
         Returns:
-            Callable[[~.GetAwsClusterRequest],
-                    Awaitable[~.AwsCluster]]:
+            Callable[[~.ImportAttachedClusterRequest],
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -335,29 +346,61 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_aws_cluster" not in self._stubs:
-            self._stubs["get_aws_cluster"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AwsClusters/GetAwsCluster",
-                request_serializer=aws_service.GetAwsClusterRequest.serialize,
-                response_deserializer=aws_resources.AwsCluster.deserialize,
+        if "import_attached_cluster" not in self._stubs:
+            self._stubs["import_attached_cluster"] = self.grpc_channel.unary_unary(
+                "/google.cloud.gkemulticloud.v1.AttachedClusters/ImportAttachedCluster",
+                request_serializer=attached_service.ImportAttachedClusterRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["get_aws_cluster"]
+        return self._stubs["import_attached_cluster"]
 
     @property
-    def list_aws_clusters(
+    def get_attached_cluster(
         self,
     ) -> Callable[
-        [aws_service.ListAwsClustersRequest],
-        Awaitable[aws_service.ListAwsClustersResponse],
+        [attached_service.GetAttachedClusterRequest],
+        Awaitable[attached_resources.AttachedCluster],
     ]:
-        r"""Return a callable for the list aws clusters method over gRPC.
+        r"""Return a callable for the get attached cluster method over gRPC.
 
-        Lists all [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
+        Describes a specific
+        [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
+        resource.
+
+        Returns:
+            Callable[[~.GetAttachedClusterRequest],
+                    Awaitable[~.AttachedCluster]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_attached_cluster" not in self._stubs:
+            self._stubs["get_attached_cluster"] = self.grpc_channel.unary_unary(
+                "/google.cloud.gkemulticloud.v1.AttachedClusters/GetAttachedCluster",
+                request_serializer=attached_service.GetAttachedClusterRequest.serialize,
+                response_deserializer=attached_resources.AttachedCluster.deserialize,
+            )
+        return self._stubs["get_attached_cluster"]
+
+    @property
+    def list_attached_clusters(
+        self,
+    ) -> Callable[
+        [attached_service.ListAttachedClustersRequest],
+        Awaitable[attached_service.ListAttachedClustersResponse],
+    ]:
+        r"""Return a callable for the list attached clusters method over gRPC.
+
+        Lists all
+        [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
         resources on a given Google Cloud project and region.
 
         Returns:
-            Callable[[~.ListAwsClustersRequest],
-                    Awaitable[~.ListAwsClustersResponse]]:
+            Callable[[~.ListAttachedClustersRequest],
+                    Awaitable[~.ListAttachedClustersResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -365,217 +408,25 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_aws_clusters" not in self._stubs:
-            self._stubs["list_aws_clusters"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AwsClusters/ListAwsClusters",
-                request_serializer=aws_service.ListAwsClustersRequest.serialize,
-                response_deserializer=aws_service.ListAwsClustersResponse.deserialize,
+        if "list_attached_clusters" not in self._stubs:
+            self._stubs["list_attached_clusters"] = self.grpc_channel.unary_unary(
+                "/google.cloud.gkemulticloud.v1.AttachedClusters/ListAttachedClusters",
+                request_serializer=attached_service.ListAttachedClustersRequest.serialize,
+                response_deserializer=attached_service.ListAttachedClustersResponse.deserialize,
             )
-        return self._stubs["list_aws_clusters"]
+        return self._stubs["list_attached_clusters"]
 
     @property
-    def delete_aws_cluster(
+    def delete_attached_cluster(
         self,
     ) -> Callable[
-        [aws_service.DeleteAwsClusterRequest], Awaitable[operations_pb2.Operation]
+        [attached_service.DeleteAttachedClusterRequest],
+        Awaitable[operations_pb2.Operation],
     ]:
-        r"""Return a callable for the delete aws cluster method over gRPC.
+        r"""Return a callable for the delete attached cluster method over gRPC.
 
         Deletes a specific
-        [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster] resource.
-
-        Fails if the cluster has one or more associated
-        [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
-        resources.
-
-        If successful, the response contains a newly created
-        [Operation][google.longrunning.Operation] resource that can be
-        described to track the status of the operation.
-
-        Returns:
-            Callable[[~.DeleteAwsClusterRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_aws_cluster" not in self._stubs:
-            self._stubs["delete_aws_cluster"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AwsClusters/DeleteAwsCluster",
-                request_serializer=aws_service.DeleteAwsClusterRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["delete_aws_cluster"]
-
-    @property
-    def generate_aws_access_token(
-        self,
-    ) -> Callable[
-        [aws_service.GenerateAwsAccessTokenRequest],
-        Awaitable[aws_service.GenerateAwsAccessTokenResponse],
-    ]:
-        r"""Return a callable for the generate aws access token method over gRPC.
-
-        Generates a short-lived access token to authenticate to a given
-        [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster] resource.
-
-        Returns:
-            Callable[[~.GenerateAwsAccessTokenRequest],
-                    Awaitable[~.GenerateAwsAccessTokenResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "generate_aws_access_token" not in self._stubs:
-            self._stubs["generate_aws_access_token"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AwsClusters/GenerateAwsAccessToken",
-                request_serializer=aws_service.GenerateAwsAccessTokenRequest.serialize,
-                response_deserializer=aws_service.GenerateAwsAccessTokenResponse.deserialize,
-            )
-        return self._stubs["generate_aws_access_token"]
-
-    @property
-    def create_aws_node_pool(
-        self,
-    ) -> Callable[
-        [aws_service.CreateAwsNodePoolRequest], Awaitable[operations_pb2.Operation]
-    ]:
-        r"""Return a callable for the create aws node pool method over gRPC.
-
-        Creates a new
-        [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool],
-        attached to a given
-        [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster].
-
-        If successful, the response contains a newly created
-        [Operation][google.longrunning.Operation] resource that can be
-        described to track the status of the operation.
-
-        Returns:
-            Callable[[~.CreateAwsNodePoolRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_aws_node_pool" not in self._stubs:
-            self._stubs["create_aws_node_pool"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AwsClusters/CreateAwsNodePool",
-                request_serializer=aws_service.CreateAwsNodePoolRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["create_aws_node_pool"]
-
-    @property
-    def update_aws_node_pool(
-        self,
-    ) -> Callable[
-        [aws_service.UpdateAwsNodePoolRequest], Awaitable[operations_pb2.Operation]
-    ]:
-        r"""Return a callable for the update aws node pool method over gRPC.
-
-        Updates an
-        [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool].
-
-        Returns:
-            Callable[[~.UpdateAwsNodePoolRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "update_aws_node_pool" not in self._stubs:
-            self._stubs["update_aws_node_pool"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AwsClusters/UpdateAwsNodePool",
-                request_serializer=aws_service.UpdateAwsNodePoolRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["update_aws_node_pool"]
-
-    @property
-    def get_aws_node_pool(
-        self,
-    ) -> Callable[
-        [aws_service.GetAwsNodePoolRequest], Awaitable[aws_resources.AwsNodePool]
-    ]:
-        r"""Return a callable for the get aws node pool method over gRPC.
-
-        Describes a specific
-        [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
-        resource.
-
-        Returns:
-            Callable[[~.GetAwsNodePoolRequest],
-                    Awaitable[~.AwsNodePool]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_aws_node_pool" not in self._stubs:
-            self._stubs["get_aws_node_pool"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AwsClusters/GetAwsNodePool",
-                request_serializer=aws_service.GetAwsNodePoolRequest.serialize,
-                response_deserializer=aws_resources.AwsNodePool.deserialize,
-            )
-        return self._stubs["get_aws_node_pool"]
-
-    @property
-    def list_aws_node_pools(
-        self,
-    ) -> Callable[
-        [aws_service.ListAwsNodePoolsRequest],
-        Awaitable[aws_service.ListAwsNodePoolsResponse],
-    ]:
-        r"""Return a callable for the list aws node pools method over gRPC.
-
-        Lists all
-        [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
-        resources on a given
-        [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster].
-
-        Returns:
-            Callable[[~.ListAwsNodePoolsRequest],
-                    Awaitable[~.ListAwsNodePoolsResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_aws_node_pools" not in self._stubs:
-            self._stubs["list_aws_node_pools"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AwsClusters/ListAwsNodePools",
-                request_serializer=aws_service.ListAwsNodePoolsRequest.serialize,
-                response_deserializer=aws_service.ListAwsNodePoolsResponse.deserialize,
-            )
-        return self._stubs["list_aws_node_pools"]
-
-    @property
-    def delete_aws_node_pool(
-        self,
-    ) -> Callable[
-        [aws_service.DeleteAwsNodePoolRequest], Awaitable[operations_pb2.Operation]
-    ]:
-        r"""Return a callable for the delete aws node pool method over gRPC.
-
-        Deletes a specific
-        [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
+        [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
         resource.
 
         If successful, the response contains a newly created
@@ -583,7 +434,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         described to track the status of the operation.
 
         Returns:
-            Callable[[~.DeleteAwsNodePoolRequest],
+            Callable[[~.DeleteAttachedClusterRequest],
                     Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -592,30 +443,29 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_aws_node_pool" not in self._stubs:
-            self._stubs["delete_aws_node_pool"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AwsClusters/DeleteAwsNodePool",
-                request_serializer=aws_service.DeleteAwsNodePoolRequest.serialize,
+        if "delete_attached_cluster" not in self._stubs:
+            self._stubs["delete_attached_cluster"] = self.grpc_channel.unary_unary(
+                "/google.cloud.gkemulticloud.v1.AttachedClusters/DeleteAttachedCluster",
+                request_serializer=attached_service.DeleteAttachedClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["delete_aws_node_pool"]
+        return self._stubs["delete_attached_cluster"]
 
     @property
-    def get_aws_server_config(
+    def get_attached_server_config(
         self,
     ) -> Callable[
-        [aws_service.GetAwsServerConfigRequest],
-        Awaitable[aws_resources.AwsServerConfig],
+        [attached_service.GetAttachedServerConfigRequest],
+        Awaitable[attached_resources.AttachedServerConfig],
     ]:
-        r"""Return a callable for the get aws server config method over gRPC.
+        r"""Return a callable for the get attached server config method over gRPC.
 
-        Returns information, such as supported AWS regions
-        and Kubernetes versions, on a given Google Cloud
-        location.
+        Returns information, such as supported Kubernetes
+        versions, on a given Google Cloud location.
 
         Returns:
-            Callable[[~.GetAwsServerConfigRequest],
-                    Awaitable[~.AwsServerConfig]]:
+            Callable[[~.GetAttachedServerConfigRequest],
+                    Awaitable[~.AttachedServerConfig]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -623,13 +473,46 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_aws_server_config" not in self._stubs:
-            self._stubs["get_aws_server_config"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AwsClusters/GetAwsServerConfig",
-                request_serializer=aws_service.GetAwsServerConfigRequest.serialize,
-                response_deserializer=aws_resources.AwsServerConfig.deserialize,
+        if "get_attached_server_config" not in self._stubs:
+            self._stubs["get_attached_server_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.gkemulticloud.v1.AttachedClusters/GetAttachedServerConfig",
+                request_serializer=attached_service.GetAttachedServerConfigRequest.serialize,
+                response_deserializer=attached_resources.AttachedServerConfig.deserialize,
             )
-        return self._stubs["get_aws_server_config"]
+        return self._stubs["get_attached_server_config"]
+
+    @property
+    def generate_attached_cluster_install_manifest(
+        self,
+    ) -> Callable[
+        [attached_service.GenerateAttachedClusterInstallManifestRequest],
+        Awaitable[attached_service.GenerateAttachedClusterInstallManifestResponse],
+    ]:
+        r"""Return a callable for the generate attached cluster
+        install manifest method over gRPC.
+
+        Generates the install manifest to be installed on the
+        target cluster.
+
+        Returns:
+            Callable[[~.GenerateAttachedClusterInstallManifestRequest],
+                    Awaitable[~.GenerateAttachedClusterInstallManifestResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "generate_attached_cluster_install_manifest" not in self._stubs:
+            self._stubs[
+                "generate_attached_cluster_install_manifest"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.gkemulticloud.v1.AttachedClusters/GenerateAttachedClusterInstallManifest",
+                request_serializer=attached_service.GenerateAttachedClusterInstallManifestRequest.serialize,
+                response_deserializer=attached_service.GenerateAttachedClusterInstallManifestResponse.deserialize,
+            )
+        return self._stubs["generate_attached_cluster_install_manifest"]
 
     def close(self):
         return self.grpc_channel.close()
@@ -705,4 +588,4 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         return self._stubs["list_operations"]
 
 
-__all__ = ("AwsClustersGrpcAsyncIOTransport",)
+__all__ = ("AttachedClustersGrpcAsyncIOTransport",)

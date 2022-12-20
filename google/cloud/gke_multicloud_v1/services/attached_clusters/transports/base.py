@@ -26,15 +26,15 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.gke_multicloud_v1 import gapic_version as package_version
-from google.cloud.gke_multicloud_v1.types import aws_resources, aws_service
+from google.cloud.gke_multicloud_v1.types import attached_resources, attached_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
 
 
-class AwsClustersTransport(abc.ABC):
-    """Abstract transport class for AwsClusters."""
+class AttachedClustersTransport(abc.ABC):
+    """Abstract transport class for AttachedClusters."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
@@ -123,18 +123,23 @@ class AwsClustersTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.create_aws_cluster: gapic_v1.method.wrap_method(
-                self.create_aws_cluster,
+            self.create_attached_cluster: gapic_v1.method.wrap_method(
+                self.create_attached_cluster,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_aws_cluster: gapic_v1.method.wrap_method(
-                self.update_aws_cluster,
+            self.update_attached_cluster: gapic_v1.method.wrap_method(
+                self.update_attached_cluster,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_aws_cluster: gapic_v1.method.wrap_method(
-                self.get_aws_cluster,
+            self.import_attached_cluster: gapic_v1.method.wrap_method(
+                self.import_attached_cluster,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_attached_cluster: gapic_v1.method.wrap_method(
+                self.get_attached_cluster,
                 default_retry=retries.Retry(
                     initial=1.0,
                     maximum=10.0,
@@ -147,8 +152,8 @@ class AwsClustersTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_aws_clusters: gapic_v1.method.wrap_method(
-                self.list_aws_clusters,
+            self.list_attached_clusters: gapic_v1.method.wrap_method(
+                self.list_attached_clusters,
                 default_retry=retries.Retry(
                     initial=1.0,
                     maximum=10.0,
@@ -161,13 +166,13 @@ class AwsClustersTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_aws_cluster: gapic_v1.method.wrap_method(
-                self.delete_aws_cluster,
+            self.delete_attached_cluster: gapic_v1.method.wrap_method(
+                self.delete_attached_cluster,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.generate_aws_access_token: gapic_v1.method.wrap_method(
-                self.generate_aws_access_token,
+            self.get_attached_server_config: gapic_v1.method.wrap_method(
+                self.get_attached_server_config,
                 default_retry=retries.Retry(
                     initial=1.0,
                     maximum=10.0,
@@ -180,51 +185,8 @@ class AwsClustersTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_aws_node_pool: gapic_v1.method.wrap_method(
-                self.create_aws_node_pool,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.update_aws_node_pool: gapic_v1.method.wrap_method(
-                self.update_aws_node_pool,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_aws_node_pool: gapic_v1.method.wrap_method(
-                self.get_aws_node_pool,
-                default_retry=retries.Retry(
-                    initial=1.0,
-                    maximum=10.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.list_aws_node_pools: gapic_v1.method.wrap_method(
-                self.list_aws_node_pools,
-                default_retry=retries.Retry(
-                    initial=1.0,
-                    maximum=10.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.delete_aws_node_pool: gapic_v1.method.wrap_method(
-                self.delete_aws_node_pool,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_aws_server_config: gapic_v1.method.wrap_method(
-                self.get_aws_server_config,
+            self.generate_attached_cluster_install_manifest: gapic_v1.method.wrap_method(
+                self.generate_attached_cluster_install_manifest,
                 default_retry=retries.Retry(
                     initial=1.0,
                     maximum=10.0,
@@ -254,119 +216,86 @@ class AwsClustersTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_aws_cluster(
+    def create_attached_cluster(
         self,
     ) -> Callable[
-        [aws_service.CreateAwsClusterRequest],
+        [attached_service.CreateAttachedClusterRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
-    def update_aws_cluster(
+    def update_attached_cluster(
         self,
     ) -> Callable[
-        [aws_service.UpdateAwsClusterRequest],
+        [attached_service.UpdateAttachedClusterRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_aws_cluster(
+    def import_attached_cluster(
         self,
     ) -> Callable[
-        [aws_service.GetAwsClusterRequest],
-        Union[aws_resources.AwsCluster, Awaitable[aws_resources.AwsCluster]],
+        [attached_service.ImportAttachedClusterRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
-    def list_aws_clusters(
+    def get_attached_cluster(
         self,
     ) -> Callable[
-        [aws_service.ListAwsClustersRequest],
+        [attached_service.GetAttachedClusterRequest],
         Union[
-            aws_service.ListAwsClustersResponse,
-            Awaitable[aws_service.ListAwsClustersResponse],
+            attached_resources.AttachedCluster,
+            Awaitable[attached_resources.AttachedCluster],
         ],
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_aws_cluster(
+    def list_attached_clusters(
         self,
     ) -> Callable[
-        [aws_service.DeleteAwsClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def generate_aws_access_token(
-        self,
-    ) -> Callable[
-        [aws_service.GenerateAwsAccessTokenRequest],
+        [attached_service.ListAttachedClustersRequest],
         Union[
-            aws_service.GenerateAwsAccessTokenResponse,
-            Awaitable[aws_service.GenerateAwsAccessTokenResponse],
+            attached_service.ListAttachedClustersResponse,
+            Awaitable[attached_service.ListAttachedClustersResponse],
         ],
     ]:
         raise NotImplementedError()
 
     @property
-    def create_aws_node_pool(
+    def delete_attached_cluster(
         self,
     ) -> Callable[
-        [aws_service.CreateAwsNodePoolRequest],
+        [attached_service.DeleteAttachedClusterRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
-    def update_aws_node_pool(
+    def get_attached_server_config(
         self,
     ) -> Callable[
-        [aws_service.UpdateAwsNodePoolRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_aws_node_pool(
-        self,
-    ) -> Callable[
-        [aws_service.GetAwsNodePoolRequest],
-        Union[aws_resources.AwsNodePool, Awaitable[aws_resources.AwsNodePool]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_aws_node_pools(
-        self,
-    ) -> Callable[
-        [aws_service.ListAwsNodePoolsRequest],
+        [attached_service.GetAttachedServerConfigRequest],
         Union[
-            aws_service.ListAwsNodePoolsResponse,
-            Awaitable[aws_service.ListAwsNodePoolsResponse],
+            attached_resources.AttachedServerConfig,
+            Awaitable[attached_resources.AttachedServerConfig],
         ],
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_aws_node_pool(
+    def generate_attached_cluster_install_manifest(
         self,
     ) -> Callable[
-        [aws_service.DeleteAwsNodePoolRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_aws_server_config(
-        self,
-    ) -> Callable[
-        [aws_service.GetAwsServerConfigRequest],
-        Union[aws_resources.AwsServerConfig, Awaitable[aws_resources.AwsServerConfig]],
+        [attached_service.GenerateAttachedClusterInstallManifestRequest],
+        Union[
+            attached_service.GenerateAttachedClusterInstallManifestResponse,
+            Awaitable[attached_service.GenerateAttachedClusterInstallManifestResponse],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -408,4 +337,4 @@ class AwsClustersTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("AwsClustersTransport",)
+__all__ = ("AttachedClustersTransport",)

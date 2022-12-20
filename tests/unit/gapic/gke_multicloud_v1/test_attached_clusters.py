@@ -50,15 +50,15 @@ from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 
-from google.cloud.gke_multicloud_v1.services.aws_clusters import (
-    AwsClustersAsyncClient,
-    AwsClustersClient,
+from google.cloud.gke_multicloud_v1.services.attached_clusters import (
+    AttachedClustersAsyncClient,
+    AttachedClustersClient,
     pagers,
     transports,
 )
 from google.cloud.gke_multicloud_v1.types import (
-    aws_resources,
-    aws_service,
+    attached_resources,
+    attached_service,
     common_resources,
 )
 
@@ -85,33 +85,39 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert AwsClustersClient._get_default_mtls_endpoint(None) is None
+    assert AttachedClustersClient._get_default_mtls_endpoint(None) is None
     assert (
-        AwsClustersClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    )
-    assert (
-        AwsClustersClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        AttachedClustersClient._get_default_mtls_endpoint(api_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        AwsClustersClient._get_default_mtls_endpoint(sandbox_endpoint)
+        AttachedClustersClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        == api_mtls_endpoint
+    )
+    assert (
+        AttachedClustersClient._get_default_mtls_endpoint(sandbox_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        AwsClustersClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        AttachedClustersClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
         == sandbox_mtls_endpoint
     )
-    assert AwsClustersClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert (
+        AttachedClustersClient._get_default_mtls_endpoint(non_googleapi)
+        == non_googleapi
+    )
 
 
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (AwsClustersClient, "grpc"),
-        (AwsClustersAsyncClient, "grpc_asyncio"),
+        (AttachedClustersClient, "grpc"),
+        (AttachedClustersAsyncClient, "grpc_asyncio"),
     ],
 )
-def test_aws_clusters_client_from_service_account_info(client_class, transport_name):
+def test_attached_clusters_client_from_service_account_info(
+    client_class, transport_name
+):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
@@ -128,11 +134,11 @@ def test_aws_clusters_client_from_service_account_info(client_class, transport_n
 @pytest.mark.parametrize(
     "transport_class,transport_name",
     [
-        (transports.AwsClustersGrpcTransport, "grpc"),
-        (transports.AwsClustersGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.AttachedClustersGrpcTransport, "grpc"),
+        (transports.AttachedClustersGrpcAsyncIOTransport, "grpc_asyncio"),
     ],
 )
-def test_aws_clusters_client_service_account_always_use_jwt(
+def test_attached_clusters_client_service_account_always_use_jwt(
     transport_class, transport_name
 ):
     with mock.patch.object(
@@ -153,11 +159,13 @@ def test_aws_clusters_client_service_account_always_use_jwt(
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (AwsClustersClient, "grpc"),
-        (AwsClustersAsyncClient, "grpc_asyncio"),
+        (AttachedClustersClient, "grpc"),
+        (AttachedClustersAsyncClient, "grpc_asyncio"),
     ],
 )
-def test_aws_clusters_client_from_service_account_file(client_class, transport_name):
+def test_attached_clusters_client_from_service_account_file(
+    client_class, transport_name
+):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
@@ -178,47 +186,49 @@ def test_aws_clusters_client_from_service_account_file(client_class, transport_n
         assert client.transport._host == ("gkemulticloud.googleapis.com:443")
 
 
-def test_aws_clusters_client_get_transport_class():
-    transport = AwsClustersClient.get_transport_class()
+def test_attached_clusters_client_get_transport_class():
+    transport = AttachedClustersClient.get_transport_class()
     available_transports = [
-        transports.AwsClustersGrpcTransport,
+        transports.AttachedClustersGrpcTransport,
     ]
     assert transport in available_transports
 
-    transport = AwsClustersClient.get_transport_class("grpc")
-    assert transport == transports.AwsClustersGrpcTransport
+    transport = AttachedClustersClient.get_transport_class("grpc")
+    assert transport == transports.AttachedClustersGrpcTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (AwsClustersClient, transports.AwsClustersGrpcTransport, "grpc"),
+        (AttachedClustersClient, transports.AttachedClustersGrpcTransport, "grpc"),
         (
-            AwsClustersAsyncClient,
-            transports.AwsClustersGrpcAsyncIOTransport,
+            AttachedClustersAsyncClient,
+            transports.AttachedClustersGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
     ],
 )
 @mock.patch.object(
-    AwsClustersClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AwsClustersClient)
+    AttachedClustersClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(AttachedClustersClient),
 )
 @mock.patch.object(
-    AwsClustersAsyncClient,
+    AttachedClustersAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(AwsClustersAsyncClient),
+    modify_default_endpoint(AttachedClustersAsyncClient),
 )
-def test_aws_clusters_client_client_options(
+def test_attached_clusters_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(AwsClustersClient, "get_transport_class") as gtc:
+    with mock.patch.object(AttachedClustersClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(AwsClustersClient, "get_transport_class") as gtc:
+    with mock.patch.object(AttachedClustersClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -327,32 +337,44 @@ def test_aws_clusters_client_client_options(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
-        (AwsClustersClient, transports.AwsClustersGrpcTransport, "grpc", "true"),
         (
-            AwsClustersAsyncClient,
-            transports.AwsClustersGrpcAsyncIOTransport,
+            AttachedClustersClient,
+            transports.AttachedClustersGrpcTransport,
+            "grpc",
+            "true",
+        ),
+        (
+            AttachedClustersAsyncClient,
+            transports.AttachedClustersGrpcAsyncIOTransport,
             "grpc_asyncio",
             "true",
         ),
-        (AwsClustersClient, transports.AwsClustersGrpcTransport, "grpc", "false"),
         (
-            AwsClustersAsyncClient,
-            transports.AwsClustersGrpcAsyncIOTransport,
+            AttachedClustersClient,
+            transports.AttachedClustersGrpcTransport,
+            "grpc",
+            "false",
+        ),
+        (
+            AttachedClustersAsyncClient,
+            transports.AttachedClustersGrpcAsyncIOTransport,
             "grpc_asyncio",
             "false",
         ),
     ],
 )
 @mock.patch.object(
-    AwsClustersClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AwsClustersClient)
+    AttachedClustersClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(AttachedClustersClient),
 )
 @mock.patch.object(
-    AwsClustersAsyncClient,
+    AttachedClustersAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(AwsClustersAsyncClient),
+    modify_default_endpoint(AttachedClustersAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_aws_clusters_client_mtls_env_auto(
+def test_attached_clusters_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -448,16 +470,20 @@ def test_aws_clusters_client_mtls_env_auto(
                 )
 
 
-@pytest.mark.parametrize("client_class", [AwsClustersClient, AwsClustersAsyncClient])
-@mock.patch.object(
-    AwsClustersClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AwsClustersClient)
+@pytest.mark.parametrize(
+    "client_class", [AttachedClustersClient, AttachedClustersAsyncClient]
 )
 @mock.patch.object(
-    AwsClustersAsyncClient,
+    AttachedClustersClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(AwsClustersAsyncClient),
+    modify_default_endpoint(AttachedClustersClient),
 )
-def test_aws_clusters_client_get_mtls_endpoint_and_cert_source(client_class):
+@mock.patch.object(
+    AttachedClustersAsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(AttachedClustersAsyncClient),
+)
+def test_attached_clusters_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
@@ -528,15 +554,15 @@ def test_aws_clusters_client_get_mtls_endpoint_and_cert_source(client_class):
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (AwsClustersClient, transports.AwsClustersGrpcTransport, "grpc"),
+        (AttachedClustersClient, transports.AttachedClustersGrpcTransport, "grpc"),
         (
-            AwsClustersAsyncClient,
-            transports.AwsClustersGrpcAsyncIOTransport,
+            AttachedClustersAsyncClient,
+            transports.AttachedClustersGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
     ],
 )
-def test_aws_clusters_client_client_options_scopes(
+def test_attached_clusters_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -562,16 +588,21 @@ def test_aws_clusters_client_client_options_scopes(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (AwsClustersClient, transports.AwsClustersGrpcTransport, "grpc", grpc_helpers),
         (
-            AwsClustersAsyncClient,
-            transports.AwsClustersGrpcAsyncIOTransport,
+            AttachedClustersClient,
+            transports.AttachedClustersGrpcTransport,
+            "grpc",
+            grpc_helpers,
+        ),
+        (
+            AttachedClustersAsyncClient,
+            transports.AttachedClustersGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
     ],
 )
-def test_aws_clusters_client_client_options_credentials_file(
+def test_attached_clusters_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -593,12 +624,14 @@ def test_aws_clusters_client_client_options_credentials_file(
         )
 
 
-def test_aws_clusters_client_client_options_from_dict():
+def test_attached_clusters_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.gke_multicloud_v1.services.aws_clusters.transports.AwsClustersGrpcTransport.__init__"
+        "google.cloud.gke_multicloud_v1.services.attached_clusters.transports.AttachedClustersGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = AwsClustersClient(client_options={"api_endpoint": "squid.clam.whelk"})
+        client = AttachedClustersClient(
+            client_options={"api_endpoint": "squid.clam.whelk"}
+        )
         grpc_transport.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -615,16 +648,21 @@ def test_aws_clusters_client_client_options_from_dict():
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (AwsClustersClient, transports.AwsClustersGrpcTransport, "grpc", grpc_helpers),
         (
-            AwsClustersAsyncClient,
-            transports.AwsClustersGrpcAsyncIOTransport,
+            AttachedClustersClient,
+            transports.AttachedClustersGrpcTransport,
+            "grpc",
+            grpc_helpers,
+        ),
+        (
+            AttachedClustersAsyncClient,
+            transports.AttachedClustersGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
     ],
 )
-def test_aws_clusters_client_create_channel_credentials_file(
+def test_attached_clusters_client_create_channel_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -677,12 +715,12 @@ def test_aws_clusters_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.CreateAwsClusterRequest,
+        attached_service.CreateAttachedClusterRequest,
         dict,
     ],
 )
-def test_create_aws_cluster(request_type, transport: str = "grpc"):
-    client = AwsClustersClient(
+def test_create_attached_cluster(request_type, transport: str = "grpc"):
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -693,44 +731,45 @@ def test_create_aws_cluster(request_type, transport: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.create_aws_cluster), "__call__"
+        type(client.transport.create_attached_cluster), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.create_aws_cluster(request)
+        response = client.create_attached_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.CreateAwsClusterRequest()
+        assert args[0] == attached_service.CreateAttachedClusterRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
-def test_create_aws_cluster_empty_call():
+def test_create_attached_cluster_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.create_aws_cluster), "__call__"
+        type(client.transport.create_attached_cluster), "__call__"
     ) as call:
-        client.create_aws_cluster()
+        client.create_attached_cluster()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.CreateAwsClusterRequest()
+        assert args[0] == attached_service.CreateAttachedClusterRequest()
 
 
 @pytest.mark.asyncio
-async def test_create_aws_cluster_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.CreateAwsClusterRequest
+async def test_create_attached_cluster_async(
+    transport: str = "grpc_asyncio",
+    request_type=attached_service.CreateAttachedClusterRequest,
 ):
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -741,45 +780,45 @@ async def test_create_aws_cluster_async(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.create_aws_cluster), "__call__"
+        type(client.transport.create_attached_cluster), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-        response = await client.create_aws_cluster(request)
+        response = await client.create_attached_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.CreateAwsClusterRequest()
+        assert args[0] == attached_service.CreateAttachedClusterRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
 @pytest.mark.asyncio
-async def test_create_aws_cluster_async_from_dict():
-    await test_create_aws_cluster_async(request_type=dict)
+async def test_create_attached_cluster_async_from_dict():
+    await test_create_attached_cluster_async(request_type=dict)
 
 
-def test_create_aws_cluster_field_headers():
-    client = AwsClustersClient(
+def test_create_attached_cluster_field_headers():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = aws_service.CreateAwsClusterRequest()
+    request = attached_service.CreateAttachedClusterRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.create_aws_cluster), "__call__"
+        type(client.transport.create_attached_cluster), "__call__"
     ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-        client.create_aws_cluster(request)
+        client.create_attached_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -795,25 +834,25 @@ def test_create_aws_cluster_field_headers():
 
 
 @pytest.mark.asyncio
-async def test_create_aws_cluster_field_headers_async():
-    client = AwsClustersAsyncClient(
+async def test_create_attached_cluster_field_headers_async():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = aws_service.CreateAwsClusterRequest()
+    request = attached_service.CreateAttachedClusterRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.create_aws_cluster), "__call__"
+        type(client.transport.create_attached_cluster), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
-        await client.create_aws_cluster(request)
+        await client.create_attached_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -828,23 +867,23 @@ async def test_create_aws_cluster_field_headers_async():
     ) in kw["metadata"]
 
 
-def test_create_aws_cluster_flattened():
-    client = AwsClustersClient(
+def test_create_attached_cluster_flattened():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.create_aws_cluster), "__call__"
+        type(client.transport.create_attached_cluster), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.create_aws_cluster(
+        client.create_attached_cluster(
             parent="parent_value",
-            aws_cluster=aws_resources.AwsCluster(name="name_value"),
-            aws_cluster_id="aws_cluster_id_value",
+            attached_cluster=attached_resources.AttachedCluster(name="name_value"),
+            attached_cluster_id="attached_cluster_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -854,39 +893,39 @@ def test_create_aws_cluster_flattened():
         arg = args[0].parent
         mock_val = "parent_value"
         assert arg == mock_val
-        arg = args[0].aws_cluster
-        mock_val = aws_resources.AwsCluster(name="name_value")
+        arg = args[0].attached_cluster
+        mock_val = attached_resources.AttachedCluster(name="name_value")
         assert arg == mock_val
-        arg = args[0].aws_cluster_id
-        mock_val = "aws_cluster_id_value"
+        arg = args[0].attached_cluster_id
+        mock_val = "attached_cluster_id_value"
         assert arg == mock_val
 
 
-def test_create_aws_cluster_flattened_error():
-    client = AwsClustersClient(
+def test_create_attached_cluster_flattened_error():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.create_aws_cluster(
-            aws_service.CreateAwsClusterRequest(),
+        client.create_attached_cluster(
+            attached_service.CreateAttachedClusterRequest(),
             parent="parent_value",
-            aws_cluster=aws_resources.AwsCluster(name="name_value"),
-            aws_cluster_id="aws_cluster_id_value",
+            attached_cluster=attached_resources.AttachedCluster(name="name_value"),
+            attached_cluster_id="attached_cluster_id_value",
         )
 
 
 @pytest.mark.asyncio
-async def test_create_aws_cluster_flattened_async():
-    client = AwsClustersAsyncClient(
+async def test_create_attached_cluster_flattened_async():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.create_aws_cluster), "__call__"
+        type(client.transport.create_attached_cluster), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
@@ -896,10 +935,10 @@ async def test_create_aws_cluster_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.create_aws_cluster(
+        response = await client.create_attached_cluster(
             parent="parent_value",
-            aws_cluster=aws_resources.AwsCluster(name="name_value"),
-            aws_cluster_id="aws_cluster_id_value",
+            attached_cluster=attached_resources.AttachedCluster(name="name_value"),
+            attached_cluster_id="attached_cluster_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -909,40 +948,40 @@ async def test_create_aws_cluster_flattened_async():
         arg = args[0].parent
         mock_val = "parent_value"
         assert arg == mock_val
-        arg = args[0].aws_cluster
-        mock_val = aws_resources.AwsCluster(name="name_value")
+        arg = args[0].attached_cluster
+        mock_val = attached_resources.AttachedCluster(name="name_value")
         assert arg == mock_val
-        arg = args[0].aws_cluster_id
-        mock_val = "aws_cluster_id_value"
+        arg = args[0].attached_cluster_id
+        mock_val = "attached_cluster_id_value"
         assert arg == mock_val
 
 
 @pytest.mark.asyncio
-async def test_create_aws_cluster_flattened_error_async():
-    client = AwsClustersAsyncClient(
+async def test_create_attached_cluster_flattened_error_async():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.create_aws_cluster(
-            aws_service.CreateAwsClusterRequest(),
+        await client.create_attached_cluster(
+            attached_service.CreateAttachedClusterRequest(),
             parent="parent_value",
-            aws_cluster=aws_resources.AwsCluster(name="name_value"),
-            aws_cluster_id="aws_cluster_id_value",
+            attached_cluster=attached_resources.AttachedCluster(name="name_value"),
+            attached_cluster_id="attached_cluster_id_value",
         )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.UpdateAwsClusterRequest,
+        attached_service.UpdateAttachedClusterRequest,
         dict,
     ],
 )
-def test_update_aws_cluster(request_type, transport: str = "grpc"):
-    client = AwsClustersClient(
+def test_update_attached_cluster(request_type, transport: str = "grpc"):
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -953,44 +992,45 @@ def test_update_aws_cluster(request_type, transport: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.update_aws_cluster), "__call__"
+        type(client.transport.update_attached_cluster), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.update_aws_cluster(request)
+        response = client.update_attached_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.UpdateAwsClusterRequest()
+        assert args[0] == attached_service.UpdateAttachedClusterRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
-def test_update_aws_cluster_empty_call():
+def test_update_attached_cluster_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.update_aws_cluster), "__call__"
+        type(client.transport.update_attached_cluster), "__call__"
     ) as call:
-        client.update_aws_cluster()
+        client.update_attached_cluster()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.UpdateAwsClusterRequest()
+        assert args[0] == attached_service.UpdateAttachedClusterRequest()
 
 
 @pytest.mark.asyncio
-async def test_update_aws_cluster_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.UpdateAwsClusterRequest
+async def test_update_attached_cluster_async(
+    transport: str = "grpc_asyncio",
+    request_type=attached_service.UpdateAttachedClusterRequest,
 ):
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1001,45 +1041,45 @@ async def test_update_aws_cluster_async(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.update_aws_cluster), "__call__"
+        type(client.transport.update_attached_cluster), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-        response = await client.update_aws_cluster(request)
+        response = await client.update_attached_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.UpdateAwsClusterRequest()
+        assert args[0] == attached_service.UpdateAttachedClusterRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
 @pytest.mark.asyncio
-async def test_update_aws_cluster_async_from_dict():
-    await test_update_aws_cluster_async(request_type=dict)
+async def test_update_attached_cluster_async_from_dict():
+    await test_update_attached_cluster_async(request_type=dict)
 
 
-def test_update_aws_cluster_field_headers():
-    client = AwsClustersClient(
+def test_update_attached_cluster_field_headers():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = aws_service.UpdateAwsClusterRequest()
+    request = attached_service.UpdateAttachedClusterRequest()
 
-    request.aws_cluster.name = "name_value"
+    request.attached_cluster.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.update_aws_cluster), "__call__"
+        type(client.transport.update_attached_cluster), "__call__"
     ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-        client.update_aws_cluster(request)
+        client.update_attached_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -1050,30 +1090,30 @@ def test_update_aws_cluster_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "aws_cluster.name=name_value",
+        "attached_cluster.name=name_value",
     ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
-async def test_update_aws_cluster_field_headers_async():
-    client = AwsClustersAsyncClient(
+async def test_update_attached_cluster_field_headers_async():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = aws_service.UpdateAwsClusterRequest()
+    request = attached_service.UpdateAttachedClusterRequest()
 
-    request.aws_cluster.name = "name_value"
+    request.attached_cluster.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.update_aws_cluster), "__call__"
+        type(client.transport.update_attached_cluster), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
-        await client.update_aws_cluster(request)
+        await client.update_attached_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -1084,25 +1124,25 @@ async def test_update_aws_cluster_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "aws_cluster.name=name_value",
+        "attached_cluster.name=name_value",
     ) in kw["metadata"]
 
 
-def test_update_aws_cluster_flattened():
-    client = AwsClustersClient(
+def test_update_attached_cluster_flattened():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.update_aws_cluster), "__call__"
+        type(client.transport.update_attached_cluster), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.update_aws_cluster(
-            aws_cluster=aws_resources.AwsCluster(name="name_value"),
+        client.update_attached_cluster(
+            attached_cluster=attached_resources.AttachedCluster(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -1110,38 +1150,38 @@ def test_update_aws_cluster_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        arg = args[0].aws_cluster
-        mock_val = aws_resources.AwsCluster(name="name_value")
+        arg = args[0].attached_cluster
+        mock_val = attached_resources.AttachedCluster(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
-def test_update_aws_cluster_flattened_error():
-    client = AwsClustersClient(
+def test_update_attached_cluster_flattened_error():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.update_aws_cluster(
-            aws_service.UpdateAwsClusterRequest(),
-            aws_cluster=aws_resources.AwsCluster(name="name_value"),
+        client.update_attached_cluster(
+            attached_service.UpdateAttachedClusterRequest(),
+            attached_cluster=attached_resources.AttachedCluster(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
 @pytest.mark.asyncio
-async def test_update_aws_cluster_flattened_async():
-    client = AwsClustersAsyncClient(
+async def test_update_attached_cluster_flattened_async():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.update_aws_cluster), "__call__"
+        type(client.transport.update_attached_cluster), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
@@ -1151,8 +1191,8 @@ async def test_update_aws_cluster_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.update_aws_cluster(
-            aws_cluster=aws_resources.AwsCluster(name="name_value"),
+        response = await client.update_attached_cluster(
+            attached_cluster=attached_resources.AttachedCluster(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -1160,8 +1200,8 @@ async def test_update_aws_cluster_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        arg = args[0].aws_cluster
-        mock_val = aws_resources.AwsCluster(name="name_value")
+        arg = args[0].attached_cluster
+        mock_val = attached_resources.AttachedCluster(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -1169,17 +1209,17 @@ async def test_update_aws_cluster_flattened_async():
 
 
 @pytest.mark.asyncio
-async def test_update_aws_cluster_flattened_error_async():
-    client = AwsClustersAsyncClient(
+async def test_update_attached_cluster_flattened_error_async():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.update_aws_cluster(
-            aws_service.UpdateAwsClusterRequest(),
-            aws_cluster=aws_resources.AwsCluster(name="name_value"),
+        await client.update_attached_cluster(
+            attached_service.UpdateAttachedClusterRequest(),
+            attached_cluster=attached_resources.AttachedCluster(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -1187,12 +1227,12 @@ async def test_update_aws_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.GetAwsClusterRequest,
+        attached_service.ImportAttachedClusterRequest,
         dict,
     ],
 )
-def test_get_aws_cluster(request_type, transport: str = "grpc"):
-    client = AwsClustersClient(
+def test_import_attached_cluster(request_type, transport: str = "grpc"):
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1202,60 +1242,318 @@ def test_get_aws_cluster(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_aws_cluster), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.import_attached_cluster), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = aws_resources.AwsCluster(
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.import_attached_cluster(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == attached_service.ImportAttachedClusterRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_import_attached_cluster_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_attached_cluster), "__call__"
+    ) as call:
+        client.import_attached_cluster()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == attached_service.ImportAttachedClusterRequest()
+
+
+@pytest.mark.asyncio
+async def test_import_attached_cluster_async(
+    transport: str = "grpc_asyncio",
+    request_type=attached_service.ImportAttachedClusterRequest,
+):
+    client = AttachedClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_attached_cluster), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.import_attached_cluster(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == attached_service.ImportAttachedClusterRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_import_attached_cluster_async_from_dict():
+    await test_import_attached_cluster_async(request_type=dict)
+
+
+def test_import_attached_cluster_field_headers():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = attached_service.ImportAttachedClusterRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_attached_cluster), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.import_attached_cluster(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_import_attached_cluster_field_headers_async():
+    client = AttachedClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = attached_service.ImportAttachedClusterRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_attached_cluster), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.import_attached_cluster(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_import_attached_cluster_flattened():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_attached_cluster), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.import_attached_cluster(
+            parent="parent_value",
+            fleet_membership="fleet_membership_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].fleet_membership
+        mock_val = "fleet_membership_value"
+        assert arg == mock_val
+
+
+def test_import_attached_cluster_flattened_error():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.import_attached_cluster(
+            attached_service.ImportAttachedClusterRequest(),
+            parent="parent_value",
+            fleet_membership="fleet_membership_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_import_attached_cluster_flattened_async():
+    client = AttachedClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_attached_cluster), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.import_attached_cluster(
+            parent="parent_value",
+            fleet_membership="fleet_membership_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].fleet_membership
+        mock_val = "fleet_membership_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_import_attached_cluster_flattened_error_async():
+    client = AttachedClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.import_attached_cluster(
+            attached_service.ImportAttachedClusterRequest(),
+            parent="parent_value",
+            fleet_membership="fleet_membership_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.GetAttachedClusterRequest,
+        dict,
+    ],
+)
+def test_get_attached_cluster(request_type, transport: str = "grpc"):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_attached_cluster), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = attached_resources.AttachedCluster(
             name="name_value",
             description="description_value",
-            aws_region="aws_region_value",
-            state=aws_resources.AwsCluster.State.PROVISIONING,
-            endpoint="endpoint_value",
+            platform_version="platform_version_value",
+            distribution="distribution_value",
+            cluster_region="cluster_region_value",
+            state=attached_resources.AttachedCluster.State.PROVISIONING,
             uid="uid_value",
             reconciling=True,
             etag="etag_value",
-            cluster_ca_certificate="cluster_ca_certificate_value",
+            kubernetes_version="kubernetes_version_value",
         )
-        response = client.get_aws_cluster(request)
+        response = client.get_attached_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsClusterRequest()
+        assert args[0] == attached_service.GetAttachedClusterRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, aws_resources.AwsCluster)
+    assert isinstance(response, attached_resources.AttachedCluster)
     assert response.name == "name_value"
     assert response.description == "description_value"
-    assert response.aws_region == "aws_region_value"
-    assert response.state == aws_resources.AwsCluster.State.PROVISIONING
-    assert response.endpoint == "endpoint_value"
+    assert response.platform_version == "platform_version_value"
+    assert response.distribution == "distribution_value"
+    assert response.cluster_region == "cluster_region_value"
+    assert response.state == attached_resources.AttachedCluster.State.PROVISIONING
     assert response.uid == "uid_value"
     assert response.reconciling is True
     assert response.etag == "etag_value"
-    assert response.cluster_ca_certificate == "cluster_ca_certificate_value"
+    assert response.kubernetes_version == "kubernetes_version_value"
 
 
-def test_get_aws_cluster_empty_call():
+def test_get_attached_cluster_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_aws_cluster), "__call__") as call:
-        client.get_aws_cluster()
+    with mock.patch.object(
+        type(client.transport.get_attached_cluster), "__call__"
+    ) as call:
+        client.get_attached_cluster()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsClusterRequest()
+        assert args[0] == attached_service.GetAttachedClusterRequest()
 
 
 @pytest.mark.asyncio
-async def test_get_aws_cluster_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.GetAwsClusterRequest
+async def test_get_attached_cluster_async(
+    transport: str = "grpc_asyncio",
+    request_type=attached_service.GetAttachedClusterRequest,
 ):
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1265,61 +1563,67 @@ async def test_get_aws_cluster_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_aws_cluster), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.get_attached_cluster), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsCluster(
+            attached_resources.AttachedCluster(
                 name="name_value",
                 description="description_value",
-                aws_region="aws_region_value",
-                state=aws_resources.AwsCluster.State.PROVISIONING,
-                endpoint="endpoint_value",
+                platform_version="platform_version_value",
+                distribution="distribution_value",
+                cluster_region="cluster_region_value",
+                state=attached_resources.AttachedCluster.State.PROVISIONING,
                 uid="uid_value",
                 reconciling=True,
                 etag="etag_value",
-                cluster_ca_certificate="cluster_ca_certificate_value",
+                kubernetes_version="kubernetes_version_value",
             )
         )
-        response = await client.get_aws_cluster(request)
+        response = await client.get_attached_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsClusterRequest()
+        assert args[0] == attached_service.GetAttachedClusterRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, aws_resources.AwsCluster)
+    assert isinstance(response, attached_resources.AttachedCluster)
     assert response.name == "name_value"
     assert response.description == "description_value"
-    assert response.aws_region == "aws_region_value"
-    assert response.state == aws_resources.AwsCluster.State.PROVISIONING
-    assert response.endpoint == "endpoint_value"
+    assert response.platform_version == "platform_version_value"
+    assert response.distribution == "distribution_value"
+    assert response.cluster_region == "cluster_region_value"
+    assert response.state == attached_resources.AttachedCluster.State.PROVISIONING
     assert response.uid == "uid_value"
     assert response.reconciling is True
     assert response.etag == "etag_value"
-    assert response.cluster_ca_certificate == "cluster_ca_certificate_value"
+    assert response.kubernetes_version == "kubernetes_version_value"
 
 
 @pytest.mark.asyncio
-async def test_get_aws_cluster_async_from_dict():
-    await test_get_aws_cluster_async(request_type=dict)
+async def test_get_attached_cluster_async_from_dict():
+    await test_get_attached_cluster_async(request_type=dict)
 
 
-def test_get_aws_cluster_field_headers():
-    client = AwsClustersClient(
+def test_get_attached_cluster_field_headers():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = aws_service.GetAwsClusterRequest()
+    request = attached_service.GetAttachedClusterRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_aws_cluster), "__call__") as call:
-        call.return_value = aws_resources.AwsCluster()
-        client.get_aws_cluster(request)
+    with mock.patch.object(
+        type(client.transport.get_attached_cluster), "__call__"
+    ) as call:
+        call.return_value = attached_resources.AttachedCluster()
+        client.get_attached_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -1335,23 +1639,25 @@ def test_get_aws_cluster_field_headers():
 
 
 @pytest.mark.asyncio
-async def test_get_aws_cluster_field_headers_async():
-    client = AwsClustersAsyncClient(
+async def test_get_attached_cluster_field_headers_async():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = aws_service.GetAwsClusterRequest()
+    request = attached_service.GetAttachedClusterRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_aws_cluster), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.get_attached_cluster), "__call__"
+    ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsCluster()
+            attached_resources.AttachedCluster()
         )
-        await client.get_aws_cluster(request)
+        await client.get_attached_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -1366,18 +1672,20 @@ async def test_get_aws_cluster_field_headers_async():
     ) in kw["metadata"]
 
 
-def test_get_aws_cluster_flattened():
-    client = AwsClustersClient(
+def test_get_attached_cluster_flattened():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_aws_cluster), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.get_attached_cluster), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = aws_resources.AwsCluster()
+        call.return_value = attached_resources.AttachedCluster()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_aws_cluster(
+        client.get_attached_cluster(
             name="name_value",
         )
 
@@ -1390,37 +1698,39 @@ def test_get_aws_cluster_flattened():
         assert arg == mock_val
 
 
-def test_get_aws_cluster_flattened_error():
-    client = AwsClustersClient(
+def test_get_attached_cluster_flattened_error():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.get_aws_cluster(
-            aws_service.GetAwsClusterRequest(),
+        client.get_attached_cluster(
+            attached_service.GetAttachedClusterRequest(),
             name="name_value",
         )
 
 
 @pytest.mark.asyncio
-async def test_get_aws_cluster_flattened_async():
-    client = AwsClustersAsyncClient(
+async def test_get_attached_cluster_flattened_async():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_aws_cluster), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.get_attached_cluster), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = aws_resources.AwsCluster()
+        call.return_value = attached_resources.AttachedCluster()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsCluster()
+            attached_resources.AttachedCluster()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_aws_cluster(
+        response = await client.get_attached_cluster(
             name="name_value",
         )
 
@@ -1434,16 +1744,16 @@ async def test_get_aws_cluster_flattened_async():
 
 
 @pytest.mark.asyncio
-async def test_get_aws_cluster_flattened_error_async():
-    client = AwsClustersAsyncClient(
+async def test_get_attached_cluster_flattened_error_async():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.get_aws_cluster(
-            aws_service.GetAwsClusterRequest(),
+        await client.get_attached_cluster(
+            attached_service.GetAttachedClusterRequest(),
             name="name_value",
         )
 
@@ -1451,12 +1761,12 @@ async def test_get_aws_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.ListAwsClustersRequest,
+        attached_service.ListAttachedClustersRequest,
         dict,
     ],
 )
-def test_list_aws_clusters(request_type, transport: str = "grpc"):
-    client = AwsClustersClient(
+def test_list_attached_clusters(request_type, transport: str = "grpc"):
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1467,730 +1777,48 @@ def test_list_aws_clusters(request_type, transport: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
+        type(client.transport.list_attached_clusters), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = aws_service.ListAwsClustersResponse(
+        call.return_value = attached_service.ListAttachedClustersResponse(
             next_page_token="next_page_token_value",
         )
-        response = client.list_aws_clusters(request)
+        response = client.list_attached_clusters(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.ListAwsClustersRequest()
+        assert args[0] == attached_service.ListAttachedClustersRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAwsClustersPager)
+    assert isinstance(response, pagers.ListAttachedClustersPager)
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_aws_clusters_empty_call():
+def test_list_attached_clusters_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
+        type(client.transport.list_attached_clusters), "__call__"
     ) as call:
-        client.list_aws_clusters()
+        client.list_attached_clusters()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.ListAwsClustersRequest()
+        assert args[0] == attached_service.ListAttachedClustersRequest()
 
 
 @pytest.mark.asyncio
-async def test_list_aws_clusters_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.ListAwsClustersRequest
-):
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_service.ListAwsClustersResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_aws_clusters(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.ListAwsClustersRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAwsClustersAsyncPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_aws_clusters_async_from_dict():
-    await test_list_aws_clusters_async(request_type=dict)
-
-
-def test_list_aws_clusters_field_headers():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = aws_service.ListAwsClustersRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
-        call.return_value = aws_service.ListAwsClustersResponse()
-        client.list_aws_clusters(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_list_aws_clusters_field_headers_async():
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = aws_service.ListAwsClustersRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_service.ListAwsClustersResponse()
-        )
-        await client.list_aws_clusters(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-def test_list_aws_clusters_flattened():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = aws_service.ListAwsClustersResponse()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.list_aws_clusters(
-            parent="parent_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-
-
-def test_list_aws_clusters_flattened_error():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_aws_clusters(
-            aws_service.ListAwsClustersRequest(),
-            parent="parent_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_list_aws_clusters_flattened_async():
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = aws_service.ListAwsClustersResponse()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_service.ListAwsClustersResponse()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.list_aws_clusters(
-            parent="parent_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_list_aws_clusters_flattened_error_async():
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.list_aws_clusters(
-            aws_service.ListAwsClustersRequest(),
-            parent="parent_value",
-        )
-
-
-def test_list_aws_clusters_pager(transport_name: str = "grpc"):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials,
-        transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            aws_service.ListAwsClustersResponse(
-                aws_clusters=[
-                    aws_resources.AwsCluster(),
-                    aws_resources.AwsCluster(),
-                    aws_resources.AwsCluster(),
-                ],
-                next_page_token="abc",
-            ),
-            aws_service.ListAwsClustersResponse(
-                aws_clusters=[],
-                next_page_token="def",
-            ),
-            aws_service.ListAwsClustersResponse(
-                aws_clusters=[
-                    aws_resources.AwsCluster(),
-                ],
-                next_page_token="ghi",
-            ),
-            aws_service.ListAwsClustersResponse(
-                aws_clusters=[
-                    aws_resources.AwsCluster(),
-                    aws_resources.AwsCluster(),
-                ],
-            ),
-            RuntimeError,
-        )
-
-        metadata = ()
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_aws_clusters(request={})
-
-        assert pager._metadata == metadata
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, aws_resources.AwsCluster) for i in results)
-
-
-def test_list_aws_clusters_pages(transport_name: str = "grpc"):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials,
-        transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            aws_service.ListAwsClustersResponse(
-                aws_clusters=[
-                    aws_resources.AwsCluster(),
-                    aws_resources.AwsCluster(),
-                    aws_resources.AwsCluster(),
-                ],
-                next_page_token="abc",
-            ),
-            aws_service.ListAwsClustersResponse(
-                aws_clusters=[],
-                next_page_token="def",
-            ),
-            aws_service.ListAwsClustersResponse(
-                aws_clusters=[
-                    aws_resources.AwsCluster(),
-                ],
-                next_page_token="ghi",
-            ),
-            aws_service.ListAwsClustersResponse(
-                aws_clusters=[
-                    aws_resources.AwsCluster(),
-                    aws_resources.AwsCluster(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = list(client.list_aws_clusters(request={}).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.asyncio
-async def test_list_aws_clusters_async_pager():
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            aws_service.ListAwsClustersResponse(
-                aws_clusters=[
-                    aws_resources.AwsCluster(),
-                    aws_resources.AwsCluster(),
-                    aws_resources.AwsCluster(),
-                ],
-                next_page_token="abc",
-            ),
-            aws_service.ListAwsClustersResponse(
-                aws_clusters=[],
-                next_page_token="def",
-            ),
-            aws_service.ListAwsClustersResponse(
-                aws_clusters=[
-                    aws_resources.AwsCluster(),
-                ],
-                next_page_token="ghi",
-            ),
-            aws_service.ListAwsClustersResponse(
-                aws_clusters=[
-                    aws_resources.AwsCluster(),
-                    aws_resources.AwsCluster(),
-                ],
-            ),
-            RuntimeError,
-        )
-        async_pager = await client.list_aws_clusters(
-            request={},
-        )
-        assert async_pager.next_page_token == "abc"
-        responses = []
-        async for response in async_pager:  # pragma: no branch
-            responses.append(response)
-
-        assert len(responses) == 6
-        assert all(isinstance(i, aws_resources.AwsCluster) for i in responses)
-
-
-@pytest.mark.asyncio
-async def test_list_aws_clusters_async_pages():
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            aws_service.ListAwsClustersResponse(
-                aws_clusters=[
-                    aws_resources.AwsCluster(),
-                    aws_resources.AwsCluster(),
-                    aws_resources.AwsCluster(),
-                ],
-                next_page_token="abc",
-            ),
-            aws_service.ListAwsClustersResponse(
-                aws_clusters=[],
-                next_page_token="def",
-            ),
-            aws_service.ListAwsClustersResponse(
-                aws_clusters=[
-                    aws_resources.AwsCluster(),
-                ],
-                next_page_token="ghi",
-            ),
-            aws_service.ListAwsClustersResponse(
-                aws_clusters=[
-                    aws_resources.AwsCluster(),
-                    aws_resources.AwsCluster(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = []
-        async for page_ in (
-            await client.list_aws_clusters(request={})
-        ).pages:  # pragma: no branch
-            pages.append(page_)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        aws_service.DeleteAwsClusterRequest,
-        dict,
-    ],
-)
-def test_delete_aws_cluster(request_type, transport: str = "grpc"):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_cluster), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.delete_aws_cluster(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.DeleteAwsClusterRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
-
-
-def test_delete_aws_cluster_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_cluster), "__call__"
-    ) as call:
-        client.delete_aws_cluster()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.DeleteAwsClusterRequest()
-
-
-@pytest.mark.asyncio
-async def test_delete_aws_cluster_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.DeleteAwsClusterRequest
-):
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_cluster), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_aws_cluster(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.DeleteAwsClusterRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_aws_cluster_async_from_dict():
-    await test_delete_aws_cluster_async(request_type=dict)
-
-
-def test_delete_aws_cluster_field_headers():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = aws_service.DeleteAwsClusterRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_cluster), "__call__"
-    ) as call:
-        call.return_value = operations_pb2.Operation(name="operations/op")
-        client.delete_aws_cluster(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_delete_aws_cluster_field_headers_async():
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = aws_service.DeleteAwsClusterRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_cluster), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
-        await client.delete_aws_cluster(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_delete_aws_cluster_flattened():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_cluster), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/op")
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.delete_aws_cluster(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_delete_aws_cluster_flattened_error():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_aws_cluster(
-            aws_service.DeleteAwsClusterRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_delete_aws_cluster_flattened_async():
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_cluster), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/op")
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.delete_aws_cluster(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_delete_aws_cluster_flattened_error_async():
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.delete_aws_cluster(
-            aws_service.DeleteAwsClusterRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        aws_service.GenerateAwsAccessTokenRequest,
-        dict,
-    ],
-)
-def test_generate_aws_access_token(request_type, transport: str = "grpc"):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_access_token), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = aws_service.GenerateAwsAccessTokenResponse(
-            access_token="access_token_value",
-        )
-        response = client.generate_aws_access_token(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GenerateAwsAccessTokenRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, aws_service.GenerateAwsAccessTokenResponse)
-    assert response.access_token == "access_token_value"
-
-
-def test_generate_aws_access_token_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_access_token), "__call__"
-    ) as call:
-        client.generate_aws_access_token()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GenerateAwsAccessTokenRequest()
-
-
-@pytest.mark.asyncio
-async def test_generate_aws_access_token_async(
+async def test_list_attached_clusters_async(
     transport: str = "grpc_asyncio",
-    request_type=aws_service.GenerateAwsAccessTokenRequest,
+    request_type=attached_service.ListAttachedClustersRequest,
 ):
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2201,988 +1829,48 @@ async def test_generate_aws_access_token_async(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.generate_aws_access_token), "__call__"
+        type(client.transport.list_attached_clusters), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_service.GenerateAwsAccessTokenResponse(
-                access_token="access_token_value",
-            )
-        )
-        response = await client.generate_aws_access_token(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GenerateAwsAccessTokenRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, aws_service.GenerateAwsAccessTokenResponse)
-    assert response.access_token == "access_token_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_aws_access_token_async_from_dict():
-    await test_generate_aws_access_token_async(request_type=dict)
-
-
-def test_generate_aws_access_token_field_headers():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = aws_service.GenerateAwsAccessTokenRequest()
-
-    request.aws_cluster = "aws_cluster_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_access_token), "__call__"
-    ) as call:
-        call.return_value = aws_service.GenerateAwsAccessTokenResponse()
-        client.generate_aws_access_token(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "aws_cluster=aws_cluster_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_generate_aws_access_token_field_headers_async():
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = aws_service.GenerateAwsAccessTokenRequest()
-
-    request.aws_cluster = "aws_cluster_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_access_token), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_service.GenerateAwsAccessTokenResponse()
-        )
-        await client.generate_aws_access_token(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "aws_cluster=aws_cluster_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        aws_service.CreateAwsNodePoolRequest,
-        dict,
-    ],
-)
-def test_create_aws_node_pool(request_type, transport: str = "grpc"):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_node_pool), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.create_aws_node_pool(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.CreateAwsNodePoolRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
-
-
-def test_create_aws_node_pool_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_node_pool), "__call__"
-    ) as call:
-        client.create_aws_node_pool()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.CreateAwsNodePoolRequest()
-
-
-@pytest.mark.asyncio
-async def test_create_aws_node_pool_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.CreateAwsNodePoolRequest
-):
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_node_pool), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_aws_node_pool(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.CreateAwsNodePoolRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_aws_node_pool_async_from_dict():
-    await test_create_aws_node_pool_async(request_type=dict)
-
-
-def test_create_aws_node_pool_field_headers():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = aws_service.CreateAwsNodePoolRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_node_pool), "__call__"
-    ) as call:
-        call.return_value = operations_pb2.Operation(name="operations/op")
-        client.create_aws_node_pool(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_create_aws_node_pool_field_headers_async():
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = aws_service.CreateAwsNodePoolRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_node_pool), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
-        await client.create_aws_node_pool(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-def test_create_aws_node_pool_flattened():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_node_pool), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/op")
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.create_aws_node_pool(
-            parent="parent_value",
-            aws_node_pool=aws_resources.AwsNodePool(name="name_value"),
-            aws_node_pool_id="aws_node_pool_id_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-        arg = args[0].aws_node_pool
-        mock_val = aws_resources.AwsNodePool(name="name_value")
-        assert arg == mock_val
-        arg = args[0].aws_node_pool_id
-        mock_val = "aws_node_pool_id_value"
-        assert arg == mock_val
-
-
-def test_create_aws_node_pool_flattened_error():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.create_aws_node_pool(
-            aws_service.CreateAwsNodePoolRequest(),
-            parent="parent_value",
-            aws_node_pool=aws_resources.AwsNodePool(name="name_value"),
-            aws_node_pool_id="aws_node_pool_id_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_create_aws_node_pool_flattened_async():
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_node_pool), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/op")
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.create_aws_node_pool(
-            parent="parent_value",
-            aws_node_pool=aws_resources.AwsNodePool(name="name_value"),
-            aws_node_pool_id="aws_node_pool_id_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-        arg = args[0].aws_node_pool
-        mock_val = aws_resources.AwsNodePool(name="name_value")
-        assert arg == mock_val
-        arg = args[0].aws_node_pool_id
-        mock_val = "aws_node_pool_id_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_create_aws_node_pool_flattened_error_async():
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.create_aws_node_pool(
-            aws_service.CreateAwsNodePoolRequest(),
-            parent="parent_value",
-            aws_node_pool=aws_resources.AwsNodePool(name="name_value"),
-            aws_node_pool_id="aws_node_pool_id_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        aws_service.UpdateAwsNodePoolRequest,
-        dict,
-    ],
-)
-def test_update_aws_node_pool(request_type, transport: str = "grpc"):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_node_pool), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.update_aws_node_pool(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.UpdateAwsNodePoolRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
-
-
-def test_update_aws_node_pool_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_node_pool), "__call__"
-    ) as call:
-        client.update_aws_node_pool()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.UpdateAwsNodePoolRequest()
-
-
-@pytest.mark.asyncio
-async def test_update_aws_node_pool_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.UpdateAwsNodePoolRequest
-):
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_node_pool), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_aws_node_pool(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.UpdateAwsNodePoolRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_aws_node_pool_async_from_dict():
-    await test_update_aws_node_pool_async(request_type=dict)
-
-
-def test_update_aws_node_pool_field_headers():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = aws_service.UpdateAwsNodePoolRequest()
-
-    request.aws_node_pool.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_node_pool), "__call__"
-    ) as call:
-        call.return_value = operations_pb2.Operation(name="operations/op")
-        client.update_aws_node_pool(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "aws_node_pool.name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_update_aws_node_pool_field_headers_async():
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = aws_service.UpdateAwsNodePoolRequest()
-
-    request.aws_node_pool.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_node_pool), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
-        await client.update_aws_node_pool(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "aws_node_pool.name=name_value",
-    ) in kw["metadata"]
-
-
-def test_update_aws_node_pool_flattened():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_node_pool), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/op")
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.update_aws_node_pool(
-            aws_node_pool=aws_resources.AwsNodePool(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].aws_node_pool
-        mock_val = aws_resources.AwsNodePool(name="name_value")
-        assert arg == mock_val
-        arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
-        assert arg == mock_val
-
-
-def test_update_aws_node_pool_flattened_error():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.update_aws_node_pool(
-            aws_service.UpdateAwsNodePoolRequest(),
-            aws_node_pool=aws_resources.AwsNodePool(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-
-@pytest.mark.asyncio
-async def test_update_aws_node_pool_flattened_async():
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_node_pool), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/op")
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.update_aws_node_pool(
-            aws_node_pool=aws_resources.AwsNodePool(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].aws_node_pool
-        mock_val = aws_resources.AwsNodePool(name="name_value")
-        assert arg == mock_val
-        arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_update_aws_node_pool_flattened_error_async():
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.update_aws_node_pool(
-            aws_service.UpdateAwsNodePoolRequest(),
-            aws_node_pool=aws_resources.AwsNodePool(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        aws_service.GetAwsNodePoolRequest,
-        dict,
-    ],
-)
-def test_get_aws_node_pool(request_type, transport: str = "grpc"):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_node_pool), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = aws_resources.AwsNodePool(
-            name="name_value",
-            version="version_value",
-            subnet_id="subnet_id_value",
-            state=aws_resources.AwsNodePool.State.PROVISIONING,
-            uid="uid_value",
-            reconciling=True,
-            etag="etag_value",
-        )
-        response = client.get_aws_node_pool(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsNodePoolRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, aws_resources.AwsNodePool)
-    assert response.name == "name_value"
-    assert response.version == "version_value"
-    assert response.subnet_id == "subnet_id_value"
-    assert response.state == aws_resources.AwsNodePool.State.PROVISIONING
-    assert response.uid == "uid_value"
-    assert response.reconciling is True
-    assert response.etag == "etag_value"
-
-
-def test_get_aws_node_pool_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_node_pool), "__call__"
-    ) as call:
-        client.get_aws_node_pool()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsNodePoolRequest()
-
-
-@pytest.mark.asyncio
-async def test_get_aws_node_pool_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.GetAwsNodePoolRequest
-):
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_node_pool), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsNodePool(
-                name="name_value",
-                version="version_value",
-                subnet_id="subnet_id_value",
-                state=aws_resources.AwsNodePool.State.PROVISIONING,
-                uid="uid_value",
-                reconciling=True,
-                etag="etag_value",
-            )
-        )
-        response = await client.get_aws_node_pool(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsNodePoolRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, aws_resources.AwsNodePool)
-    assert response.name == "name_value"
-    assert response.version == "version_value"
-    assert response.subnet_id == "subnet_id_value"
-    assert response.state == aws_resources.AwsNodePool.State.PROVISIONING
-    assert response.uid == "uid_value"
-    assert response.reconciling is True
-    assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_aws_node_pool_async_from_dict():
-    await test_get_aws_node_pool_async(request_type=dict)
-
-
-def test_get_aws_node_pool_field_headers():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = aws_service.GetAwsNodePoolRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_node_pool), "__call__"
-    ) as call:
-        call.return_value = aws_resources.AwsNodePool()
-        client.get_aws_node_pool(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_aws_node_pool_field_headers_async():
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = aws_service.GetAwsNodePoolRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_node_pool), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsNodePool()
-        )
-        await client.get_aws_node_pool(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_get_aws_node_pool_flattened():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_node_pool), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = aws_resources.AwsNodePool()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_aws_node_pool(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_get_aws_node_pool_flattened_error():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_aws_node_pool(
-            aws_service.GetAwsNodePoolRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_get_aws_node_pool_flattened_async():
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_node_pool), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = aws_resources.AwsNodePool()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsNodePool()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.get_aws_node_pool(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_get_aws_node_pool_flattened_error_async():
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.get_aws_node_pool(
-            aws_service.GetAwsNodePoolRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        aws_service.ListAwsNodePoolsRequest,
-        dict,
-    ],
-)
-def test_list_aws_node_pools(request_type, transport: str = "grpc"):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = aws_service.ListAwsNodePoolsResponse(
-            next_page_token="next_page_token_value",
-        )
-        response = client.list_aws_node_pools(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.ListAwsNodePoolsRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAwsNodePoolsPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_aws_node_pools_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
-    ) as call:
-        client.list_aws_node_pools()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.ListAwsNodePoolsRequest()
-
-
-@pytest.mark.asyncio
-async def test_list_aws_node_pools_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.ListAwsNodePoolsRequest
-):
-    client = AwsClustersAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_service.ListAwsNodePoolsResponse(
+            attached_service.ListAttachedClustersResponse(
                 next_page_token="next_page_token_value",
             )
         )
-        response = await client.list_aws_node_pools(request)
+        response = await client.list_attached_clusters(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.ListAwsNodePoolsRequest()
+        assert args[0] == attached_service.ListAttachedClustersRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAwsNodePoolsAsyncPager)
+    assert isinstance(response, pagers.ListAttachedClustersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
-async def test_list_aws_node_pools_async_from_dict():
-    await test_list_aws_node_pools_async(request_type=dict)
+async def test_list_attached_clusters_async_from_dict():
+    await test_list_attached_clusters_async(request_type=dict)
 
 
-def test_list_aws_node_pools_field_headers():
-    client = AwsClustersClient(
+def test_list_attached_clusters_field_headers():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = aws_service.ListAwsNodePoolsRequest()
+    request = attached_service.ListAttachedClustersRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
+        type(client.transport.list_attached_clusters), "__call__"
     ) as call:
-        call.return_value = aws_service.ListAwsNodePoolsResponse()
-        client.list_aws_node_pools(request)
+        call.return_value = attached_service.ListAttachedClustersResponse()
+        client.list_attached_clusters(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -3198,25 +1886,25 @@ def test_list_aws_node_pools_field_headers():
 
 
 @pytest.mark.asyncio
-async def test_list_aws_node_pools_field_headers_async():
-    client = AwsClustersAsyncClient(
+async def test_list_attached_clusters_field_headers_async():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = aws_service.ListAwsNodePoolsRequest()
+    request = attached_service.ListAttachedClustersRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
+        type(client.transport.list_attached_clusters), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_service.ListAwsNodePoolsResponse()
+            attached_service.ListAttachedClustersResponse()
         )
-        await client.list_aws_node_pools(request)
+        await client.list_attached_clusters(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -3231,20 +1919,20 @@ async def test_list_aws_node_pools_field_headers_async():
     ) in kw["metadata"]
 
 
-def test_list_aws_node_pools_flattened():
-    client = AwsClustersClient(
+def test_list_attached_clusters_flattened():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
+        type(client.transport.list_attached_clusters), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = aws_service.ListAwsNodePoolsResponse()
+        call.return_value = attached_service.ListAttachedClustersResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_aws_node_pools(
+        client.list_attached_clusters(
             parent="parent_value",
         )
 
@@ -3257,39 +1945,39 @@ def test_list_aws_node_pools_flattened():
         assert arg == mock_val
 
 
-def test_list_aws_node_pools_flattened_error():
-    client = AwsClustersClient(
+def test_list_attached_clusters_flattened_error():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.list_aws_node_pools(
-            aws_service.ListAwsNodePoolsRequest(),
+        client.list_attached_clusters(
+            attached_service.ListAttachedClustersRequest(),
             parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
-async def test_list_aws_node_pools_flattened_async():
-    client = AwsClustersAsyncClient(
+async def test_list_attached_clusters_flattened_async():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
+        type(client.transport.list_attached_clusters), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = aws_service.ListAwsNodePoolsResponse()
+        call.return_value = attached_service.ListAttachedClustersResponse()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_service.ListAwsNodePoolsResponse()
+            attached_service.ListAttachedClustersResponse()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_aws_node_pools(
+        response = await client.list_attached_clusters(
             parent="parent_value",
         )
 
@@ -3303,54 +1991,54 @@ async def test_list_aws_node_pools_flattened_async():
 
 
 @pytest.mark.asyncio
-async def test_list_aws_node_pools_flattened_error_async():
-    client = AwsClustersAsyncClient(
+async def test_list_attached_clusters_flattened_error_async():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.list_aws_node_pools(
-            aws_service.ListAwsNodePoolsRequest(),
+        await client.list_attached_clusters(
+            attached_service.ListAttachedClustersRequest(),
             parent="parent_value",
         )
 
 
-def test_list_aws_node_pools_pager(transport_name: str = "grpc"):
-    client = AwsClustersClient(
+def test_list_attached_clusters_pager(transport_name: str = "grpc"):
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials,
         transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
+        type(client.transport.list_attached_clusters), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            aws_service.ListAwsNodePoolsResponse(
-                aws_node_pools=[
-                    aws_resources.AwsNodePool(),
-                    aws_resources.AwsNodePool(),
-                    aws_resources.AwsNodePool(),
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[
+                    attached_resources.AttachedCluster(),
+                    attached_resources.AttachedCluster(),
+                    attached_resources.AttachedCluster(),
                 ],
                 next_page_token="abc",
             ),
-            aws_service.ListAwsNodePoolsResponse(
-                aws_node_pools=[],
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[],
                 next_page_token="def",
             ),
-            aws_service.ListAwsNodePoolsResponse(
-                aws_node_pools=[
-                    aws_resources.AwsNodePool(),
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[
+                    attached_resources.AttachedCluster(),
                 ],
                 next_page_token="ghi",
             ),
-            aws_service.ListAwsNodePoolsResponse(
-                aws_node_pools=[
-                    aws_resources.AwsNodePool(),
-                    aws_resources.AwsNodePool(),
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[
+                    attached_resources.AttachedCluster(),
+                    attached_resources.AttachedCluster(),
                 ],
             ),
             RuntimeError,
@@ -3360,99 +2048,99 @@ def test_list_aws_node_pools_pager(transport_name: str = "grpc"):
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_aws_node_pools(request={})
+        pager = client.list_attached_clusters(request={})
 
         assert pager._metadata == metadata
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, aws_resources.AwsNodePool) for i in results)
+        assert all(isinstance(i, attached_resources.AttachedCluster) for i in results)
 
 
-def test_list_aws_node_pools_pages(transport_name: str = "grpc"):
-    client = AwsClustersClient(
+def test_list_attached_clusters_pages(transport_name: str = "grpc"):
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials,
         transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
+        type(client.transport.list_attached_clusters), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            aws_service.ListAwsNodePoolsResponse(
-                aws_node_pools=[
-                    aws_resources.AwsNodePool(),
-                    aws_resources.AwsNodePool(),
-                    aws_resources.AwsNodePool(),
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[
+                    attached_resources.AttachedCluster(),
+                    attached_resources.AttachedCluster(),
+                    attached_resources.AttachedCluster(),
                 ],
                 next_page_token="abc",
             ),
-            aws_service.ListAwsNodePoolsResponse(
-                aws_node_pools=[],
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[],
                 next_page_token="def",
             ),
-            aws_service.ListAwsNodePoolsResponse(
-                aws_node_pools=[
-                    aws_resources.AwsNodePool(),
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[
+                    attached_resources.AttachedCluster(),
                 ],
                 next_page_token="ghi",
             ),
-            aws_service.ListAwsNodePoolsResponse(
-                aws_node_pools=[
-                    aws_resources.AwsNodePool(),
-                    aws_resources.AwsNodePool(),
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[
+                    attached_resources.AttachedCluster(),
+                    attached_resources.AttachedCluster(),
                 ],
             ),
             RuntimeError,
         )
-        pages = list(client.list_aws_node_pools(request={}).pages)
+        pages = list(client.list_attached_clusters(request={}).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
-async def test_list_aws_node_pools_async_pager():
-    client = AwsClustersAsyncClient(
+async def test_list_attached_clusters_async_pager():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.list_aws_node_pools),
+        type(client.transport.list_attached_clusters),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            aws_service.ListAwsNodePoolsResponse(
-                aws_node_pools=[
-                    aws_resources.AwsNodePool(),
-                    aws_resources.AwsNodePool(),
-                    aws_resources.AwsNodePool(),
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[
+                    attached_resources.AttachedCluster(),
+                    attached_resources.AttachedCluster(),
+                    attached_resources.AttachedCluster(),
                 ],
                 next_page_token="abc",
             ),
-            aws_service.ListAwsNodePoolsResponse(
-                aws_node_pools=[],
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[],
                 next_page_token="def",
             ),
-            aws_service.ListAwsNodePoolsResponse(
-                aws_node_pools=[
-                    aws_resources.AwsNodePool(),
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[
+                    attached_resources.AttachedCluster(),
                 ],
                 next_page_token="ghi",
             ),
-            aws_service.ListAwsNodePoolsResponse(
-                aws_node_pools=[
-                    aws_resources.AwsNodePool(),
-                    aws_resources.AwsNodePool(),
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[
+                    attached_resources.AttachedCluster(),
+                    attached_resources.AttachedCluster(),
                 ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_aws_node_pools(
+        async_pager = await client.list_attached_clusters(
             request={},
         )
         assert async_pager.next_page_token == "abc"
@@ -3461,52 +2149,52 @@ async def test_list_aws_node_pools_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(isinstance(i, aws_resources.AwsNodePool) for i in responses)
+        assert all(isinstance(i, attached_resources.AttachedCluster) for i in responses)
 
 
 @pytest.mark.asyncio
-async def test_list_aws_node_pools_async_pages():
-    client = AwsClustersAsyncClient(
+async def test_list_attached_clusters_async_pages():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.list_aws_node_pools),
+        type(client.transport.list_attached_clusters),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            aws_service.ListAwsNodePoolsResponse(
-                aws_node_pools=[
-                    aws_resources.AwsNodePool(),
-                    aws_resources.AwsNodePool(),
-                    aws_resources.AwsNodePool(),
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[
+                    attached_resources.AttachedCluster(),
+                    attached_resources.AttachedCluster(),
+                    attached_resources.AttachedCluster(),
                 ],
                 next_page_token="abc",
             ),
-            aws_service.ListAwsNodePoolsResponse(
-                aws_node_pools=[],
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[],
                 next_page_token="def",
             ),
-            aws_service.ListAwsNodePoolsResponse(
-                aws_node_pools=[
-                    aws_resources.AwsNodePool(),
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[
+                    attached_resources.AttachedCluster(),
                 ],
                 next_page_token="ghi",
             ),
-            aws_service.ListAwsNodePoolsResponse(
-                aws_node_pools=[
-                    aws_resources.AwsNodePool(),
-                    aws_resources.AwsNodePool(),
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[
+                    attached_resources.AttachedCluster(),
+                    attached_resources.AttachedCluster(),
                 ],
             ),
             RuntimeError,
         )
         pages = []
         async for page_ in (
-            await client.list_aws_node_pools(request={})
+            await client.list_attached_clusters(request={})
         ).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -3516,12 +2204,12 @@ async def test_list_aws_node_pools_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.DeleteAwsNodePoolRequest,
+        attached_service.DeleteAttachedClusterRequest,
         dict,
     ],
 )
-def test_delete_aws_node_pool(request_type, transport: str = "grpc"):
-    client = AwsClustersClient(
+def test_delete_attached_cluster(request_type, transport: str = "grpc"):
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3532,44 +2220,45 @@ def test_delete_aws_node_pool(request_type, transport: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.delete_aws_node_pool), "__call__"
+        type(client.transport.delete_attached_cluster), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.delete_aws_node_pool(request)
+        response = client.delete_attached_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.DeleteAwsNodePoolRequest()
+        assert args[0] == attached_service.DeleteAttachedClusterRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
-def test_delete_aws_node_pool_empty_call():
+def test_delete_attached_cluster_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.delete_aws_node_pool), "__call__"
+        type(client.transport.delete_attached_cluster), "__call__"
     ) as call:
-        client.delete_aws_node_pool()
+        client.delete_attached_cluster()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.DeleteAwsNodePoolRequest()
+        assert args[0] == attached_service.DeleteAttachedClusterRequest()
 
 
 @pytest.mark.asyncio
-async def test_delete_aws_node_pool_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.DeleteAwsNodePoolRequest
+async def test_delete_attached_cluster_async(
+    transport: str = "grpc_asyncio",
+    request_type=attached_service.DeleteAttachedClusterRequest,
 ):
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3580,45 +2269,45 @@ async def test_delete_aws_node_pool_async(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.delete_aws_node_pool), "__call__"
+        type(client.transport.delete_attached_cluster), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-        response = await client.delete_aws_node_pool(request)
+        response = await client.delete_attached_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.DeleteAwsNodePoolRequest()
+        assert args[0] == attached_service.DeleteAttachedClusterRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
 @pytest.mark.asyncio
-async def test_delete_aws_node_pool_async_from_dict():
-    await test_delete_aws_node_pool_async(request_type=dict)
+async def test_delete_attached_cluster_async_from_dict():
+    await test_delete_attached_cluster_async(request_type=dict)
 
 
-def test_delete_aws_node_pool_field_headers():
-    client = AwsClustersClient(
+def test_delete_attached_cluster_field_headers():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = aws_service.DeleteAwsNodePoolRequest()
+    request = attached_service.DeleteAttachedClusterRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.delete_aws_node_pool), "__call__"
+        type(client.transport.delete_attached_cluster), "__call__"
     ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-        client.delete_aws_node_pool(request)
+        client.delete_attached_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -3634,25 +2323,25 @@ def test_delete_aws_node_pool_field_headers():
 
 
 @pytest.mark.asyncio
-async def test_delete_aws_node_pool_field_headers_async():
-    client = AwsClustersAsyncClient(
+async def test_delete_attached_cluster_field_headers_async():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = aws_service.DeleteAwsNodePoolRequest()
+    request = attached_service.DeleteAttachedClusterRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.delete_aws_node_pool), "__call__"
+        type(client.transport.delete_attached_cluster), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
-        await client.delete_aws_node_pool(request)
+        await client.delete_attached_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -3667,20 +2356,20 @@ async def test_delete_aws_node_pool_field_headers_async():
     ) in kw["metadata"]
 
 
-def test_delete_aws_node_pool_flattened():
-    client = AwsClustersClient(
+def test_delete_attached_cluster_flattened():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.delete_aws_node_pool), "__call__"
+        type(client.transport.delete_attached_cluster), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_aws_node_pool(
+        client.delete_attached_cluster(
             name="name_value",
         )
 
@@ -3693,29 +2382,29 @@ def test_delete_aws_node_pool_flattened():
         assert arg == mock_val
 
 
-def test_delete_aws_node_pool_flattened_error():
-    client = AwsClustersClient(
+def test_delete_attached_cluster_flattened_error():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.delete_aws_node_pool(
-            aws_service.DeleteAwsNodePoolRequest(),
+        client.delete_attached_cluster(
+            attached_service.DeleteAttachedClusterRequest(),
             name="name_value",
         )
 
 
 @pytest.mark.asyncio
-async def test_delete_aws_node_pool_flattened_async():
-    client = AwsClustersAsyncClient(
+async def test_delete_attached_cluster_flattened_async():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.delete_aws_node_pool), "__call__"
+        type(client.transport.delete_attached_cluster), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
@@ -3725,7 +2414,7 @@ async def test_delete_aws_node_pool_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_aws_node_pool(
+        response = await client.delete_attached_cluster(
             name="name_value",
         )
 
@@ -3739,16 +2428,16 @@ async def test_delete_aws_node_pool_flattened_async():
 
 
 @pytest.mark.asyncio
-async def test_delete_aws_node_pool_flattened_error_async():
-    client = AwsClustersAsyncClient(
+async def test_delete_attached_cluster_flattened_error_async():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.delete_aws_node_pool(
-            aws_service.DeleteAwsNodePoolRequest(),
+        await client.delete_attached_cluster(
+            attached_service.DeleteAttachedClusterRequest(),
             name="name_value",
         )
 
@@ -3756,12 +2445,12 @@ async def test_delete_aws_node_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.GetAwsServerConfigRequest,
+        attached_service.GetAttachedServerConfigRequest,
         dict,
     ],
 )
-def test_get_aws_server_config(request_type, transport: str = "grpc"):
-    client = AwsClustersClient(
+def test_get_attached_server_config(request_type, transport: str = "grpc"):
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3772,49 +2461,48 @@ def test_get_aws_server_config(request_type, transport: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.get_aws_server_config), "__call__"
+        type(client.transport.get_attached_server_config), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = aws_resources.AwsServerConfig(
+        call.return_value = attached_resources.AttachedServerConfig(
             name="name_value",
-            supported_aws_regions=["supported_aws_regions_value"],
         )
-        response = client.get_aws_server_config(request)
+        response = client.get_attached_server_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsServerConfigRequest()
+        assert args[0] == attached_service.GetAttachedServerConfigRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, aws_resources.AwsServerConfig)
+    assert isinstance(response, attached_resources.AttachedServerConfig)
     assert response.name == "name_value"
-    assert response.supported_aws_regions == ["supported_aws_regions_value"]
 
 
-def test_get_aws_server_config_empty_call():
+def test_get_attached_server_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.get_aws_server_config), "__call__"
+        type(client.transport.get_attached_server_config), "__call__"
     ) as call:
-        client.get_aws_server_config()
+        client.get_attached_server_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsServerConfigRequest()
+        assert args[0] == attached_service.GetAttachedServerConfigRequest()
 
 
 @pytest.mark.asyncio
-async def test_get_aws_server_config_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.GetAwsServerConfigRequest
+async def test_get_attached_server_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=attached_service.GetAttachedServerConfigRequest,
 ):
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3825,50 +2513,48 @@ async def test_get_aws_server_config_async(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.get_aws_server_config), "__call__"
+        type(client.transport.get_attached_server_config), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsServerConfig(
+            attached_resources.AttachedServerConfig(
                 name="name_value",
-                supported_aws_regions=["supported_aws_regions_value"],
             )
         )
-        response = await client.get_aws_server_config(request)
+        response = await client.get_attached_server_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsServerConfigRequest()
+        assert args[0] == attached_service.GetAttachedServerConfigRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, aws_resources.AwsServerConfig)
+    assert isinstance(response, attached_resources.AttachedServerConfig)
     assert response.name == "name_value"
-    assert response.supported_aws_regions == ["supported_aws_regions_value"]
 
 
 @pytest.mark.asyncio
-async def test_get_aws_server_config_async_from_dict():
-    await test_get_aws_server_config_async(request_type=dict)
+async def test_get_attached_server_config_async_from_dict():
+    await test_get_attached_server_config_async(request_type=dict)
 
 
-def test_get_aws_server_config_field_headers():
-    client = AwsClustersClient(
+def test_get_attached_server_config_field_headers():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = aws_service.GetAwsServerConfigRequest()
+    request = attached_service.GetAttachedServerConfigRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.get_aws_server_config), "__call__"
+        type(client.transport.get_attached_server_config), "__call__"
     ) as call:
-        call.return_value = aws_resources.AwsServerConfig()
-        client.get_aws_server_config(request)
+        call.return_value = attached_resources.AttachedServerConfig()
+        client.get_attached_server_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -3884,25 +2570,25 @@ def test_get_aws_server_config_field_headers():
 
 
 @pytest.mark.asyncio
-async def test_get_aws_server_config_field_headers_async():
-    client = AwsClustersAsyncClient(
+async def test_get_attached_server_config_field_headers_async():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = aws_service.GetAwsServerConfigRequest()
+    request = attached_service.GetAttachedServerConfigRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.get_aws_server_config), "__call__"
+        type(client.transport.get_attached_server_config), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsServerConfig()
+            attached_resources.AttachedServerConfig()
         )
-        await client.get_aws_server_config(request)
+        await client.get_attached_server_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -3917,20 +2603,20 @@ async def test_get_aws_server_config_field_headers_async():
     ) in kw["metadata"]
 
 
-def test_get_aws_server_config_flattened():
-    client = AwsClustersClient(
+def test_get_attached_server_config_flattened():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.get_aws_server_config), "__call__"
+        type(client.transport.get_attached_server_config), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = aws_resources.AwsServerConfig()
+        call.return_value = attached_resources.AttachedServerConfig()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_aws_server_config(
+        client.get_attached_server_config(
             name="name_value",
         )
 
@@ -3943,39 +2629,39 @@ def test_get_aws_server_config_flattened():
         assert arg == mock_val
 
 
-def test_get_aws_server_config_flattened_error():
-    client = AwsClustersClient(
+def test_get_attached_server_config_flattened_error():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.get_aws_server_config(
-            aws_service.GetAwsServerConfigRequest(),
+        client.get_attached_server_config(
+            attached_service.GetAttachedServerConfigRequest(),
             name="name_value",
         )
 
 
 @pytest.mark.asyncio
-async def test_get_aws_server_config_flattened_async():
-    client = AwsClustersAsyncClient(
+async def test_get_attached_server_config_flattened_async():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.get_aws_server_config), "__call__"
+        type(client.transport.get_attached_server_config), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = aws_resources.AwsServerConfig()
+        call.return_value = attached_resources.AttachedServerConfig()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsServerConfig()
+            attached_resources.AttachedServerConfig()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_aws_server_config(
+        response = await client.get_attached_server_config(
             name="name_value",
         )
 
@@ -3989,49 +2675,326 @@ async def test_get_aws_server_config_flattened_async():
 
 
 @pytest.mark.asyncio
-async def test_get_aws_server_config_flattened_error_async():
-    client = AwsClustersAsyncClient(
+async def test_get_attached_server_config_flattened_error_async():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.get_aws_server_config(
-            aws_service.GetAwsServerConfigRequest(),
+        await client.get_attached_server_config(
+            attached_service.GetAttachedServerConfigRequest(),
             name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.GenerateAttachedClusterInstallManifestRequest,
+        dict,
+    ],
+)
+def test_generate_attached_cluster_install_manifest(
+    request_type, transport: str = "grpc"
+):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_attached_cluster_install_manifest), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            attached_service.GenerateAttachedClusterInstallManifestResponse(
+                manifest="manifest_value",
+            )
+        )
+        response = client.generate_attached_cluster_install_manifest(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == attached_service.GenerateAttachedClusterInstallManifestRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, attached_service.GenerateAttachedClusterInstallManifestResponse
+    )
+    assert response.manifest == "manifest_value"
+
+
+def test_generate_attached_cluster_install_manifest_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_attached_cluster_install_manifest), "__call__"
+    ) as call:
+        client.generate_attached_cluster_install_manifest()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == attached_service.GenerateAttachedClusterInstallManifestRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_generate_attached_cluster_install_manifest_async(
+    transport: str = "grpc_asyncio",
+    request_type=attached_service.GenerateAttachedClusterInstallManifestRequest,
+):
+    client = AttachedClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_attached_cluster_install_manifest), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            attached_service.GenerateAttachedClusterInstallManifestResponse(
+                manifest="manifest_value",
+            )
+        )
+        response = await client.generate_attached_cluster_install_manifest(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == attached_service.GenerateAttachedClusterInstallManifestRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, attached_service.GenerateAttachedClusterInstallManifestResponse
+    )
+    assert response.manifest == "manifest_value"
+
+
+@pytest.mark.asyncio
+async def test_generate_attached_cluster_install_manifest_async_from_dict():
+    await test_generate_attached_cluster_install_manifest_async(request_type=dict)
+
+
+def test_generate_attached_cluster_install_manifest_field_headers():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = attached_service.GenerateAttachedClusterInstallManifestRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_attached_cluster_install_manifest), "__call__"
+    ) as call:
+        call.return_value = (
+            attached_service.GenerateAttachedClusterInstallManifestResponse()
+        )
+        client.generate_attached_cluster_install_manifest(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_generate_attached_cluster_install_manifest_field_headers_async():
+    client = AttachedClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = attached_service.GenerateAttachedClusterInstallManifestRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_attached_cluster_install_manifest), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            attached_service.GenerateAttachedClusterInstallManifestResponse()
+        )
+        await client.generate_attached_cluster_install_manifest(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_generate_attached_cluster_install_manifest_flattened():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_attached_cluster_install_manifest), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            attached_service.GenerateAttachedClusterInstallManifestResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.generate_attached_cluster_install_manifest(
+            parent="parent_value",
+            attached_cluster_id="attached_cluster_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].attached_cluster_id
+        mock_val = "attached_cluster_id_value"
+        assert arg == mock_val
+
+
+def test_generate_attached_cluster_install_manifest_flattened_error():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.generate_attached_cluster_install_manifest(
+            attached_service.GenerateAttachedClusterInstallManifestRequest(),
+            parent="parent_value",
+            attached_cluster_id="attached_cluster_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_generate_attached_cluster_install_manifest_flattened_async():
+    client = AttachedClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_attached_cluster_install_manifest), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            attached_service.GenerateAttachedClusterInstallManifestResponse()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            attached_service.GenerateAttachedClusterInstallManifestResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.generate_attached_cluster_install_manifest(
+            parent="parent_value",
+            attached_cluster_id="attached_cluster_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].attached_cluster_id
+        mock_val = "attached_cluster_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_generate_attached_cluster_install_manifest_flattened_error_async():
+    client = AttachedClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.generate_attached_cluster_install_manifest(
+            attached_service.GenerateAttachedClusterInstallManifestRequest(),
+            parent="parent_value",
+            attached_cluster_id="attached_cluster_id_value",
         )
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.AwsClustersGrpcTransport(
+    transport = transports.AttachedClustersGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = AwsClustersClient(
+        client = AttachedClustersClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.AwsClustersGrpcTransport(
+    transport = transports.AttachedClustersGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = AwsClustersClient(
+        client = AttachedClustersClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide an api_key and a transport instance.
-    transport = transports.AwsClustersGrpcTransport(
+    transport = transports.AttachedClustersGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = AwsClustersClient(
+        client = AttachedClustersClient(
             client_options=options,
             transport=transport,
         )
@@ -4040,16 +3003,16 @@ def test_credentials_transport_error():
     options = mock.Mock()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = AwsClustersClient(
+        client = AttachedClustersClient(
             client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.AwsClustersGrpcTransport(
+    transport = transports.AttachedClustersGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = AwsClustersClient(
+        client = AttachedClustersClient(
             client_options={"scopes": ["1", "2"]},
             transport=transport,
         )
@@ -4057,22 +3020,22 @@ def test_credentials_transport_error():
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.AwsClustersGrpcTransport(
+    transport = transports.AttachedClustersGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    client = AwsClustersClient(transport=transport)
+    client = AttachedClustersClient(transport=transport)
     assert client.transport is transport
 
 
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.AwsClustersGrpcTransport(
+    transport = transports.AttachedClustersGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
-    transport = transports.AwsClustersGrpcAsyncIOTransport(
+    transport = transports.AttachedClustersGrpcAsyncIOTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
@@ -4082,8 +3045,8 @@ def test_transport_get_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.AwsClustersGrpcTransport,
-        transports.AwsClustersGrpcAsyncIOTransport,
+        transports.AttachedClustersGrpcTransport,
+        transports.AttachedClustersGrpcAsyncIOTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -4101,7 +3064,7 @@ def test_transport_adc(transport_class):
     ],
 )
 def test_transport_kind(transport_name):
-    transport = AwsClustersClient.get_transport_class(transport_name)(
+    transport = AttachedClustersClient.get_transport_class(transport_name)(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
@@ -4109,49 +3072,45 @@ def test_transport_kind(transport_name):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
-        transports.AwsClustersGrpcTransport,
+        transports.AttachedClustersGrpcTransport,
     )
 
 
-def test_aws_clusters_base_transport_error():
+def test_attached_clusters_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.AwsClustersTransport(
+        transport = transports.AttachedClustersTransport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_aws_clusters_base_transport():
+def test_attached_clusters_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.gke_multicloud_v1.services.aws_clusters.transports.AwsClustersTransport.__init__"
+        "google.cloud.gke_multicloud_v1.services.attached_clusters.transports.AttachedClustersTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.AwsClustersTransport(
+        transport = transports.AttachedClustersTransport(
             credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
-        "create_aws_cluster",
-        "update_aws_cluster",
-        "get_aws_cluster",
-        "list_aws_clusters",
-        "delete_aws_cluster",
-        "generate_aws_access_token",
-        "create_aws_node_pool",
-        "update_aws_node_pool",
-        "get_aws_node_pool",
-        "list_aws_node_pools",
-        "delete_aws_node_pool",
-        "get_aws_server_config",
+        "create_attached_cluster",
+        "update_attached_cluster",
+        "import_attached_cluster",
+        "get_attached_cluster",
+        "list_attached_clusters",
+        "delete_attached_cluster",
+        "get_attached_server_config",
+        "generate_attached_cluster_install_manifest",
         "get_operation",
         "cancel_operation",
         "delete_operation",
@@ -4178,16 +3137,16 @@ def test_aws_clusters_base_transport():
             getattr(transport, r)()
 
 
-def test_aws_clusters_base_transport_with_credentials_file():
+def test_attached_clusters_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.gke_multicloud_v1.services.aws_clusters.transports.AwsClustersTransport._prep_wrapped_messages"
+        "google.cloud.gke_multicloud_v1.services.attached_clusters.transports.AttachedClustersTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.AwsClustersTransport(
+        transport = transports.AttachedClustersTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
         )
@@ -4199,22 +3158,22 @@ def test_aws_clusters_base_transport_with_credentials_file():
         )
 
 
-def test_aws_clusters_base_transport_with_adc():
+def test_attached_clusters_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.gke_multicloud_v1.services.aws_clusters.transports.AwsClustersTransport._prep_wrapped_messages"
+        "google.cloud.gke_multicloud_v1.services.attached_clusters.transports.AttachedClustersTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.AwsClustersTransport()
+        transport = transports.AttachedClustersTransport()
         adc.assert_called_once()
 
 
-def test_aws_clusters_auth_adc():
+def test_attached_clusters_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        AwsClustersClient()
+        AttachedClustersClient()
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
@@ -4225,11 +3184,11 @@ def test_aws_clusters_auth_adc():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.AwsClustersGrpcTransport,
-        transports.AwsClustersGrpcAsyncIOTransport,
+        transports.AttachedClustersGrpcTransport,
+        transports.AttachedClustersGrpcAsyncIOTransport,
     ],
 )
-def test_aws_clusters_transport_auth_adc(transport_class):
+def test_attached_clusters_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -4245,11 +3204,11 @@ def test_aws_clusters_transport_auth_adc(transport_class):
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.AwsClustersGrpcTransport,
-        transports.AwsClustersGrpcAsyncIOTransport,
+        transports.AttachedClustersGrpcTransport,
+        transports.AttachedClustersGrpcAsyncIOTransport,
     ],
 )
-def test_aws_clusters_transport_auth_gdch_credentials(transport_class):
+def test_attached_clusters_transport_auth_gdch_credentials(transport_class):
     host = "https://language.com"
     api_audience_tests = [None, "https://language2.com"]
     api_audience_expect = [host, "https://language2.com"]
@@ -4267,11 +3226,11 @@ def test_aws_clusters_transport_auth_gdch_credentials(transport_class):
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
     [
-        (transports.AwsClustersGrpcTransport, grpc_helpers),
-        (transports.AwsClustersGrpcAsyncIOTransport, grpc_helpers_async),
+        (transports.AttachedClustersGrpcTransport, grpc_helpers),
+        (transports.AttachedClustersGrpcAsyncIOTransport, grpc_helpers_async),
     ],
 )
-def test_aws_clusters_transport_create_channel(transport_class, grpc_helpers):
+def test_attached_clusters_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(
@@ -4301,9 +3260,12 @@ def test_aws_clusters_transport_create_channel(transport_class, grpc_helpers):
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.AwsClustersGrpcTransport, transports.AwsClustersGrpcAsyncIOTransport],
+    [
+        transports.AttachedClustersGrpcTransport,
+        transports.AttachedClustersGrpcAsyncIOTransport,
+    ],
 )
-def test_aws_clusters_grpc_transport_client_cert_source_for_mtls(transport_class):
+def test_attached_clusters_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
@@ -4348,8 +3310,8 @@ def test_aws_clusters_grpc_transport_client_cert_source_for_mtls(transport_class
         "grpc_asyncio",
     ],
 )
-def test_aws_clusters_host_no_port(transport_name):
-    client = AwsClustersClient(
+def test_attached_clusters_host_no_port(transport_name):
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="gkemulticloud.googleapis.com"
@@ -4366,8 +3328,8 @@ def test_aws_clusters_host_no_port(transport_name):
         "grpc_asyncio",
     ],
 )
-def test_aws_clusters_host_with_port(transport_name):
-    client = AwsClustersClient(
+def test_attached_clusters_host_with_port(transport_name):
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="gkemulticloud.googleapis.com:8000"
@@ -4377,11 +3339,11 @@ def test_aws_clusters_host_with_port(transport_name):
     assert client.transport._host == ("gkemulticloud.googleapis.com:8000")
 
 
-def test_aws_clusters_grpc_transport_channel():
+def test_attached_clusters_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.AwsClustersGrpcTransport(
+    transport = transports.AttachedClustersGrpcTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -4390,11 +3352,11 @@ def test_aws_clusters_grpc_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
-def test_aws_clusters_grpc_asyncio_transport_channel():
+def test_attached_clusters_grpc_asyncio_transport_channel():
     channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.AwsClustersGrpcAsyncIOTransport(
+    transport = transports.AttachedClustersGrpcAsyncIOTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -4407,9 +3369,14 @@ def test_aws_clusters_grpc_asyncio_transport_channel():
 # removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.AwsClustersGrpcTransport, transports.AwsClustersGrpcAsyncIOTransport],
+    [
+        transports.AttachedClustersGrpcTransport,
+        transports.AttachedClustersGrpcAsyncIOTransport,
+    ],
 )
-def test_aws_clusters_transport_channel_mtls_with_client_cert_source(transport_class):
+def test_attached_clusters_transport_channel_mtls_with_client_cert_source(
+    transport_class,
+):
     with mock.patch(
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
@@ -4456,9 +3423,12 @@ def test_aws_clusters_transport_channel_mtls_with_client_cert_source(transport_c
 # removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.AwsClustersGrpcTransport, transports.AwsClustersGrpcAsyncIOTransport],
+    [
+        transports.AttachedClustersGrpcTransport,
+        transports.AttachedClustersGrpcAsyncIOTransport,
+    ],
 )
-def test_aws_clusters_transport_channel_mtls_with_adc(transport_class):
+def test_attached_clusters_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
@@ -4495,8 +3465,8 @@ def test_aws_clusters_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_aws_clusters_grpc_lro_client():
-    client = AwsClustersClient(
+def test_attached_clusters_grpc_lro_client():
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -4512,8 +3482,8 @@ def test_aws_clusters_grpc_lro_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_aws_clusters_grpc_lro_async_client():
-    client = AwsClustersAsyncClient(
+def test_attached_clusters_grpc_lro_async_client():
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
@@ -4529,188 +3499,157 @@ def test_aws_clusters_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_aws_cluster_path():
+def test_attached_cluster_path():
     project = "squid"
     location = "clam"
-    aws_cluster = "whelk"
-    expected = (
-        "projects/{project}/locations/{location}/awsClusters/{aws_cluster}".format(
-            project=project,
-            location=location,
-            aws_cluster=aws_cluster,
-        )
+    attached_cluster = "whelk"
+    expected = "projects/{project}/locations/{location}/attachedClusters/{attached_cluster}".format(
+        project=project,
+        location=location,
+        attached_cluster=attached_cluster,
     )
-    actual = AwsClustersClient.aws_cluster_path(project, location, aws_cluster)
+    actual = AttachedClustersClient.attached_cluster_path(
+        project, location, attached_cluster
+    )
     assert expected == actual
 
 
-def test_parse_aws_cluster_path():
+def test_parse_attached_cluster_path():
     expected = {
         "project": "octopus",
         "location": "oyster",
-        "aws_cluster": "nudibranch",
+        "attached_cluster": "nudibranch",
     }
-    path = AwsClustersClient.aws_cluster_path(**expected)
+    path = AttachedClustersClient.attached_cluster_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = AwsClustersClient.parse_aws_cluster_path(path)
+    actual = AttachedClustersClient.parse_attached_cluster_path(path)
     assert expected == actual
 
 
-def test_aws_node_pool_path():
+def test_attached_server_config_path():
     project = "cuttlefish"
     location = "mussel"
-    aws_cluster = "winkle"
-    aws_node_pool = "nautilus"
-    expected = "projects/{project}/locations/{location}/awsClusters/{aws_cluster}/awsNodePools/{aws_node_pool}".format(
-        project=project,
-        location=location,
-        aws_cluster=aws_cluster,
-        aws_node_pool=aws_node_pool,
-    )
-    actual = AwsClustersClient.aws_node_pool_path(
-        project, location, aws_cluster, aws_node_pool
-    )
-    assert expected == actual
-
-
-def test_parse_aws_node_pool_path():
-    expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "aws_cluster": "squid",
-        "aws_node_pool": "clam",
-    }
-    path = AwsClustersClient.aws_node_pool_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = AwsClustersClient.parse_aws_node_pool_path(path)
-    assert expected == actual
-
-
-def test_aws_server_config_path():
-    project = "whelk"
-    location = "octopus"
-    expected = "projects/{project}/locations/{location}/awsServerConfig".format(
+    expected = "projects/{project}/locations/{location}/attachedServerConfig".format(
         project=project,
         location=location,
     )
-    actual = AwsClustersClient.aws_server_config_path(project, location)
+    actual = AttachedClustersClient.attached_server_config_path(project, location)
     assert expected == actual
 
 
-def test_parse_aws_server_config_path():
+def test_parse_attached_server_config_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "winkle",
+        "location": "nautilus",
     }
-    path = AwsClustersClient.aws_server_config_path(**expected)
+    path = AttachedClustersClient.attached_server_config_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = AwsClustersClient.parse_aws_server_config_path(path)
+    actual = AttachedClustersClient.parse_attached_server_config_path(path)
     assert expected == actual
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = AwsClustersClient.common_billing_account_path(billing_account)
+    actual = AttachedClustersClient.common_billing_account_path(billing_account)
     assert expected == actual
 
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "abalone",
     }
-    path = AwsClustersClient.common_billing_account_path(**expected)
+    path = AttachedClustersClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = AwsClustersClient.parse_common_billing_account_path(path)
+    actual = AttachedClustersClient.parse_common_billing_account_path(path)
     assert expected == actual
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
-    actual = AwsClustersClient.common_folder_path(folder)
+    actual = AttachedClustersClient.common_folder_path(folder)
     assert expected == actual
 
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "clam",
     }
-    path = AwsClustersClient.common_folder_path(**expected)
+    path = AttachedClustersClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = AwsClustersClient.parse_common_folder_path(path)
+    actual = AttachedClustersClient.parse_common_folder_path(path)
     assert expected == actual
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
-    actual = AwsClustersClient.common_organization_path(organization)
+    actual = AttachedClustersClient.common_organization_path(organization)
     assert expected == actual
 
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "octopus",
     }
-    path = AwsClustersClient.common_organization_path(**expected)
+    path = AttachedClustersClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = AwsClustersClient.parse_common_organization_path(path)
+    actual = AttachedClustersClient.parse_common_organization_path(path)
     assert expected == actual
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
-    actual = AwsClustersClient.common_project_path(project)
+    actual = AttachedClustersClient.common_project_path(project)
     assert expected == actual
 
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "nudibranch",
     }
-    path = AwsClustersClient.common_project_path(**expected)
+    path = AttachedClustersClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = AwsClustersClient.parse_common_project_path(path)
+    actual = AttachedClustersClient.parse_common_project_path(path)
     assert expected == actual
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
     )
-    actual = AwsClustersClient.common_location_path(project, location)
+    actual = AttachedClustersClient.common_location_path(project, location)
     assert expected == actual
 
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "winkle",
+        "location": "nautilus",
     }
-    path = AwsClustersClient.common_location_path(**expected)
+    path = AttachedClustersClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = AwsClustersClient.parse_common_location_path(path)
+    actual = AttachedClustersClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -4718,18 +3657,18 @@ def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.AwsClustersTransport, "_prep_wrapped_messages"
+        transports.AttachedClustersTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = AwsClustersClient(
+        client = AttachedClustersClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.AwsClustersTransport, "_prep_wrapped_messages"
+        transports.AttachedClustersTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = AwsClustersClient.get_transport_class()
+        transport_class = AttachedClustersClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
@@ -4739,7 +3678,7 @@ def test_client_with_default_client_info():
 
 @pytest.mark.asyncio
 async def test_transport_close_async():
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
@@ -4752,7 +3691,7 @@ async def test_transport_close_async():
 
 
 def test_delete_operation(transport: str = "grpc"):
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4777,7 +3716,7 @@ def test_delete_operation(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc"):
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4801,7 +3740,7 @@ async def test_delete_operation_async(transport: str = "grpc"):
 
 
 def test_delete_operation_field_headers():
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4830,7 +3769,7 @@ def test_delete_operation_field_headers():
 
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4857,7 +3796,7 @@ async def test_delete_operation_field_headers_async():
 
 
 def test_delete_operation_from_dict():
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4875,7 +3814,7 @@ def test_delete_operation_from_dict():
 
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4891,7 +3830,7 @@ async def test_delete_operation_from_dict_async():
 
 
 def test_cancel_operation(transport: str = "grpc"):
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4916,7 +3855,7 @@ def test_cancel_operation(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc"):
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4940,7 +3879,7 @@ async def test_cancel_operation_async(transport: str = "grpc"):
 
 
 def test_cancel_operation_field_headers():
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4969,7 +3908,7 @@ def test_cancel_operation_field_headers():
 
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4996,7 +3935,7 @@ async def test_cancel_operation_field_headers_async():
 
 
 def test_cancel_operation_from_dict():
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5014,7 +3953,7 @@ def test_cancel_operation_from_dict():
 
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5030,7 +3969,7 @@ async def test_cancel_operation_from_dict_async():
 
 
 def test_get_operation(transport: str = "grpc"):
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -5055,7 +3994,7 @@ def test_get_operation(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc"):
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -5081,7 +4020,7 @@ async def test_get_operation_async(transport: str = "grpc"):
 
 
 def test_get_operation_field_headers():
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -5110,7 +4049,7 @@ def test_get_operation_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -5139,7 +4078,7 @@ async def test_get_operation_field_headers_async():
 
 
 def test_get_operation_from_dict():
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5157,7 +4096,7 @@ def test_get_operation_from_dict():
 
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5175,7 +4114,7 @@ async def test_get_operation_from_dict_async():
 
 
 def test_list_operations(transport: str = "grpc"):
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -5200,7 +4139,7 @@ def test_list_operations(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc"):
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -5226,7 +4165,7 @@ async def test_list_operations_async(transport: str = "grpc"):
 
 
 def test_list_operations_field_headers():
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -5255,7 +4194,7 @@ def test_list_operations_field_headers():
 
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -5284,7 +4223,7 @@ async def test_list_operations_field_headers_async():
 
 
 def test_list_operations_from_dict():
-    client = AwsClustersClient(
+    client = AttachedClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5302,7 +4241,7 @@ def test_list_operations_from_dict():
 
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
-    client = AwsClustersAsyncClient(
+    client = AttachedClustersAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5325,7 +4264,7 @@ def test_transport_close():
     }
 
     for transport, close_name in transports.items():
-        client = AwsClustersClient(
+        client = AttachedClustersClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
@@ -5341,7 +4280,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = AwsClustersClient(
+        client = AttachedClustersClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
@@ -5355,8 +4294,8 @@ def test_client_ctx():
 @pytest.mark.parametrize(
     "client_class,transport_class",
     [
-        (AwsClustersClient, transports.AwsClustersGrpcTransport),
-        (AwsClustersAsyncClient, transports.AwsClustersGrpcAsyncIOTransport),
+        (AttachedClustersClient, transports.AttachedClustersGrpcTransport),
+        (AttachedClustersAsyncClient, transports.AttachedClustersGrpcAsyncIOTransport),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):

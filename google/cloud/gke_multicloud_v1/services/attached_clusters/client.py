@@ -53,34 +53,36 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.gke_multicloud_v1.services.aws_clusters import pagers
+from google.cloud.gke_multicloud_v1.services.attached_clusters import pagers
 from google.cloud.gke_multicloud_v1.types import (
-    aws_resources,
-    aws_service,
+    attached_resources,
+    attached_service,
     common_resources,
 )
 
-from .transports.base import DEFAULT_CLIENT_INFO, AwsClustersTransport
-from .transports.grpc import AwsClustersGrpcTransport
-from .transports.grpc_asyncio import AwsClustersGrpcAsyncIOTransport
+from .transports.base import DEFAULT_CLIENT_INFO, AttachedClustersTransport
+from .transports.grpc import AttachedClustersGrpcTransport
+from .transports.grpc_asyncio import AttachedClustersGrpcAsyncIOTransport
 
 
-class AwsClustersClientMeta(type):
-    """Metaclass for the AwsClusters client.
+class AttachedClustersClientMeta(type):
+    """Metaclass for the AttachedClusters client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
 
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[AwsClustersTransport]]
-    _transport_registry["grpc"] = AwsClustersGrpcTransport
-    _transport_registry["grpc_asyncio"] = AwsClustersGrpcAsyncIOTransport
+    _transport_registry = (
+        OrderedDict()
+    )  # type: Dict[str, Type[AttachedClustersTransport]]
+    _transport_registry["grpc"] = AttachedClustersGrpcTransport
+    _transport_registry["grpc_asyncio"] = AttachedClustersGrpcAsyncIOTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[AwsClustersTransport]:
+    ) -> Type[AttachedClustersTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -99,10 +101,10 @@ class AwsClustersClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class AwsClustersClient(metaclass=AwsClustersClientMeta):
-    """The AwsClusters API provides a single centrally managed
-    service to create and manage Anthos clusters that run on AWS
-    infrastructure.
+class AttachedClustersClient(metaclass=AttachedClustersClientMeta):
+    """The AttachedClusters API provides a single centrally managed
+    service to register and manage Anthos attached clusters that run
+    on customer's owned infrastructure.
     """
 
     @staticmethod
@@ -151,7 +153,7 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            AwsClustersClient: The constructed client.
+            AttachedClustersClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -169,7 +171,7 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            AwsClustersClient: The constructed client.
+            AttachedClustersClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -178,79 +180,53 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> AwsClustersTransport:
+    def transport(self) -> AttachedClustersTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            AwsClustersTransport: The transport used by the client
+            AttachedClustersTransport: The transport used by the client
                 instance.
         """
         return self._transport
 
     @staticmethod
-    def aws_cluster_path(
+    def attached_cluster_path(
         project: str,
         location: str,
-        aws_cluster: str,
+        attached_cluster: str,
     ) -> str:
-        """Returns a fully-qualified aws_cluster string."""
-        return (
-            "projects/{project}/locations/{location}/awsClusters/{aws_cluster}".format(
-                project=project,
-                location=location,
-                aws_cluster=aws_cluster,
-            )
+        """Returns a fully-qualified attached_cluster string."""
+        return "projects/{project}/locations/{location}/attachedClusters/{attached_cluster}".format(
+            project=project,
+            location=location,
+            attached_cluster=attached_cluster,
         )
 
     @staticmethod
-    def parse_aws_cluster_path(path: str) -> Dict[str, str]:
-        """Parses a aws_cluster path into its component segments."""
+    def parse_attached_cluster_path(path: str) -> Dict[str, str]:
+        """Parses a attached_cluster path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/awsClusters/(?P<aws_cluster>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/attachedClusters/(?P<attached_cluster>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
 
     @staticmethod
-    def aws_node_pool_path(
-        project: str,
-        location: str,
-        aws_cluster: str,
-        aws_node_pool: str,
-    ) -> str:
-        """Returns a fully-qualified aws_node_pool string."""
-        return "projects/{project}/locations/{location}/awsClusters/{aws_cluster}/awsNodePools/{aws_node_pool}".format(
-            project=project,
-            location=location,
-            aws_cluster=aws_cluster,
-            aws_node_pool=aws_node_pool,
-        )
-
-    @staticmethod
-    def parse_aws_node_pool_path(path: str) -> Dict[str, str]:
-        """Parses a aws_node_pool path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/awsClusters/(?P<aws_cluster>.+?)/awsNodePools/(?P<aws_node_pool>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def aws_server_config_path(
+    def attached_server_config_path(
         project: str,
         location: str,
     ) -> str:
-        """Returns a fully-qualified aws_server_config string."""
-        return "projects/{project}/locations/{location}/awsServerConfig".format(
+        """Returns a fully-qualified attached_server_config string."""
+        return "projects/{project}/locations/{location}/attachedServerConfig".format(
             project=project,
             location=location,
         )
 
     @staticmethod
-    def parse_aws_server_config_path(path: str) -> Dict[str, str]:
-        """Parses a aws_server_config path into its component segments."""
+    def parse_attached_server_config_path(path: str) -> Dict[str, str]:
+        """Parses a attached_server_config path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/awsServerConfig$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/attachedServerConfig$",
             path,
         )
         return m.groupdict() if m else {}
@@ -403,11 +379,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, AwsClustersTransport]] = None,
+        transport: Optional[Union[str, AttachedClustersTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the aws clusters client.
+        """Instantiates the attached clusters client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -415,7 +391,7 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, AwsClustersTransport]): The
+            transport (Union[str, AttachedClustersTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
@@ -463,8 +439,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, AwsClustersTransport):
-            # transport is a AwsClustersTransport instance.
+        if isinstance(transport, AttachedClustersTransport):
+            # transport is a AttachedClustersTransport instance.
             if credentials or client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -499,20 +475,22 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 api_audience=client_options.api_audience,
             )
 
-    def create_aws_cluster(
+    def create_attached_cluster(
         self,
-        request: Optional[Union[aws_service.CreateAwsClusterRequest, dict]] = None,
+        request: Optional[
+            Union[attached_service.CreateAttachedClusterRequest, dict]
+        ] = None,
         *,
         parent: Optional[str] = None,
-        aws_cluster: Optional[aws_resources.AwsCluster] = None,
-        aws_cluster_id: Optional[str] = None,
+        attached_cluster: Optional[attached_resources.AttachedCluster] = None,
+        attached_cluster_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new
-        [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster] resource
-        on a given GCP project and region.
+        [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
+        resource on a given GCP project and region.
 
         If successful, the response contains a newly created
         [Operation][google.longrunning.Operation] resource that can be
@@ -529,33 +507,24 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
-            def sample_create_aws_cluster():
+            def sample_create_attached_cluster():
                 # Create a client
-                client = gke_multicloud_v1.AwsClustersClient()
+                client = gke_multicloud_v1.AttachedClustersClient()
 
                 # Initialize request argument(s)
-                aws_cluster = gke_multicloud_v1.AwsCluster()
-                aws_cluster.networking.vpc_id = "vpc_id_value"
-                aws_cluster.networking.pod_address_cidr_blocks = ['pod_address_cidr_blocks_value1', 'pod_address_cidr_blocks_value2']
-                aws_cluster.networking.service_address_cidr_blocks = ['service_address_cidr_blocks_value1', 'service_address_cidr_blocks_value2']
-                aws_cluster.aws_region = "aws_region_value"
-                aws_cluster.control_plane.version = "version_value"
-                aws_cluster.control_plane.subnet_ids = ['subnet_ids_value1', 'subnet_ids_value2']
-                aws_cluster.control_plane.iam_instance_profile = "iam_instance_profile_value"
-                aws_cluster.control_plane.database_encryption.kms_key_arn = "kms_key_arn_value"
-                aws_cluster.control_plane.aws_services_authentication.role_arn = "role_arn_value"
-                aws_cluster.control_plane.config_encryption.kms_key_arn = "kms_key_arn_value"
-                aws_cluster.authorization.admin_users.username = "username_value"
-                aws_cluster.fleet.project = "project_value"
+                attached_cluster = gke_multicloud_v1.AttachedCluster()
+                attached_cluster.platform_version = "platform_version_value"
+                attached_cluster.distribution = "distribution_value"
+                attached_cluster.fleet.project = "project_value"
 
-                request = gke_multicloud_v1.CreateAwsClusterRequest(
+                request = gke_multicloud_v1.CreateAttachedClusterRequest(
                     parent="parent_value",
-                    aws_cluster=aws_cluster,
-                    aws_cluster_id="aws_cluster_id_value",
+                    attached_cluster=attached_cluster,
+                    attached_cluster_id="attached_cluster_id_value",
                 )
 
                 # Make the request
-                operation = client.create_aws_cluster(request=request)
+                operation = client.create_attached_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
@@ -565,12 +534,12 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.CreateAwsClusterRequest, dict]):
+            request (Union[google.cloud.gke_multicloud_v1.types.CreateAttachedClusterRequest, dict]):
                 The request object. Request message for
-                `AwsClusters.CreateAwsCluster` method.
+                `AttachedClusters.CreateAttachedCluster` method.
             parent (str):
                 Required. The parent location where this
-                [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
+                [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
                 resource will be created.
 
                 Location names are formatted as
@@ -583,27 +552,27 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            aws_cluster (google.cloud.gke_multicloud_v1.types.AwsCluster):
+            attached_cluster (google.cloud.gke_multicloud_v1.types.AttachedCluster):
                 Required. The specification of the
-                [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
+                [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
                 to create.
 
-                This corresponds to the ``aws_cluster`` field
+                This corresponds to the ``attached_cluster`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            aws_cluster_id (str):
+            attached_cluster_id (str):
                 Required. A client provided ID the resource. Must be
                 unique within the parent resource.
 
                 The provided ID will be part of the
-                [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
+                [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
                 resource name formatted as
-                ``projects/<project-id>/locations/<region>/awsClusters/<cluster-id>``.
+                ``projects/<project-id>/locations/<region>/attachedClusters/<cluster-id>``.
 
                 Valid characters are ``/[a-z][0-9]-/``. Cannot be longer
                 than 63 characters.
 
-                This corresponds to the ``aws_cluster_id`` field
+                This corresponds to the ``attached_cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -617,14 +586,15 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.gke_multicloud_v1.types.AwsCluster`
-                An Anthos cluster running on AWS.
+                :class:`google.cloud.gke_multicloud_v1.types.AttachedCluster`
+                An Anthos cluster running on customer own
+                infrastructure.
 
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, aws_cluster, aws_cluster_id])
+        has_flattened_params = any([parent, attached_cluster, attached_cluster_id])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -632,23 +602,23 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.CreateAwsClusterRequest.
+        # in a attached_service.CreateAttachedClusterRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, aws_service.CreateAwsClusterRequest):
-            request = aws_service.CreateAwsClusterRequest(request)
+        if not isinstance(request, attached_service.CreateAttachedClusterRequest):
+            request = attached_service.CreateAttachedClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
                 request.parent = parent
-            if aws_cluster is not None:
-                request.aws_cluster = aws_cluster
-            if aws_cluster_id is not None:
-                request.aws_cluster_id = aws_cluster_id
+            if attached_cluster is not None:
+                request.attached_cluster = attached_cluster
+            if attached_cluster_id is not None:
+                request.attached_cluster_id = attached_cluster_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_aws_cluster]
+        rpc = self._transport._wrapped_methods[self._transport.create_attached_cluster]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -668,25 +638,27 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            aws_resources.AwsCluster,
+            attached_resources.AttachedCluster,
             metadata_type=common_resources.OperationMetadata,
         )
 
         # Done; return the response.
         return response
 
-    def update_aws_cluster(
+    def update_attached_cluster(
         self,
-        request: Optional[Union[aws_service.UpdateAwsClusterRequest, dict]] = None,
+        request: Optional[
+            Union[attached_service.UpdateAttachedClusterRequest, dict]
+        ] = None,
         *,
-        aws_cluster: Optional[aws_resources.AwsCluster] = None,
+        attached_cluster: Optional[attached_resources.AttachedCluster] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates an
-        [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster].
+        [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster].
 
         .. code-block:: python
 
@@ -699,31 +671,22 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
-            def sample_update_aws_cluster():
+            def sample_update_attached_cluster():
                 # Create a client
-                client = gke_multicloud_v1.AwsClustersClient()
+                client = gke_multicloud_v1.AttachedClustersClient()
 
                 # Initialize request argument(s)
-                aws_cluster = gke_multicloud_v1.AwsCluster()
-                aws_cluster.networking.vpc_id = "vpc_id_value"
-                aws_cluster.networking.pod_address_cidr_blocks = ['pod_address_cidr_blocks_value1', 'pod_address_cidr_blocks_value2']
-                aws_cluster.networking.service_address_cidr_blocks = ['service_address_cidr_blocks_value1', 'service_address_cidr_blocks_value2']
-                aws_cluster.aws_region = "aws_region_value"
-                aws_cluster.control_plane.version = "version_value"
-                aws_cluster.control_plane.subnet_ids = ['subnet_ids_value1', 'subnet_ids_value2']
-                aws_cluster.control_plane.iam_instance_profile = "iam_instance_profile_value"
-                aws_cluster.control_plane.database_encryption.kms_key_arn = "kms_key_arn_value"
-                aws_cluster.control_plane.aws_services_authentication.role_arn = "role_arn_value"
-                aws_cluster.control_plane.config_encryption.kms_key_arn = "kms_key_arn_value"
-                aws_cluster.authorization.admin_users.username = "username_value"
-                aws_cluster.fleet.project = "project_value"
+                attached_cluster = gke_multicloud_v1.AttachedCluster()
+                attached_cluster.platform_version = "platform_version_value"
+                attached_cluster.distribution = "distribution_value"
+                attached_cluster.fleet.project = "project_value"
 
-                request = gke_multicloud_v1.UpdateAwsClusterRequest(
-                    aws_cluster=aws_cluster,
+                request = gke_multicloud_v1.UpdateAttachedClusterRequest(
+                    attached_cluster=attached_cluster,
                 )
 
                 # Make the request
-                operation = client.update_aws_cluster(request=request)
+                operation = client.update_attached_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
@@ -733,45 +696,28 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.UpdateAwsClusterRequest, dict]):
+            request (Union[google.cloud.gke_multicloud_v1.types.UpdateAttachedClusterRequest, dict]):
                 The request object. Request message for
-                `AwsClusters.UpdateAwsCluster` method.
-            aws_cluster (google.cloud.gke_multicloud_v1.types.AwsCluster):
+                `AttachedClusters.UpdateAttachedCluster` method.
+            attached_cluster (google.cloud.gke_multicloud_v1.types.AttachedCluster):
                 Required. The
-                [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
+                [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
                 resource to update.
 
-                This corresponds to the ``aws_cluster`` field
+                This corresponds to the ``attached_cluster`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. Mask of fields to update. At least one path
                 must be supplied in this field. The elements of the
                 repeated paths field can only include these fields from
-                [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]:
+                [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]:
 
                 -  ``description``.
                 -  ``annotations``.
-                -  ``control_plane.version``.
+                -  ``platform_version``.
                 -  ``authorization.admin_users``.
-                -  ``control_plane.aws_services_authentication.role_arn``.
-                -  ``control_plane.aws_services_authentication.role_session_name``.
-                -  ``control_plane.config_encryption.kms_key_arn``.
-                -  ``control_plane.instance_type``.
-                -  ``control_plane.security_group_ids``.
-                -  ``control_plane.proxy_config``.
-                -  ``control_plane.proxy_config.secret_arn``.
-                -  ``control_plane.proxy_config.secret_version``.
-                -  ``control_plane.root_volume.size_gib``.
-                -  ``control_plane.root_volume.volume_type``.
-                -  ``control_plane.root_volume.iops``.
-                -  ``control_plane.root_volume.kms_key_arn``.
-                -  ``control_plane.ssh_config``.
-                -  ``control_plane.ssh_config.ec2_key_pair``.
-                -  ``control_plane.instance_placement.tenancy``.
-                -  ``control_plane.iam_instance_profile``.
                 -  ``logging_config.component_config.enable_components``.
-                -  ``control_plane.tags``.
                 -  ``monitoring_config.managed_prometheus_config.enabled``.
 
                 This corresponds to the ``update_mask`` field
@@ -788,14 +734,15 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.gke_multicloud_v1.types.AwsCluster`
-                An Anthos cluster running on AWS.
+                :class:`google.cloud.gke_multicloud_v1.types.AttachedCluster`
+                An Anthos cluster running on customer own
+                infrastructure.
 
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([aws_cluster, update_mask])
+        has_flattened_params = any([attached_cluster, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -803,27 +750,27 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.UpdateAwsClusterRequest.
+        # in a attached_service.UpdateAttachedClusterRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, aws_service.UpdateAwsClusterRequest):
-            request = aws_service.UpdateAwsClusterRequest(request)
+        if not isinstance(request, attached_service.UpdateAttachedClusterRequest):
+            request = attached_service.UpdateAttachedClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-            if aws_cluster is not None:
-                request.aws_cluster = aws_cluster
+            if attached_cluster is not None:
+                request.attached_cluster = attached_cluster
             if update_mask is not None:
                 request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_aws_cluster]
+        rpc = self._transport._wrapped_methods[self._transport.update_attached_cluster]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("aws_cluster.name", request.aws_cluster.name),)
+                (("attached_cluster.name", request.attached_cluster.name),)
             ),
         )
 
@@ -839,24 +786,35 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            aws_resources.AwsCluster,
+            attached_resources.AttachedCluster,
             metadata_type=common_resources.OperationMetadata,
         )
 
         # Done; return the response.
         return response
 
-    def get_aws_cluster(
+    def import_attached_cluster(
         self,
-        request: Optional[Union[aws_service.GetAwsClusterRequest, dict]] = None,
+        request: Optional[
+            Union[attached_service.ImportAttachedClusterRequest, dict]
+        ] = None,
         *,
-        name: Optional[str] = None,
+        parent: Optional[str] = None,
+        fleet_membership: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> aws_resources.AwsCluster:
-        r"""Describes a specific
-        [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster] resource.
+    ) -> operation.Operation:
+        r"""Imports creates a new
+        [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
+        resource by importing an existing Fleet Membership resource.
+
+        Attached Clusters created before the introduction of the Anthos
+        Multi-Cloud API can be imported through this method.
+
+        If successful, the response contains a newly created
+        [Operation][google.longrunning.Operation] resource that can be
+        described to track the status of the operation.
 
         .. code-block:: python
 
@@ -869,32 +827,174 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
-            def sample_get_aws_cluster():
+            def sample_import_attached_cluster():
                 # Create a client
-                client = gke_multicloud_v1.AwsClustersClient()
+                client = gke_multicloud_v1.AttachedClustersClient()
 
                 # Initialize request argument(s)
-                request = gke_multicloud_v1.GetAwsClusterRequest(
-                    name="name_value",
+                request = gke_multicloud_v1.ImportAttachedClusterRequest(
+                    parent="parent_value",
+                    fleet_membership="fleet_membership_value",
+                    platform_version="platform_version_value",
+                    distribution="distribution_value",
                 )
 
                 # Make the request
-                response = client.get_aws_cluster(request=request)
+                operation = client.import_attached_cluster(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.GetAwsClusterRequest, dict]):
+            request (Union[google.cloud.gke_multicloud_v1.types.ImportAttachedClusterRequest, dict]):
                 The request object. Request message for
-                `AwsClusters.GetAwsCluster` method.
+                `AttachedClusters.ImportAttachedCluster` method.
+            parent (str):
+                Required. The parent location where this
+                [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
+                resource will be created.
+
+                Location names are formatted as
+                ``projects/<project-id>/locations/<region>``.
+
+                See `Resource
+                Names <https://cloud.google.com/apis/design/resource_names>`__
+                for more details on Google Cloud resource names.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            fleet_membership (str):
+                Required. The name of the fleet
+                membership resource to import.
+
+                This corresponds to the ``fleet_membership`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.gke_multicloud_v1.types.AttachedCluster`
+                An Anthos cluster running on customer own
+                infrastructure.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, fleet_membership])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a attached_service.ImportAttachedClusterRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, attached_service.ImportAttachedClusterRequest):
+            request = attached_service.ImportAttachedClusterRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if fleet_membership is not None:
+                request.fleet_membership = fleet_membership
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.import_attached_cluster]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            attached_resources.AttachedCluster,
+            metadata_type=common_resources.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_attached_cluster(
+        self,
+        request: Optional[
+            Union[attached_service.GetAttachedClusterRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> attached_resources.AttachedCluster:
+        r"""Describes a specific
+        [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
+        resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_multicloud_v1
+
+            def sample_get_attached_cluster():
+                # Create a client
+                client = gke_multicloud_v1.AttachedClustersClient()
+
+                # Initialize request argument(s)
+                request = gke_multicloud_v1.GetAttachedClusterRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_attached_cluster(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.gke_multicloud_v1.types.GetAttachedClusterRequest, dict]):
+                The request object. Request message for
+                `AttachedClusters.GetAttachedCluster` method.
             name (str):
                 Required. The name of the
-                [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
+                [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
                 resource to describe.
 
-                ``AwsCluster`` names are formatted as
-                ``projects/<project-id>/locations/<region>/awsClusters/<cluster-id>``.
+                ``AttachedCluster`` names are formatted as
+                ``projects/<project-id>/locations/<region>/attachedClusters/<cluster-id>``.
 
                 See `Resource
                 Names <https://cloud.google.com/apis/design/resource_names>`__
@@ -910,8 +1010,10 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.gke_multicloud_v1.types.AwsCluster:
-                An Anthos cluster running on AWS.
+            google.cloud.gke_multicloud_v1.types.AttachedCluster:
+                An Anthos cluster running on customer
+                own infrastructure.
+
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -924,11 +1026,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.GetAwsClusterRequest.
+        # in a attached_service.GetAttachedClusterRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, aws_service.GetAwsClusterRequest):
-            request = aws_service.GetAwsClusterRequest(request)
+        if not isinstance(request, attached_service.GetAttachedClusterRequest):
+            request = attached_service.GetAttachedClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -936,7 +1038,7 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_aws_cluster]
+        rpc = self._transport._wrapped_methods[self._transport.get_attached_cluster]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -955,16 +1057,19 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
         # Done; return the response.
         return response
 
-    def list_aws_clusters(
+    def list_attached_clusters(
         self,
-        request: Optional[Union[aws_service.ListAwsClustersRequest, dict]] = None,
+        request: Optional[
+            Union[attached_service.ListAttachedClustersRequest, dict]
+        ] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListAwsClustersPager:
-        r"""Lists all [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
+    ) -> pagers.ListAttachedClustersPager:
+        r"""Lists all
+        [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
         resources on a given Google Cloud project and region.
 
         .. code-block:: python
@@ -978,30 +1083,30 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
-            def sample_list_aws_clusters():
+            def sample_list_attached_clusters():
                 # Create a client
-                client = gke_multicloud_v1.AwsClustersClient()
+                client = gke_multicloud_v1.AttachedClustersClient()
 
                 # Initialize request argument(s)
-                request = gke_multicloud_v1.ListAwsClustersRequest(
+                request = gke_multicloud_v1.ListAttachedClustersRequest(
                     parent="parent_value",
                 )
 
                 # Make the request
-                page_result = client.list_aws_clusters(request=request)
+                page_result = client.list_attached_clusters(request=request)
 
                 # Handle the response
                 for response in page_result:
                     print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.ListAwsClustersRequest, dict]):
+            request (Union[google.cloud.gke_multicloud_v1.types.ListAttachedClustersRequest, dict]):
                 The request object. Request message for
-                `AwsClusters.ListAwsClusters` method.
+                `AttachedClusters.ListAttachedClusters` method.
             parent (str):
                 Required. The parent location which owns this collection
                 of
-                [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
+                [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
                 resources.
 
                 Location names are formatted as
@@ -1021,8 +1126,9 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.gke_multicloud_v1.services.aws_clusters.pagers.ListAwsClustersPager:
-                Response message for AwsClusters.ListAwsClusters method.
+            google.cloud.gke_multicloud_v1.services.attached_clusters.pagers.ListAttachedClustersPager:
+                Response message for
+                AttachedClusters.ListAttachedClusters method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1039,11 +1145,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.ListAwsClustersRequest.
+        # in a attached_service.ListAttachedClustersRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, aws_service.ListAwsClustersRequest):
-            request = aws_service.ListAwsClustersRequest(request)
+        if not isinstance(request, attached_service.ListAttachedClustersRequest):
+            request = attached_service.ListAttachedClustersRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -1051,7 +1157,7 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_aws_clusters]
+        rpc = self._transport._wrapped_methods[self._transport.list_attached_clusters]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1069,7 +1175,7 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
-        response = pagers.ListAwsClustersPager(
+        response = pagers.ListAttachedClustersPager(
             method=rpc,
             request=request,
             response=response,
@@ -1079,9 +1185,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
         # Done; return the response.
         return response
 
-    def delete_aws_cluster(
+    def delete_attached_cluster(
         self,
-        request: Optional[Union[aws_service.DeleteAwsClusterRequest, dict]] = None,
+        request: Optional[
+            Union[attached_service.DeleteAttachedClusterRequest, dict]
+        ] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1089,11 +1197,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a specific
-        [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster] resource.
-
-        Fails if the cluster has one or more associated
-        [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
-        resources.
+        [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
+        resource.
 
         If successful, the response contains a newly created
         [Operation][google.longrunning.Operation] resource that can be
@@ -1110,17 +1215,17 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
-            def sample_delete_aws_cluster():
+            def sample_delete_attached_cluster():
                 # Create a client
-                client = gke_multicloud_v1.AwsClustersClient()
+                client = gke_multicloud_v1.AttachedClustersClient()
 
                 # Initialize request argument(s)
-                request = gke_multicloud_v1.DeleteAwsClusterRequest(
+                request = gke_multicloud_v1.DeleteAttachedClusterRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                operation = client.delete_aws_cluster(request=request)
+                operation = client.delete_attached_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
@@ -1130,16 +1235,16 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.DeleteAwsClusterRequest, dict]):
+            request (Union[google.cloud.gke_multicloud_v1.types.DeleteAttachedClusterRequest, dict]):
                 The request object. Request message for
-                `AwsClusters.DeleteAwsCluster` method.
+                `AttachedClusters.DeleteAttachedCluster` method.
             name (str):
                 Required. The resource name the
-                [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
+                [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
                 to delete.
 
-                ``AwsCluster`` names are formatted as
-                ``projects/<project-id>/locations/<region>/awsClusters/<cluster-id>``.
+                ``AttachedCluster`` names are formatted as
+                ``projects/<project-id>/locations/<region>/attachedClusters/<cluster-id>``.
 
                 See `Resource
                 Names <https://cloud.google.com/apis/design/resource_names>`__
@@ -1181,11 +1286,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.DeleteAwsClusterRequest.
+        # in a attached_service.DeleteAttachedClusterRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, aws_service.DeleteAwsClusterRequest):
-            request = aws_service.DeleteAwsClusterRequest(request)
+        if not isinstance(request, attached_service.DeleteAttachedClusterRequest):
+            request = attached_service.DeleteAttachedClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -1193,7 +1298,7 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_aws_cluster]
+        rpc = self._transport._wrapped_methods[self._transport.delete_attached_cluster]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1220,18 +1325,19 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
         # Done; return the response.
         return response
 
-    def generate_aws_access_token(
+    def get_attached_server_config(
         self,
         request: Optional[
-            Union[aws_service.GenerateAwsAccessTokenRequest, dict]
+            Union[attached_service.GetAttachedServerConfigRequest, dict]
         ] = None,
         *,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> aws_service.GenerateAwsAccessTokenResponse:
-        r"""Generates a short-lived access token to authenticate to a given
-        [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster] resource.
+    ) -> attached_resources.AttachedServerConfig:
+        r"""Returns information, such as supported Kubernetes
+        versions, on a given Google Cloud location.
 
         .. code-block:: python
 
@@ -1244,25 +1350,40 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
-            def sample_generate_aws_access_token():
+            def sample_get_attached_server_config():
                 # Create a client
-                client = gke_multicloud_v1.AwsClustersClient()
+                client = gke_multicloud_v1.AttachedClustersClient()
 
                 # Initialize request argument(s)
-                request = gke_multicloud_v1.GenerateAwsAccessTokenRequest(
-                    aws_cluster="aws_cluster_value",
+                request = gke_multicloud_v1.GetAttachedServerConfigRequest(
+                    name="name_value",
                 )
 
                 # Make the request
-                response = client.generate_aws_access_token(request=request)
+                response = client.get_attached_server_config(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.GenerateAwsAccessTokenRequest, dict]):
-                The request object. Request message for
-                `AwsClusters.GenerateAwsAccessToken` method.
+            request (Union[google.cloud.gke_multicloud_v1.types.GetAttachedServerConfigRequest, dict]):
+                The request object. GetAttachedServerConfigRequest gets
+                the server config for attached clusters.
+            name (str):
+                Required. The name of the
+                [AttachedServerConfig][google.cloud.gkemulticloud.v1.AttachedServerConfig]
+                resource to describe.
+
+                ``AttachedServerConfig`` names are formatted as
+                ``projects/<project-id>/locations/<region>/attachedServerConfig``.
+
+                See `Resource
+                Names <https://cloud.google.com/apis/design/resource_names>`__
+                for more details on Google Cloud resource names.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1270,31 +1391,43 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.gke_multicloud_v1.types.GenerateAwsAccessTokenResponse:
-                Response message for AwsClusters.GenerateAwsAccessToken
-                method.
+            google.cloud.gke_multicloud_v1.types.AttachedServerConfig:
+                AttachedServerConfig provides
+                information about supported Kubernetes
+                versions
 
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.GenerateAwsAccessTokenRequest.
+        # in a attached_service.GetAttachedServerConfigRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, aws_service.GenerateAwsAccessTokenRequest):
-            request = aws_service.GenerateAwsAccessTokenRequest(request)
+        if not isinstance(request, attached_service.GetAttachedServerConfigRequest):
+            request = attached_service.GetAttachedServerConfigRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[
-            self._transport.generate_aws_access_token
+            self._transport.get_attached_server_config
         ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("aws_cluster", request.aws_cluster),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
@@ -1308,25 +1441,20 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
         # Done; return the response.
         return response
 
-    def create_aws_node_pool(
+    def generate_attached_cluster_install_manifest(
         self,
-        request: Optional[Union[aws_service.CreateAwsNodePoolRequest, dict]] = None,
+        request: Optional[
+            Union[attached_service.GenerateAttachedClusterInstallManifestRequest, dict]
+        ] = None,
         *,
         parent: Optional[str] = None,
-        aws_node_pool: Optional[aws_resources.AwsNodePool] = None,
-        aws_node_pool_id: Optional[str] = None,
+        attached_cluster_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Creates a new
-        [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool],
-        attached to a given
-        [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster].
-
-        If successful, the response contains a newly created
-        [Operation][google.longrunning.Operation] resource that can be
-        described to track the status of the operation.
+    ) -> attached_service.GenerateAttachedClusterInstallManifestResponse:
+        r"""Generates the install manifest to be installed on the
+        target cluster.
 
         .. code-block:: python
 
@@ -1339,47 +1467,35 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
-            def sample_create_aws_node_pool():
+            def sample_generate_attached_cluster_install_manifest():
                 # Create a client
-                client = gke_multicloud_v1.AwsClustersClient()
+                client = gke_multicloud_v1.AttachedClustersClient()
 
                 # Initialize request argument(s)
-                aws_node_pool = gke_multicloud_v1.AwsNodePool()
-                aws_node_pool.version = "version_value"
-                aws_node_pool.config.iam_instance_profile = "iam_instance_profile_value"
-                aws_node_pool.config.config_encryption.kms_key_arn = "kms_key_arn_value"
-                aws_node_pool.autoscaling.min_node_count = 1489
-                aws_node_pool.autoscaling.max_node_count = 1491
-                aws_node_pool.subnet_id = "subnet_id_value"
-                aws_node_pool.max_pods_constraint.max_pods_per_node = 1798
-
-                request = gke_multicloud_v1.CreateAwsNodePoolRequest(
+                request = gke_multicloud_v1.GenerateAttachedClusterInstallManifestRequest(
                     parent="parent_value",
-                    aws_node_pool=aws_node_pool,
-                    aws_node_pool_id="aws_node_pool_id_value",
+                    attached_cluster_id="attached_cluster_id_value",
+                    platform_version="platform_version_value",
                 )
 
                 # Make the request
-                operation = client.create_aws_node_pool(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
+                response = client.generate_attached_cluster_install_manifest(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.CreateAwsNodePoolRequest, dict]):
-                The request object. Response message for
-                `AwsClusters.CreateAwsNodePool` method.
+            request (Union[google.cloud.gke_multicloud_v1.types.GenerateAttachedClusterInstallManifestRequest, dict]):
+                The request object. Request message for
+                `AttachedClusters.GenerateAttachedClusterInstallManifest`
+                method.
             parent (str):
-                Required. The
-                [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
-                resource where this node pool will be created.
+                Required. The parent location where this
+                [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
+                resource will be created.
 
-                ``AwsCluster`` names are formatted as
-                ``projects/<project-id>/locations/<region>/awsClusters/<cluster-id>``.
+                Location names are formatted as
+                ``projects/<project-id>/locations/<region>``.
 
                 See `Resource
                 Names <https://cloud.google.com/apis/design/resource_names>`__
@@ -1388,27 +1504,26 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            aws_node_pool (google.cloud.gke_multicloud_v1.types.AwsNodePool):
-                Required. The specification of the
-                [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
-                to create.
-
-                This corresponds to the ``aws_node_pool`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            aws_node_pool_id (str):
+            attached_cluster_id (str):
                 Required. A client provided ID the resource. Must be
                 unique within the parent resource.
 
                 The provided ID will be part of the
-                [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
+                [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
                 resource name formatted as
-                ``projects/<project-id>/locations/<region>/awsClusters/<cluster-id>/awsNodePools/<node-pool-id>``.
+                ``projects/<project-id>/locations/<region>/attachedClusters/<cluster-id>``.
 
                 Valid characters are ``/[a-z][0-9]-/``. Cannot be longer
                 than 63 characters.
 
-                This corresponds to the ``aws_node_pool_id`` field
+                When generating an install manifest for importing an
+                existing Membership resource, the attached_cluster_id
+                field must be the Membership id.
+
+                Membership names are formatted as
+                ``resource name formatted as``\ projects//locations//memberships/\`.
+
+                This corresponds to the ``attached_cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1418,18 +1533,16 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.gke_multicloud_v1.types.AwsNodePool`
-                An Anthos node pool running on AWS.
+            google.cloud.gke_multicloud_v1.types.GenerateAttachedClusterInstallManifestResponse:
+                Response message for
+                   AttachedClusters.GenerateAttachedClusterInstallManifest
+                   method.
 
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, aws_node_pool, aws_node_pool_id])
+        has_flattened_params = any([parent, attached_cluster_id])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1437,688 +1550,32 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.CreateAwsNodePoolRequest.
+        # in a attached_service.GenerateAttachedClusterInstallManifestRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, aws_service.CreateAwsNodePoolRequest):
-            request = aws_service.CreateAwsNodePoolRequest(request)
+        if not isinstance(
+            request, attached_service.GenerateAttachedClusterInstallManifestRequest
+        ):
+            request = attached_service.GenerateAttachedClusterInstallManifestRequest(
+                request
+            )
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
                 request.parent = parent
-            if aws_node_pool is not None:
-                request.aws_node_pool = aws_node_pool
-            if aws_node_pool_id is not None:
-                request.aws_node_pool_id = aws_node_pool_id
+            if attached_cluster_id is not None:
+                request.attached_cluster_id = attached_cluster_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_aws_node_pool]
+        rpc = self._transport._wrapped_methods[
+            self._transport.generate_attached_cluster_install_manifest
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            aws_resources.AwsNodePool,
-            metadata_type=common_resources.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def update_aws_node_pool(
-        self,
-        request: Optional[Union[aws_service.UpdateAwsNodePoolRequest, dict]] = None,
-        *,
-        aws_node_pool: Optional[aws_resources.AwsNodePool] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Updates an
-        [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool].
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import gke_multicloud_v1
-
-            def sample_update_aws_node_pool():
-                # Create a client
-                client = gke_multicloud_v1.AwsClustersClient()
-
-                # Initialize request argument(s)
-                aws_node_pool = gke_multicloud_v1.AwsNodePool()
-                aws_node_pool.version = "version_value"
-                aws_node_pool.config.iam_instance_profile = "iam_instance_profile_value"
-                aws_node_pool.config.config_encryption.kms_key_arn = "kms_key_arn_value"
-                aws_node_pool.autoscaling.min_node_count = 1489
-                aws_node_pool.autoscaling.max_node_count = 1491
-                aws_node_pool.subnet_id = "subnet_id_value"
-                aws_node_pool.max_pods_constraint.max_pods_per_node = 1798
-
-                request = gke_multicloud_v1.UpdateAwsNodePoolRequest(
-                    aws_node_pool=aws_node_pool,
-                )
-
-                # Make the request
-                operation = client.update_aws_node_pool(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.UpdateAwsNodePoolRequest, dict]):
-                The request object. Request message for
-                `AwsClusters.UpdateAwsNodePool` method.
-            aws_node_pool (google.cloud.gke_multicloud_v1.types.AwsNodePool):
-                Required. The
-                [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
-                resource to update.
-
-                This corresponds to the ``aws_node_pool`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Mask of fields to update. At least one path
-                must be supplied in this field. The elements of the
-                repeated paths field can only include these fields from
-                [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]:
-
-                -  ``annotations``.
-                -  ``version``.
-                -  ``autoscaling.min_node_count``.
-                -  ``autoscaling.max_node_count``.
-                -  ``config.config_encryption.kms_key_arn``.
-                -  ``config.security_group_ids``.
-                -  ``config.root_volume.iops``.
-                -  ``config.root_volume.kms_key_arn``.
-                -  ``config.root_volume.volume_type``.
-                -  ``config.root_volume.size_gib``.
-                -  ``config.proxy_config``.
-                -  ``config.proxy_config.secret_arn``.
-                -  ``config.proxy_config.secret_version``.
-                -  ``config.ssh_config``.
-                -  ``config.ssh_config.ec2_key_pair``.
-                -  ``config.instance_placement.tenancy``.
-                -  ``config.iam_instance_profile``.
-                -  ``config.labels``.
-                -  ``config.tags``.
-                -  ``config.autoscaling_metrics_collection``.
-                -  ``config.autoscaling_metrics_collection.granularity``.
-                -  ``config.autoscaling_metrics_collection.metrics``.
-
-                This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.gke_multicloud_v1.types.AwsNodePool`
-                An Anthos node pool running on AWS.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([aws_node_pool, update_mask])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.UpdateAwsNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, aws_service.UpdateAwsNodePoolRequest):
-            request = aws_service.UpdateAwsNodePoolRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if aws_node_pool is not None:
-                request.aws_node_pool = aws_node_pool
-            if update_mask is not None:
-                request.update_mask = update_mask
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_aws_node_pool]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("aws_node_pool.name", request.aws_node_pool.name),)
-            ),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            aws_resources.AwsNodePool,
-            metadata_type=common_resources.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def get_aws_node_pool(
-        self,
-        request: Optional[Union[aws_service.GetAwsNodePoolRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> aws_resources.AwsNodePool:
-        r"""Describes a specific
-        [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
-        resource.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import gke_multicloud_v1
-
-            def sample_get_aws_node_pool():
-                # Create a client
-                client = gke_multicloud_v1.AwsClustersClient()
-
-                # Initialize request argument(s)
-                request = gke_multicloud_v1.GetAwsNodePoolRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_aws_node_pool(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.GetAwsNodePoolRequest, dict]):
-                The request object. Request message for
-                `AwsClusters.GetAwsNodePool` method.
-            name (str):
-                Required. The name of the
-                [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
-                resource to describe.
-
-                ``AwsNodePool`` names are formatted as
-                ``projects/<project-id>/locations/<region>/awsClusters/<cluster-id>/awsNodePools/<node-pool-id>``.
-
-                See `Resource
-                Names <https://cloud.google.com/apis/design/resource_names>`__
-                for more details on Google Cloud resource names.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.gke_multicloud_v1.types.AwsNodePool:
-                An Anthos node pool running on AWS.
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.GetAwsNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, aws_service.GetAwsNodePoolRequest):
-            request = aws_service.GetAwsNodePoolRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_aws_node_pool]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def list_aws_node_pools(
-        self,
-        request: Optional[Union[aws_service.ListAwsNodePoolsRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListAwsNodePoolsPager:
-        r"""Lists all
-        [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
-        resources on a given
-        [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster].
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import gke_multicloud_v1
-
-            def sample_list_aws_node_pools():
-                # Create a client
-                client = gke_multicloud_v1.AwsClustersClient()
-
-                # Initialize request argument(s)
-                request = gke_multicloud_v1.ListAwsNodePoolsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_aws_node_pools(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
-        Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.ListAwsNodePoolsRequest, dict]):
-                The request object. Request message for
-                `AwsClusters.ListAwsNodePools` method.
-            parent (str):
-                Required. The parent ``AwsCluster`` which owns this
-                collection of
-                [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
-                resources.
-
-                ``AwsCluster`` names are formatted as
-                ``projects/<project-id>/locations/<region>/awsClusters/<cluster-id>``.
-
-                See `Resource
-                Names <https://cloud.google.com/apis/design/resource_names>`__
-                for more details on Google Cloud resource names.
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.gke_multicloud_v1.services.aws_clusters.pagers.ListAwsNodePoolsPager:
-                Response message for AwsClusters.ListAwsNodePools
-                method.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.ListAwsNodePoolsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, aws_service.ListAwsNodePoolsRequest):
-            request = aws_service.ListAwsNodePoolsRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_aws_node_pools]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListAwsNodePoolsPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def delete_aws_node_pool(
-        self,
-        request: Optional[Union[aws_service.DeleteAwsNodePoolRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Deletes a specific
-        [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
-        resource.
-
-        If successful, the response contains a newly created
-        [Operation][google.longrunning.Operation] resource that can be
-        described to track the status of the operation.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import gke_multicloud_v1
-
-            def sample_delete_aws_node_pool():
-                # Create a client
-                client = gke_multicloud_v1.AwsClustersClient()
-
-                # Initialize request argument(s)
-                request = gke_multicloud_v1.DeleteAwsNodePoolRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                operation = client.delete_aws_node_pool(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.DeleteAwsNodePoolRequest, dict]):
-                The request object. Request message for
-                `AwsClusters.DeleteAwsNodePool` method.
-            name (str):
-                Required. The resource name the
-                [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
-                to delete.
-
-                ``AwsNodePool`` names are formatted as
-                ``projects/<project-id>/locations/<region>/awsClusters/<cluster-id>/awsNodePools/<node-pool-id>``.
-
-                See `Resource
-                Names <https://cloud.google.com/apis/design/resource_names>`__
-                for more details on Google Cloud resource names.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.DeleteAwsNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, aws_service.DeleteAwsNodePoolRequest):
-            request = aws_service.DeleteAwsNodePoolRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_aws_node_pool]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            empty_pb2.Empty,
-            metadata_type=common_resources.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def get_aws_server_config(
-        self,
-        request: Optional[Union[aws_service.GetAwsServerConfigRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> aws_resources.AwsServerConfig:
-        r"""Returns information, such as supported AWS regions
-        and Kubernetes versions, on a given Google Cloud
-        location.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import gke_multicloud_v1
-
-            def sample_get_aws_server_config():
-                # Create a client
-                client = gke_multicloud_v1.AwsClustersClient()
-
-                # Initialize request argument(s)
-                request = gke_multicloud_v1.GetAwsServerConfigRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_aws_server_config(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.GetAwsServerConfigRequest, dict]):
-                The request object. GetAwsServerConfigRequest gets the
-                server config of GKE cluster on AWS.
-            name (str):
-                Required. The name of the
-                [AwsServerConfig][google.cloud.gkemulticloud.v1.AwsServerConfig]
-                resource to describe.
-
-                ``AwsServerConfig`` names are formatted as
-                ``projects/<project-id>/locations/<region>/awsServerConfig``.
-
-                See `Resource
-                Names <https://cloud.google.com/apis/design/resource_names>`__
-                for more details on Google Cloud resource names.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.gke_multicloud_v1.types.AwsServerConfig:
-                AwsServerConfig is the configuration
-                of GKE cluster on AWS.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.GetAwsServerConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, aws_service.GetAwsServerConfigRequest):
-            request = aws_service.GetAwsServerConfigRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_aws_server_config]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
@@ -2368,4 +1825,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("AwsClustersClient",)
+__all__ = ("AttachedClustersClient",)
