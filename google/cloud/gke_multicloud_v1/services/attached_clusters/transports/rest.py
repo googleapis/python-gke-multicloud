@@ -45,9 +45,9 @@ except AttributeError:  # pragma: NO COVER
 
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.cloud.gke_multicloud_v1.types import aws_resources, aws_service
+from google.cloud.gke_multicloud_v1.types import attached_resources, attached_service
 
-from .base import AwsClustersTransport
+from .base import AttachedClustersTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -57,8 +57,8 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-class AwsClustersRestInterceptor:
-    """Interceptor for AwsClusters.
+class AttachedClustersRestInterceptor:
+    """Interceptor for AttachedClusters.
 
     Interceptors are used to manipulate requests, request metadata, and responses
     in arbitrary ways.
@@ -68,384 +68,273 @@ class AwsClustersRestInterceptor:
     * Stripping extraneous information from responses
 
     These use cases and more can be enabled by injecting an
-    instance of a custom subclass when constructing the AwsClustersRestTransport.
+    instance of a custom subclass when constructing the AttachedClustersRestTransport.
 
     .. code-block:: python
-        class MyCustomAwsClustersInterceptor(AwsClustersRestInterceptor):
-            def pre_create_aws_cluster(self, request, metadata):
+        class MyCustomAttachedClustersInterceptor(AttachedClustersRestInterceptor):
+            def pre_create_attached_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_aws_cluster(self, response):
+            def post_create_attached_cluster(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_create_aws_node_pool(self, request, metadata):
+            def pre_delete_attached_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_aws_node_pool(self, response):
+            def post_delete_attached_cluster(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_delete_aws_cluster(self, request, metadata):
+            def pre_generate_attached_cluster_install_manifest(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_aws_cluster(self, response):
+            def post_generate_attached_cluster_install_manifest(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_delete_aws_node_pool(self, request, metadata):
+            def pre_get_attached_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_aws_node_pool(self, response):
+            def post_get_attached_cluster(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_generate_aws_access_token(self, request, metadata):
+            def pre_get_attached_server_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_generate_aws_access_token(self, response):
+            def post_get_attached_server_config(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_get_aws_cluster(self, request, metadata):
+            def pre_import_attached_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_aws_cluster(self, response):
+            def post_import_attached_cluster(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_get_aws_node_pool(self, request, metadata):
+            def pre_list_attached_clusters(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_aws_node_pool(self, response):
+            def post_list_attached_clusters(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_get_aws_server_config(self, request, metadata):
+            def pre_update_attached_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_aws_server_config(self, response):
+            def post_update_attached_cluster(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_list_aws_clusters(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_list_aws_clusters(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_list_aws_node_pools(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_list_aws_node_pools(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_update_aws_cluster(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_update_aws_cluster(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_update_aws_node_pool(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_update_aws_node_pool(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-        transport = AwsClustersRestTransport(interceptor=MyCustomAwsClustersInterceptor())
-        client = AwsClustersClient(transport=transport)
+        transport = AttachedClustersRestTransport(interceptor=MyCustomAttachedClustersInterceptor())
+        client = AttachedClustersClient(transport=transport)
 
 
     """
 
-    def pre_create_aws_cluster(
+    def pre_create_attached_cluster(
         self,
-        request: aws_service.CreateAwsClusterRequest,
+        request: attached_service.CreateAttachedClusterRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.CreateAwsClusterRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for create_aws_cluster
+    ) -> Tuple[
+        attached_service.CreateAttachedClusterRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_attached_cluster
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the AwsClusters server.
+        before they are sent to the AttachedClusters server.
         """
         return request, metadata
 
-    def post_create_aws_cluster(
+    def post_create_attached_cluster(
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for create_aws_cluster
+        """Post-rpc interceptor for create_attached_cluster
 
         Override in a subclass to manipulate the response
-        after it is returned by the AwsClusters server but before
+        after it is returned by the AttachedClusters server but before
         it is returned to user code.
         """
         return response
 
-    def pre_create_aws_node_pool(
+    def pre_delete_attached_cluster(
         self,
-        request: aws_service.CreateAwsNodePoolRequest,
+        request: attached_service.DeleteAttachedClusterRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.CreateAwsNodePoolRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for create_aws_node_pool
+    ) -> Tuple[
+        attached_service.DeleteAttachedClusterRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_attached_cluster
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the AwsClusters server.
+        before they are sent to the AttachedClusters server.
         """
         return request, metadata
 
-    def post_create_aws_node_pool(
+    def post_delete_attached_cluster(
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for create_aws_node_pool
+        """Post-rpc interceptor for delete_attached_cluster
 
         Override in a subclass to manipulate the response
-        after it is returned by the AwsClusters server but before
+        after it is returned by the AttachedClusters server but before
         it is returned to user code.
         """
         return response
 
-    def pre_delete_aws_cluster(
+    def pre_generate_attached_cluster_install_manifest(
         self,
-        request: aws_service.DeleteAwsClusterRequest,
+        request: attached_service.GenerateAttachedClusterInstallManifestRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.DeleteAwsClusterRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for delete_aws_cluster
+    ) -> Tuple[
+        attached_service.GenerateAttachedClusterInstallManifestRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for generate_attached_cluster_install_manifest
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the AwsClusters server.
+        before they are sent to the AttachedClusters server.
         """
         return request, metadata
 
-    def post_delete_aws_cluster(
+    def post_generate_attached_cluster_install_manifest(
+        self, response: attached_service.GenerateAttachedClusterInstallManifestResponse
+    ) -> attached_service.GenerateAttachedClusterInstallManifestResponse:
+        """Post-rpc interceptor for generate_attached_cluster_install_manifest
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AttachedClusters server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_attached_cluster(
+        self,
+        request: attached_service.GetAttachedClusterRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[attached_service.GetAttachedClusterRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_attached_cluster
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AttachedClusters server.
+        """
+        return request, metadata
+
+    def post_get_attached_cluster(
+        self, response: attached_resources.AttachedCluster
+    ) -> attached_resources.AttachedCluster:
+        """Post-rpc interceptor for get_attached_cluster
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AttachedClusters server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_attached_server_config(
+        self,
+        request: attached_service.GetAttachedServerConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        attached_service.GetAttachedServerConfigRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_attached_server_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AttachedClusters server.
+        """
+        return request, metadata
+
+    def post_get_attached_server_config(
+        self, response: attached_resources.AttachedServerConfig
+    ) -> attached_resources.AttachedServerConfig:
+        """Post-rpc interceptor for get_attached_server_config
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AttachedClusters server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_import_attached_cluster(
+        self,
+        request: attached_service.ImportAttachedClusterRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        attached_service.ImportAttachedClusterRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for import_attached_cluster
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AttachedClusters server.
+        """
+        return request, metadata
+
+    def post_import_attached_cluster(
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for delete_aws_cluster
+        """Post-rpc interceptor for import_attached_cluster
 
         Override in a subclass to manipulate the response
-        after it is returned by the AwsClusters server but before
+        after it is returned by the AttachedClusters server but before
         it is returned to user code.
         """
         return response
 
-    def pre_delete_aws_node_pool(
+    def pre_list_attached_clusters(
         self,
-        request: aws_service.DeleteAwsNodePoolRequest,
+        request: attached_service.ListAttachedClustersRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.DeleteAwsNodePoolRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for delete_aws_node_pool
+    ) -> Tuple[attached_service.ListAttachedClustersRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_attached_clusters
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the AwsClusters server.
+        before they are sent to the AttachedClusters server.
         """
         return request, metadata
 
-    def post_delete_aws_node_pool(
+    def post_list_attached_clusters(
+        self, response: attached_service.ListAttachedClustersResponse
+    ) -> attached_service.ListAttachedClustersResponse:
+        """Post-rpc interceptor for list_attached_clusters
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AttachedClusters server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_attached_cluster(
+        self,
+        request: attached_service.UpdateAttachedClusterRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        attached_service.UpdateAttachedClusterRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_attached_cluster
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AttachedClusters server.
+        """
+        return request, metadata
+
+    def post_update_attached_cluster(
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for delete_aws_node_pool
+        """Post-rpc interceptor for update_attached_cluster
 
         Override in a subclass to manipulate the response
-        after it is returned by the AwsClusters server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_generate_aws_access_token(
-        self,
-        request: aws_service.GenerateAwsAccessTokenRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.GenerateAwsAccessTokenRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for generate_aws_access_token
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AwsClusters server.
-        """
-        return request, metadata
-
-    def post_generate_aws_access_token(
-        self, response: aws_service.GenerateAwsAccessTokenResponse
-    ) -> aws_service.GenerateAwsAccessTokenResponse:
-        """Post-rpc interceptor for generate_aws_access_token
-
-        Override in a subclass to manipulate the response
-        after it is returned by the AwsClusters server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_get_aws_cluster(
-        self,
-        request: aws_service.GetAwsClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.GetAwsClusterRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for get_aws_cluster
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AwsClusters server.
-        """
-        return request, metadata
-
-    def post_get_aws_cluster(
-        self, response: aws_resources.AwsCluster
-    ) -> aws_resources.AwsCluster:
-        """Post-rpc interceptor for get_aws_cluster
-
-        Override in a subclass to manipulate the response
-        after it is returned by the AwsClusters server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_get_aws_node_pool(
-        self,
-        request: aws_service.GetAwsNodePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.GetAwsNodePoolRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for get_aws_node_pool
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AwsClusters server.
-        """
-        return request, metadata
-
-    def post_get_aws_node_pool(
-        self, response: aws_resources.AwsNodePool
-    ) -> aws_resources.AwsNodePool:
-        """Post-rpc interceptor for get_aws_node_pool
-
-        Override in a subclass to manipulate the response
-        after it is returned by the AwsClusters server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_get_aws_server_config(
-        self,
-        request: aws_service.GetAwsServerConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.GetAwsServerConfigRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for get_aws_server_config
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AwsClusters server.
-        """
-        return request, metadata
-
-    def post_get_aws_server_config(
-        self, response: aws_resources.AwsServerConfig
-    ) -> aws_resources.AwsServerConfig:
-        """Post-rpc interceptor for get_aws_server_config
-
-        Override in a subclass to manipulate the response
-        after it is returned by the AwsClusters server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_list_aws_clusters(
-        self,
-        request: aws_service.ListAwsClustersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.ListAwsClustersRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for list_aws_clusters
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AwsClusters server.
-        """
-        return request, metadata
-
-    def post_list_aws_clusters(
-        self, response: aws_service.ListAwsClustersResponse
-    ) -> aws_service.ListAwsClustersResponse:
-        """Post-rpc interceptor for list_aws_clusters
-
-        Override in a subclass to manipulate the response
-        after it is returned by the AwsClusters server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_list_aws_node_pools(
-        self,
-        request: aws_service.ListAwsNodePoolsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.ListAwsNodePoolsRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for list_aws_node_pools
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AwsClusters server.
-        """
-        return request, metadata
-
-    def post_list_aws_node_pools(
-        self, response: aws_service.ListAwsNodePoolsResponse
-    ) -> aws_service.ListAwsNodePoolsResponse:
-        """Post-rpc interceptor for list_aws_node_pools
-
-        Override in a subclass to manipulate the response
-        after it is returned by the AwsClusters server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_update_aws_cluster(
-        self,
-        request: aws_service.UpdateAwsClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.UpdateAwsClusterRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for update_aws_cluster
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AwsClusters server.
-        """
-        return request, metadata
-
-    def post_update_aws_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for update_aws_cluster
-
-        Override in a subclass to manipulate the response
-        after it is returned by the AwsClusters server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_update_aws_node_pool(
-        self,
-        request: aws_service.UpdateAwsNodePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.UpdateAwsNodePoolRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for update_aws_node_pool
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AwsClusters server.
-        """
-        return request, metadata
-
-    def post_update_aws_node_pool(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for update_aws_node_pool
-
-        Override in a subclass to manipulate the response
-        after it is returned by the AwsClusters server but before
+        after it is returned by the AttachedClusters server but before
         it is returned to user code.
         """
         return response
@@ -458,7 +347,7 @@ class AwsClustersRestInterceptor:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the AwsClusters server.
+        before they are sent to the AttachedClusters server.
         """
         return request, metadata
 
@@ -468,7 +357,7 @@ class AwsClustersRestInterceptor:
         """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
-        after it is returned by the AwsClusters server but before
+        after it is returned by the AttachedClusters server but before
         it is returned to user code.
         """
         return response
@@ -481,7 +370,7 @@ class AwsClustersRestInterceptor:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the AwsClusters server.
+        before they are sent to the AttachedClusters server.
         """
         return request, metadata
 
@@ -491,7 +380,7 @@ class AwsClustersRestInterceptor:
         """Post-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the response
-        after it is returned by the AwsClusters server but before
+        after it is returned by the AttachedClusters server but before
         it is returned to user code.
         """
         return response
@@ -504,7 +393,7 @@ class AwsClustersRestInterceptor:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the AwsClusters server.
+        before they are sent to the AttachedClusters server.
         """
         return request, metadata
 
@@ -514,7 +403,7 @@ class AwsClustersRestInterceptor:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
-        after it is returned by the AwsClusters server but before
+        after it is returned by the AttachedClusters server but before
         it is returned to user code.
         """
         return response
@@ -527,7 +416,7 @@ class AwsClustersRestInterceptor:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the AwsClusters server.
+        before they are sent to the AttachedClusters server.
         """
         return request, metadata
 
@@ -537,25 +426,25 @@ class AwsClustersRestInterceptor:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
-        after it is returned by the AwsClusters server but before
+        after it is returned by the AttachedClusters server but before
         it is returned to user code.
         """
         return response
 
 
 @dataclasses.dataclass
-class AwsClustersRestStub:
+class AttachedClustersRestStub:
     _session: AuthorizedSession
     _host: str
-    _interceptor: AwsClustersRestInterceptor
+    _interceptor: AttachedClustersRestInterceptor
 
 
-class AwsClustersRestTransport(AwsClustersTransport):
-    """REST backend transport for AwsClusters.
+class AttachedClustersRestTransport(AttachedClustersTransport):
+    """REST backend transport for AttachedClusters.
 
-    The AwsClusters API provides a single centrally managed
-    service to create and manage Anthos clusters that run on AWS
-    infrastructure.
+    The AttachedClusters API provides a single centrally managed
+    service to register and manage Anthos attached clusters that run
+    on customer's owned infrastructure.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -580,7 +469,7 @@ class AwsClustersRestTransport(AwsClustersTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
-        interceptor: Optional[AwsClustersRestInterceptor] = None,
+        interceptor: Optional[AttachedClustersRestInterceptor] = None,
         api_audience: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
@@ -646,7 +535,7 @@ class AwsClustersRestTransport(AwsClustersTransport):
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = interceptor or AwsClustersRestInterceptor()
+        self._interceptor = interceptor or AttachedClustersRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -702,12 +591,12 @@ class AwsClustersRestTransport(AwsClustersTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateAwsCluster(AwsClustersRestStub):
+    class _CreateAttachedCluster(AttachedClustersRestStub):
         def __hash__(self):
-            return hash("CreateAwsCluster")
+            return hash("CreateAttachedCluster")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
-            "awsClusterId": "",
+            "attachedClusterId": "",
         }
 
         @classmethod
@@ -720,394 +609,18 @@ class AwsClustersRestTransport(AwsClustersTransport):
 
         def __call__(
             self,
-            request: aws_service.CreateAwsClusterRequest,
+            request: attached_service.CreateAttachedClusterRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
-            r"""Call the create aws cluster method over HTTP.
+            r"""Call the create attached cluster method over HTTP.
 
             Args:
-                request (~.aws_service.CreateAwsClusterRequest):
-                    The request object. Request message for ``AwsClusters.CreateAwsCluster``
-                method.
-
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/awsClusters",
-                    "body": "aws_cluster",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_aws_cluster(
-                request, metadata
-            )
-            pb_request = aws_service.CreateAwsClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_create_aws_cluster(resp)
-            return resp
-
-    class _CreateAwsNodePool(AwsClustersRestStub):
-        def __hash__(self):
-            return hash("CreateAwsNodePool")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
-            "awsNodePoolId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: aws_service.CreateAwsNodePoolRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the create aws node pool method over HTTP.
-
-            Args:
-                request (~.aws_service.CreateAwsNodePoolRequest):
-                    The request object. Response message for ``AwsClusters.CreateAwsNodePool``
-                method.
-
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/awsClusters/*}/awsNodePools",
-                    "body": "aws_node_pool",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_aws_node_pool(
-                request, metadata
-            )
-            pb_request = aws_service.CreateAwsNodePoolRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_create_aws_node_pool(resp)
-            return resp
-
-    class _DeleteAwsCluster(AwsClustersRestStub):
-        def __hash__(self):
-            return hash("DeleteAwsCluster")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: aws_service.DeleteAwsClusterRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the delete aws cluster method over HTTP.
-
-            Args:
-                request (~.aws_service.DeleteAwsClusterRequest):
-                    The request object. Request message for ``AwsClusters.DeleteAwsCluster``
-                method.
-
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/awsClusters/*}",
-                },
-            ]
-            request, metadata = self._interceptor.pre_delete_aws_cluster(
-                request, metadata
-            )
-            pb_request = aws_service.DeleteAwsClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_delete_aws_cluster(resp)
-            return resp
-
-    class _DeleteAwsNodePool(AwsClustersRestStub):
-        def __hash__(self):
-            return hash("DeleteAwsNodePool")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: aws_service.DeleteAwsNodePoolRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the delete aws node pool method over HTTP.
-
-            Args:
-                request (~.aws_service.DeleteAwsNodePoolRequest):
-                    The request object. Request message for ``AwsClusters.DeleteAwsNodePool``
-                method.
-
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/awsClusters/*/awsNodePools/*}",
-                },
-            ]
-            request, metadata = self._interceptor.pre_delete_aws_node_pool(
-                request, metadata
-            )
-            pb_request = aws_service.DeleteAwsNodePoolRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_delete_aws_node_pool(resp)
-            return resp
-
-    class _GenerateAwsAccessToken(AwsClustersRestStub):
-        def __hash__(self):
-            return hash("GenerateAwsAccessToken")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: aws_service.GenerateAwsAccessTokenRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> aws_service.GenerateAwsAccessTokenResponse:
-            r"""Call the generate aws access token method over HTTP.
-
-            Args:
-                request (~.aws_service.GenerateAwsAccessTokenRequest):
+                request (~.attached_service.CreateAttachedClusterRequest):
                     The request object. Request message for
-                ``AwsClusters.GenerateAwsAccessToken`` method.
+                ``AttachedClusters.CreateAttachedCluster`` method.
 
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1116,22 +629,596 @@ class AwsClustersRestTransport(AwsClustersTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.aws_service.GenerateAwsAccessTokenResponse:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/attachedClusters",
+                    "body": "attached_cluster",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_attached_cluster(
+                request, metadata
+            )
+            pb_request = attached_service.CreateAttachedClusterRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_attached_cluster(resp)
+            return resp
+
+    class _DeleteAttachedCluster(AttachedClustersRestStub):
+        def __hash__(self):
+            return hash("DeleteAttachedCluster")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: attached_service.DeleteAttachedClusterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete attached cluster method over HTTP.
+
+            Args:
+                request (~.attached_service.DeleteAttachedClusterRequest):
+                    The request object. Request message for
+                ``AttachedClusters.DeleteAttachedCluster`` method.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/attachedClusters/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_attached_cluster(
+                request, metadata
+            )
+            pb_request = attached_service.DeleteAttachedClusterRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_attached_cluster(resp)
+            return resp
+
+    class _GenerateAttachedClusterInstallManifest(AttachedClustersRestStub):
+        def __hash__(self):
+            return hash("GenerateAttachedClusterInstallManifest")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+            "attachedClusterId": "",
+            "platformVersion": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: attached_service.GenerateAttachedClusterInstallManifestRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> attached_service.GenerateAttachedClusterInstallManifestResponse:
+            r"""Call the generate attached cluster
+            install manifest method over HTTP.
+
+                Args:
+                    request (~.attached_service.GenerateAttachedClusterInstallManifestRequest):
+                        The request object. Request message for
+                    ``AttachedClusters.GenerateAttachedClusterInstallManifest``
+                    method.
+
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.attached_service.GenerateAttachedClusterInstallManifestResponse:
+                        Response message for
+                    ``AttachedClusters.GenerateAttachedClusterInstallManifest``
+                    method.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}:generateAttachedClusterInstallManifest",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_generate_attached_cluster_install_manifest(
+                request, metadata
+            )
+            pb_request = (
+                attached_service.GenerateAttachedClusterInstallManifestRequest.pb(
+                    request
+                )
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = attached_service.GenerateAttachedClusterInstallManifestResponse()
+            pb_resp = (
+                attached_service.GenerateAttachedClusterInstallManifestResponse.pb(resp)
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_generate_attached_cluster_install_manifest(
+                resp
+            )
+            return resp
+
+    class _GetAttachedCluster(AttachedClustersRestStub):
+        def __hash__(self):
+            return hash("GetAttachedCluster")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: attached_service.GetAttachedClusterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> attached_resources.AttachedCluster:
+            r"""Call the get attached cluster method over HTTP.
+
+            Args:
+                request (~.attached_service.GetAttachedClusterRequest):
+                    The request object. Request message for
+                ``AttachedClusters.GetAttachedCluster`` method.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.attached_resources.AttachedCluster:
+                    An Anthos cluster running on customer
+                own infrastructure.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/attachedClusters/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_attached_cluster(
+                request, metadata
+            )
+            pb_request = attached_service.GetAttachedClusterRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = attached_resources.AttachedCluster()
+            pb_resp = attached_resources.AttachedCluster.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_attached_cluster(resp)
+            return resp
+
+    class _GetAttachedServerConfig(AttachedClustersRestStub):
+        def __hash__(self):
+            return hash("GetAttachedServerConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: attached_service.GetAttachedServerConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> attached_resources.AttachedServerConfig:
+            r"""Call the get attached server
+            config method over HTTP.
+
+                Args:
+                    request (~.attached_service.GetAttachedServerConfigRequest):
+                        The request object. GetAttachedServerConfigRequest gets
+                    the server config for attached clusters.
+
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.attached_resources.AttachedServerConfig:
+                        AttachedServerConfig provides
+                    information about supported Kubernetes
+                    versions
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/attachedServerConfig}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_attached_server_config(
+                request, metadata
+            )
+            pb_request = attached_service.GetAttachedServerConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = attached_resources.AttachedServerConfig()
+            pb_resp = attached_resources.AttachedServerConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_attached_server_config(resp)
+            return resp
+
+    class _ImportAttachedCluster(AttachedClustersRestStub):
+        def __hash__(self):
+            return hash("ImportAttachedCluster")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: attached_service.ImportAttachedClusterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the import attached cluster method over HTTP.
+
+            Args:
+                request (~.attached_service.ImportAttachedClusterRequest):
+                    The request object. Request message for
+                ``AttachedClusters.ImportAttachedCluster`` method.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/attachedClusters:import",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_import_attached_cluster(
+                request, metadata
+            )
+            pb_request = attached_service.ImportAttachedClusterRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_import_attached_cluster(resp)
+            return resp
+
+    class _ListAttachedClusters(AttachedClustersRestStub):
+        def __hash__(self):
+            return hash("ListAttachedClusters")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: attached_service.ListAttachedClustersRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> attached_service.ListAttachedClustersResponse:
+            r"""Call the list attached clusters method over HTTP.
+
+            Args:
+                request (~.attached_service.ListAttachedClustersRequest):
+                    The request object. Request message for
+                ``AttachedClusters.ListAttachedClusters`` method.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.attached_service.ListAttachedClustersResponse:
                     Response message for
-                ``AwsClusters.GenerateAwsAccessToken`` method.
+                ``AttachedClusters.ListAttachedClusters`` method.
 
             """
 
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{aws_cluster=projects/*/locations/*/awsClusters/*}:generateAwsAccessToken",
+                    "uri": "/v1/{parent=projects/*/locations/*}/attachedClusters",
                 },
             ]
-            request, metadata = self._interceptor.pre_generate_aws_access_token(
+            request, metadata = self._interceptor.pre_list_attached_clusters(
                 request, metadata
             )
-            pb_request = aws_service.GenerateAwsAccessTokenRequest.pb(request)
+            pb_request = attached_service.ListAttachedClustersRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
@@ -1163,460 +1250,16 @@ class AwsClustersRestTransport(AwsClustersTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = aws_service.GenerateAwsAccessTokenResponse()
-            pb_resp = aws_service.GenerateAwsAccessTokenResponse.pb(resp)
+            resp = attached_service.ListAttachedClustersResponse()
+            pb_resp = attached_service.ListAttachedClustersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_generate_aws_access_token(resp)
+            resp = self._interceptor.post_list_attached_clusters(resp)
             return resp
 
-    class _GetAwsCluster(AwsClustersRestStub):
+    class _UpdateAttachedCluster(AttachedClustersRestStub):
         def __hash__(self):
-            return hash("GetAwsCluster")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: aws_service.GetAwsClusterRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> aws_resources.AwsCluster:
-            r"""Call the get aws cluster method over HTTP.
-
-            Args:
-                request (~.aws_service.GetAwsClusterRequest):
-                    The request object. Request message for ``AwsClusters.GetAwsCluster``
-                method.
-
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.aws_resources.AwsCluster:
-                    An Anthos cluster running on AWS.
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/awsClusters/*}",
-                },
-            ]
-            request, metadata = self._interceptor.pre_get_aws_cluster(request, metadata)
-            pb_request = aws_service.GetAwsClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = aws_resources.AwsCluster()
-            pb_resp = aws_resources.AwsCluster.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_get_aws_cluster(resp)
-            return resp
-
-    class _GetAwsNodePool(AwsClustersRestStub):
-        def __hash__(self):
-            return hash("GetAwsNodePool")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: aws_service.GetAwsNodePoolRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> aws_resources.AwsNodePool:
-            r"""Call the get aws node pool method over HTTP.
-
-            Args:
-                request (~.aws_service.GetAwsNodePoolRequest):
-                    The request object. Request message for ``AwsClusters.GetAwsNodePool``
-                method.
-
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.aws_resources.AwsNodePool:
-                    An Anthos node pool running on AWS.
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/awsClusters/*/awsNodePools/*}",
-                },
-            ]
-            request, metadata = self._interceptor.pre_get_aws_node_pool(
-                request, metadata
-            )
-            pb_request = aws_service.GetAwsNodePoolRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = aws_resources.AwsNodePool()
-            pb_resp = aws_resources.AwsNodePool.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_get_aws_node_pool(resp)
-            return resp
-
-    class _GetAwsServerConfig(AwsClustersRestStub):
-        def __hash__(self):
-            return hash("GetAwsServerConfig")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: aws_service.GetAwsServerConfigRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> aws_resources.AwsServerConfig:
-            r"""Call the get aws server config method over HTTP.
-
-            Args:
-                request (~.aws_service.GetAwsServerConfigRequest):
-                    The request object. GetAwsServerConfigRequest gets the
-                server config of GKE cluster on AWS.
-
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.aws_resources.AwsServerConfig:
-                    AwsServerConfig is the configuration
-                of GKE cluster on AWS.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/awsServerConfig}",
-                },
-            ]
-            request, metadata = self._interceptor.pre_get_aws_server_config(
-                request, metadata
-            )
-            pb_request = aws_service.GetAwsServerConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = aws_resources.AwsServerConfig()
-            pb_resp = aws_resources.AwsServerConfig.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_get_aws_server_config(resp)
-            return resp
-
-    class _ListAwsClusters(AwsClustersRestStub):
-        def __hash__(self):
-            return hash("ListAwsClusters")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: aws_service.ListAwsClustersRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> aws_service.ListAwsClustersResponse:
-            r"""Call the list aws clusters method over HTTP.
-
-            Args:
-                request (~.aws_service.ListAwsClustersRequest):
-                    The request object. Request message for ``AwsClusters.ListAwsClusters``
-                method.
-
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.aws_service.ListAwsClustersResponse:
-                    Response message for ``AwsClusters.ListAwsClusters``
-                method.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/awsClusters",
-                },
-            ]
-            request, metadata = self._interceptor.pre_list_aws_clusters(
-                request, metadata
-            )
-            pb_request = aws_service.ListAwsClustersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = aws_service.ListAwsClustersResponse()
-            pb_resp = aws_service.ListAwsClustersResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_list_aws_clusters(resp)
-            return resp
-
-    class _ListAwsNodePools(AwsClustersRestStub):
-        def __hash__(self):
-            return hash("ListAwsNodePools")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: aws_service.ListAwsNodePoolsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> aws_service.ListAwsNodePoolsResponse:
-            r"""Call the list aws node pools method over HTTP.
-
-            Args:
-                request (~.aws_service.ListAwsNodePoolsRequest):
-                    The request object. Request message for ``AwsClusters.ListAwsNodePools``
-                method.
-
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.aws_service.ListAwsNodePoolsResponse:
-                    Response message for ``AwsClusters.ListAwsNodePools``
-                method.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/awsClusters/*}/awsNodePools",
-                },
-            ]
-            request, metadata = self._interceptor.pre_list_aws_node_pools(
-                request, metadata
-            )
-            pb_request = aws_service.ListAwsNodePoolsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = aws_service.ListAwsNodePoolsResponse()
-            pb_resp = aws_service.ListAwsNodePoolsResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_list_aws_node_pools(resp)
-            return resp
-
-    class _UpdateAwsCluster(AwsClustersRestStub):
-        def __hash__(self):
-            return hash("UpdateAwsCluster")
+            return hash("UpdateAttachedCluster")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
             "updateMask": {},
@@ -1632,18 +1275,18 @@ class AwsClustersRestTransport(AwsClustersTransport):
 
         def __call__(
             self,
-            request: aws_service.UpdateAwsClusterRequest,
+            request: attached_service.UpdateAttachedClusterRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
-            r"""Call the update aws cluster method over HTTP.
+            r"""Call the update attached cluster method over HTTP.
 
             Args:
-                request (~.aws_service.UpdateAwsClusterRequest):
-                    The request object. Request message for ``AwsClusters.UpdateAwsCluster``
-                method.
+                request (~.attached_service.UpdateAttachedClusterRequest):
+                    The request object. Request message for
+                ``AttachedClusters.UpdateAttachedCluster`` method.
 
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1662,14 +1305,14 @@ class AwsClustersRestTransport(AwsClustersTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
-                    "uri": "/v1/{aws_cluster.name=projects/*/locations/*/awsClusters/*}",
-                    "body": "aws_cluster",
+                    "uri": "/v1/{attached_cluster.name=projects/*/locations/*/attachedClusters/*}",
+                    "body": "attached_cluster",
                 },
             ]
-            request, metadata = self._interceptor.pre_update_aws_cluster(
+            request, metadata = self._interceptor.pre_update_attached_cluster(
                 request, metadata
             )
-            pb_request = aws_service.UpdateAwsClusterRequest.pb(request)
+            pb_request = attached_service.UpdateAttachedClusterRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
@@ -1711,219 +1354,97 @@ class AwsClustersRestTransport(AwsClustersTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_update_aws_cluster(resp)
-            return resp
-
-    class _UpdateAwsNodePool(AwsClustersRestStub):
-        def __hash__(self):
-            return hash("UpdateAwsNodePool")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: aws_service.UpdateAwsNodePoolRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the update aws node pool method over HTTP.
-
-            Args:
-                request (~.aws_service.UpdateAwsNodePoolRequest):
-                    The request object. Request message for ``AwsClusters.UpdateAwsNodePool``
-                method.
-
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{aws_node_pool.name=projects/*/locations/*/awsClusters/*/awsNodePools/*}",
-                    "body": "aws_node_pool",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_aws_node_pool(
-                request, metadata
-            )
-            pb_request = aws_service.UpdateAwsNodePoolRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_update_aws_node_pool(resp)
+            resp = self._interceptor.post_update_attached_cluster(resp)
             return resp
 
     @property
-    def create_aws_cluster(
-        self,
-    ) -> Callable[[aws_service.CreateAwsClusterRequest], operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._CreateAwsCluster(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def create_aws_node_pool(
-        self,
-    ) -> Callable[[aws_service.CreateAwsNodePoolRequest], operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._CreateAwsNodePool(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def delete_aws_cluster(
-        self,
-    ) -> Callable[[aws_service.DeleteAwsClusterRequest], operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._DeleteAwsCluster(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def delete_aws_node_pool(
-        self,
-    ) -> Callable[[aws_service.DeleteAwsNodePoolRequest], operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._DeleteAwsNodePool(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def generate_aws_access_token(
+    def create_attached_cluster(
         self,
     ) -> Callable[
-        [aws_service.GenerateAwsAccessTokenRequest],
-        aws_service.GenerateAwsAccessTokenResponse,
+        [attached_service.CreateAttachedClusterRequest], operations_pb2.Operation
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateAwsAccessToken(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateAttachedCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_aws_cluster(
-        self,
-    ) -> Callable[[aws_service.GetAwsClusterRequest], aws_resources.AwsCluster]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._GetAwsCluster(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def get_aws_node_pool(
-        self,
-    ) -> Callable[[aws_service.GetAwsNodePoolRequest], aws_resources.AwsNodePool]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._GetAwsNodePool(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def get_aws_server_config(
+    def delete_attached_cluster(
         self,
     ) -> Callable[
-        [aws_service.GetAwsServerConfigRequest], aws_resources.AwsServerConfig
+        [attached_service.DeleteAttachedClusterRequest], operations_pb2.Operation
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetAwsServerConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteAttachedCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_aws_clusters(
+    def generate_attached_cluster_install_manifest(
         self,
     ) -> Callable[
-        [aws_service.ListAwsClustersRequest], aws_service.ListAwsClustersResponse
+        [attached_service.GenerateAttachedClusterInstallManifestRequest],
+        attached_service.GenerateAttachedClusterInstallManifestResponse,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListAwsClusters(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GenerateAttachedClusterInstallManifest(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_aws_node_pools(
+    def get_attached_cluster(
         self,
     ) -> Callable[
-        [aws_service.ListAwsNodePoolsRequest], aws_service.ListAwsNodePoolsResponse
+        [attached_service.GetAttachedClusterRequest], attached_resources.AttachedCluster
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListAwsNodePools(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetAttachedCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_aws_cluster(
+    def get_attached_server_config(
         self,
-    ) -> Callable[[aws_service.UpdateAwsClusterRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [attached_service.GetAttachedServerConfigRequest],
+        attached_resources.AttachedServerConfig,
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateAwsCluster(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetAttachedServerConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_aws_node_pool(
+    def import_attached_cluster(
         self,
-    ) -> Callable[[aws_service.UpdateAwsNodePoolRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [attached_service.ImportAttachedClusterRequest], operations_pb2.Operation
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateAwsNodePool(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ImportAttachedCluster(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_attached_clusters(
+        self,
+    ) -> Callable[
+        [attached_service.ListAttachedClustersRequest],
+        attached_service.ListAttachedClustersResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAttachedClusters(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_attached_cluster(
+        self,
+    ) -> Callable[
+        [attached_service.UpdateAttachedClusterRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateAttachedCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(AwsClustersRestStub):
+    class _CancelOperation(AttachedClustersRestStub):
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -1989,7 +1510,7 @@ class AwsClustersRestTransport(AwsClustersTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(AwsClustersRestStub):
+    class _DeleteOperation(AttachedClustersRestStub):
         def __call__(
             self,
             request: operations_pb2.DeleteOperationRequest,
@@ -2052,7 +1573,7 @@ class AwsClustersRestTransport(AwsClustersTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(AwsClustersRestStub):
+    class _GetOperation(AttachedClustersRestStub):
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -2119,7 +1640,7 @@ class AwsClustersRestTransport(AwsClustersTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(AwsClustersRestStub):
+    class _ListOperations(AttachedClustersRestStub):
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -2190,4 +1711,4 @@ class AwsClustersRestTransport(AwsClustersTransport):
         self._session.close()
 
 
-__all__ = ("AwsClustersRestTransport",)
+__all__ = ("AttachedClustersRestTransport",)
