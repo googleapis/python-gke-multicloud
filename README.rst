@@ -16,7 +16,7 @@ Python Client for Anthos Multicloud API
    :target: https://pypi.org/project/google-cloud-gke-multicloud/
 .. _Anthos Multicloud API: https://cloud.google.com/gkemulticloud
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/gkemulticloud/latest
-.. _Product Documentation:  https://cloud.google.com/gkemulticloud
+.. _Product Documentation:  https://cloud.google.com/anthos/clusters/docs/multi-cloud
 
 Quick Start
 -----------
@@ -103,5 +103,5 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Anthos Multicloud API Product documentation:  https://cloud.google.com/gkemulticloud
+.. _Anthos Multicloud API Product documentation:  https://cloud.google.com/anthos/clusters/docs/multi-cloud
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
