@@ -63,6 +63,7 @@ from google.cloud.gke_multicloud_v1.types import (
 from .transports.base import DEFAULT_CLIENT_INFO, AttachedClustersTransport
 from .transports.grpc import AttachedClustersGrpcTransport
 from .transports.grpc_asyncio import AttachedClustersGrpcAsyncIOTransport
+from .transports.rest import AttachedClustersRestTransport
 
 
 class AttachedClustersClientMeta(type):
@@ -78,6 +79,7 @@ class AttachedClustersClientMeta(type):
     )  # type: Dict[str, Type[AttachedClustersTransport]]
     _transport_registry["grpc"] = AttachedClustersGrpcTransport
     _transport_registry["grpc_asyncio"] = AttachedClustersGrpcAsyncIOTransport
+    _transport_registry["rest"] = AttachedClustersRestTransport
 
     def get_transport_class(
         cls,
@@ -394,6 +396,9 @@ class AttachedClustersClient(metaclass=AttachedClustersClientMeta):
             transport (Union[str, AttachedClustersTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
