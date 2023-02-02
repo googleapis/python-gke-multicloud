@@ -63,7 +63,6 @@ from google.cloud.gke_multicloud_v1.types import (
 from .transports.base import DEFAULT_CLIENT_INFO, AttachedClustersTransport
 from .transports.grpc import AttachedClustersGrpcTransport
 from .transports.grpc_asyncio import AttachedClustersGrpcAsyncIOTransport
-from .transports.rest import AttachedClustersRestTransport
 
 
 class AttachedClustersClientMeta(type):
@@ -79,7 +78,6 @@ class AttachedClustersClientMeta(type):
     )  # type: Dict[str, Type[AttachedClustersTransport]]
     _transport_registry["grpc"] = AttachedClustersGrpcTransport
     _transport_registry["grpc_asyncio"] = AttachedClustersGrpcAsyncIOTransport
-    _transport_registry["rest"] = AttachedClustersRestTransport
 
     def get_transport_class(
         cls,
@@ -396,9 +394,6 @@ class AttachedClustersClient(metaclass=AttachedClustersClientMeta):
             transport (Union[str, AttachedClustersTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-                NOTE: "rest" transport functionality is currently in a
-                beta state (preview). We welcome your feedback via an
-                issue in this library's source repository.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
@@ -495,7 +490,7 @@ class AttachedClustersClient(metaclass=AttachedClustersClientMeta):
     ) -> operation.Operation:
         r"""Creates a new
         [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
-        resource on a given GCP project and region.
+        resource on a given Google Cloud Platform project and region.
 
         If successful, the response contains a newly created
         [Operation][google.longrunning.Operation] resource that can be
@@ -1003,7 +998,8 @@ class AttachedClustersClient(metaclass=AttachedClustersClientMeta):
 
                 See `Resource
                 Names <https://cloud.google.com/apis/design/resource_names>`__
-                for more details on GCP resource names.
+                for more details on Google Cloud Platform resource
+                names.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1119,7 +1115,8 @@ class AttachedClustersClient(metaclass=AttachedClustersClientMeta):
 
                 See `Resource
                 Names <https://cloud.google.com/apis/design/resource_names>`__
-                for more details on GCP resource names.
+                for more details on Google Cloud Platform resource
+                names.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1253,7 +1250,8 @@ class AttachedClustersClient(metaclass=AttachedClustersClientMeta):
 
                 See `Resource
                 Names <https://cloud.google.com/apis/design/resource_names>`__
-                for more details on GCP resource names.
+                for more details on Google Cloud Platform resource
+                names.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1510,7 +1508,7 @@ class AttachedClustersClient(metaclass=AttachedClustersClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             attached_cluster_id (str):
-                Required. A client provided ID the resource. Must be
+                Required. A client provided ID of the resource. Must be
                 unique within the parent resource.
 
                 The provided ID will be part of the
@@ -1526,7 +1524,7 @@ class AttachedClustersClient(metaclass=AttachedClustersClientMeta):
                 field must be the Membership id.
 
                 Membership names are formatted as
-                ``resource name formatted as``\ projects//locations//memberships/\`.
+                ``projects/<project-id>/locations/<region>/memberships/<membership-id>``.
 
                 This corresponds to the ``attached_cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
