@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -43,12 +45,15 @@ from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.gke_multicloud_v1.services.attached_clusters import (
     AttachedClustersAsyncClient,
@@ -113,6 +118,7 @@ def test__get_default_mtls_endpoint():
     [
         (AttachedClustersClient, "grpc"),
         (AttachedClustersAsyncClient, "grpc_asyncio"),
+        (AttachedClustersClient, "rest"),
     ],
 )
 def test_attached_clusters_client_from_service_account_info(
@@ -128,7 +134,11 @@ def test_attached_clusters_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("gkemulticloud.googleapis.com:443")
+        assert client.transport._host == (
+            "gkemulticloud.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://gkemulticloud.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -136,6 +146,7 @@ def test_attached_clusters_client_from_service_account_info(
     [
         (transports.AttachedClustersGrpcTransport, "grpc"),
         (transports.AttachedClustersGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.AttachedClustersRestTransport, "rest"),
     ],
 )
 def test_attached_clusters_client_service_account_always_use_jwt(
@@ -161,6 +172,7 @@ def test_attached_clusters_client_service_account_always_use_jwt(
     [
         (AttachedClustersClient, "grpc"),
         (AttachedClustersAsyncClient, "grpc_asyncio"),
+        (AttachedClustersClient, "rest"),
     ],
 )
 def test_attached_clusters_client_from_service_account_file(
@@ -183,13 +195,18 @@ def test_attached_clusters_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("gkemulticloud.googleapis.com:443")
+        assert client.transport._host == (
+            "gkemulticloud.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://gkemulticloud.googleapis.com"
+        )
 
 
 def test_attached_clusters_client_get_transport_class():
     transport = AttachedClustersClient.get_transport_class()
     available_transports = [
         transports.AttachedClustersGrpcTransport,
+        transports.AttachedClustersRestTransport,
     ]
     assert transport in available_transports
 
@@ -206,6 +223,7 @@ def test_attached_clusters_client_get_transport_class():
             transports.AttachedClustersGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (AttachedClustersClient, transports.AttachedClustersRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -359,6 +377,18 @@ def test_attached_clusters_client_client_options(
             AttachedClustersAsyncClient,
             transports.AttachedClustersGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            AttachedClustersClient,
+            transports.AttachedClustersRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            AttachedClustersClient,
+            transports.AttachedClustersRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -560,6 +590,7 @@ def test_attached_clusters_client_get_mtls_endpoint_and_cert_source(client_class
             transports.AttachedClustersGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (AttachedClustersClient, transports.AttachedClustersRestTransport, "rest"),
     ],
 )
 def test_attached_clusters_client_client_options_scopes(
@@ -599,6 +630,12 @@ def test_attached_clusters_client_client_options_scopes(
             transports.AttachedClustersGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            AttachedClustersClient,
+            transports.AttachedClustersRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -2966,6 +3003,2532 @@ async def test_generate_attached_cluster_install_manifest_flattened_error_async(
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.CreateAttachedClusterRequest,
+        dict,
+    ],
+)
+def test_create_attached_cluster_rest(request_type):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["attached_cluster"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "oidc_config": {"issuer_url": "issuer_url_value", "jwks": b"jwks_blob"},
+        "platform_version": "platform_version_value",
+        "distribution": "distribution_value",
+        "cluster_region": "cluster_region_value",
+        "fleet": {"project": "project_value", "membership": "membership_value"},
+        "state": 1,
+        "uid": "uid_value",
+        "reconciling": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "etag": "etag_value",
+        "kubernetes_version": "kubernetes_version_value",
+        "annotations": {},
+        "workload_identity_config": {
+            "issuer_uri": "issuer_uri_value",
+            "workload_pool": "workload_pool_value",
+            "identity_provider": "identity_provider_value",
+        },
+        "logging_config": {"component_config": {"enable_components": [1]}},
+        "errors": [{"message": "message_value"}],
+        "authorization": {"admin_users": [{"username": "username_value"}]},
+        "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_attached_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_attached_cluster_rest_required_fields(
+    request_type=attached_service.CreateAttachedClusterRequest,
+):
+    transport_class = transports.AttachedClustersRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["attached_cluster_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "attachedClusterId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_attached_cluster._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "attachedClusterId" in jsonified_request
+    assert jsonified_request["attachedClusterId"] == request_init["attached_cluster_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["attachedClusterId"] = "attached_cluster_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_attached_cluster._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "attached_cluster_id",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "attachedClusterId" in jsonified_request
+    assert jsonified_request["attachedClusterId"] == "attached_cluster_id_value"
+
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_attached_cluster(request)
+
+            expected_params = [
+                (
+                    "attachedClusterId",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_attached_cluster_rest_unset_required_fields():
+    transport = transports.AttachedClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_attached_cluster._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "attachedClusterId",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "attachedCluster",
+                "attachedClusterId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_attached_cluster_rest_interceptors(null_interceptor):
+    transport = transports.AttachedClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AttachedClustersRestInterceptor(),
+    )
+    client = AttachedClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AttachedClustersRestInterceptor, "post_create_attached_cluster"
+    ) as post, mock.patch.object(
+        transports.AttachedClustersRestInterceptor, "pre_create_attached_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = attached_service.CreateAttachedClusterRequest.pb(
+            attached_service.CreateAttachedClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = attached_service.CreateAttachedClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_attached_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_attached_cluster_rest_bad_request(
+    transport: str = "rest", request_type=attached_service.CreateAttachedClusterRequest
+):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["attached_cluster"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "oidc_config": {"issuer_url": "issuer_url_value", "jwks": b"jwks_blob"},
+        "platform_version": "platform_version_value",
+        "distribution": "distribution_value",
+        "cluster_region": "cluster_region_value",
+        "fleet": {"project": "project_value", "membership": "membership_value"},
+        "state": 1,
+        "uid": "uid_value",
+        "reconciling": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "etag": "etag_value",
+        "kubernetes_version": "kubernetes_version_value",
+        "annotations": {},
+        "workload_identity_config": {
+            "issuer_uri": "issuer_uri_value",
+            "workload_pool": "workload_pool_value",
+            "identity_provider": "identity_provider_value",
+        },
+        "logging_config": {"component_config": {"enable_components": [1]}},
+        "errors": [{"message": "message_value"}],
+        "authorization": {"admin_users": [{"username": "username_value"}]},
+        "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_attached_cluster(request)
+
+
+def test_create_attached_cluster_rest_flattened():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            attached_cluster=attached_resources.AttachedCluster(name="name_value"),
+            attached_cluster_id="attached_cluster_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_attached_cluster(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/attachedClusters"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_attached_cluster_rest_flattened_error(transport: str = "rest"):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_attached_cluster(
+            attached_service.CreateAttachedClusterRequest(),
+            parent="parent_value",
+            attached_cluster=attached_resources.AttachedCluster(name="name_value"),
+            attached_cluster_id="attached_cluster_id_value",
+        )
+
+
+def test_create_attached_cluster_rest_error():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.UpdateAttachedClusterRequest,
+        dict,
+    ],
+)
+def test_update_attached_cluster_rest(request_type):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "attached_cluster": {
+            "name": "projects/sample1/locations/sample2/attachedClusters/sample3"
+        }
+    }
+    request_init["attached_cluster"] = {
+        "name": "projects/sample1/locations/sample2/attachedClusters/sample3",
+        "description": "description_value",
+        "oidc_config": {"issuer_url": "issuer_url_value", "jwks": b"jwks_blob"},
+        "platform_version": "platform_version_value",
+        "distribution": "distribution_value",
+        "cluster_region": "cluster_region_value",
+        "fleet": {"project": "project_value", "membership": "membership_value"},
+        "state": 1,
+        "uid": "uid_value",
+        "reconciling": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "etag": "etag_value",
+        "kubernetes_version": "kubernetes_version_value",
+        "annotations": {},
+        "workload_identity_config": {
+            "issuer_uri": "issuer_uri_value",
+            "workload_pool": "workload_pool_value",
+            "identity_provider": "identity_provider_value",
+        },
+        "logging_config": {"component_config": {"enable_components": [1]}},
+        "errors": [{"message": "message_value"}],
+        "authorization": {"admin_users": [{"username": "username_value"}]},
+        "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_attached_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_attached_cluster_rest_required_fields(
+    request_type=attached_service.UpdateAttachedClusterRequest,
+):
+    transport_class = transports.AttachedClustersRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_attached_cluster._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_attached_cluster._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "update_mask",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_attached_cluster(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_attached_cluster_rest_unset_required_fields():
+    transport = transports.AttachedClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_attached_cluster._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "updateMask",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "attachedCluster",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_attached_cluster_rest_interceptors(null_interceptor):
+    transport = transports.AttachedClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AttachedClustersRestInterceptor(),
+    )
+    client = AttachedClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AttachedClustersRestInterceptor, "post_update_attached_cluster"
+    ) as post, mock.patch.object(
+        transports.AttachedClustersRestInterceptor, "pre_update_attached_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = attached_service.UpdateAttachedClusterRequest.pb(
+            attached_service.UpdateAttachedClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = attached_service.UpdateAttachedClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_attached_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_attached_cluster_rest_bad_request(
+    transport: str = "rest", request_type=attached_service.UpdateAttachedClusterRequest
+):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "attached_cluster": {
+            "name": "projects/sample1/locations/sample2/attachedClusters/sample3"
+        }
+    }
+    request_init["attached_cluster"] = {
+        "name": "projects/sample1/locations/sample2/attachedClusters/sample3",
+        "description": "description_value",
+        "oidc_config": {"issuer_url": "issuer_url_value", "jwks": b"jwks_blob"},
+        "platform_version": "platform_version_value",
+        "distribution": "distribution_value",
+        "cluster_region": "cluster_region_value",
+        "fleet": {"project": "project_value", "membership": "membership_value"},
+        "state": 1,
+        "uid": "uid_value",
+        "reconciling": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "etag": "etag_value",
+        "kubernetes_version": "kubernetes_version_value",
+        "annotations": {},
+        "workload_identity_config": {
+            "issuer_uri": "issuer_uri_value",
+            "workload_pool": "workload_pool_value",
+            "identity_provider": "identity_provider_value",
+        },
+        "logging_config": {"component_config": {"enable_components": [1]}},
+        "errors": [{"message": "message_value"}],
+        "authorization": {"admin_users": [{"username": "username_value"}]},
+        "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_attached_cluster(request)
+
+
+def test_update_attached_cluster_rest_flattened():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "attached_cluster": {
+                "name": "projects/sample1/locations/sample2/attachedClusters/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            attached_cluster=attached_resources.AttachedCluster(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_attached_cluster(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{attached_cluster.name=projects/*/locations/*/attachedClusters/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_attached_cluster_rest_flattened_error(transport: str = "rest"):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_attached_cluster(
+            attached_service.UpdateAttachedClusterRequest(),
+            attached_cluster=attached_resources.AttachedCluster(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_attached_cluster_rest_error():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.ImportAttachedClusterRequest,
+        dict,
+    ],
+)
+def test_import_attached_cluster_rest(request_type):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.import_attached_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_import_attached_cluster_rest_required_fields(
+    request_type=attached_service.ImportAttachedClusterRequest,
+):
+    transport_class = transports.AttachedClustersRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["fleet_membership"] = ""
+    request_init["platform_version"] = ""
+    request_init["distribution"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).import_attached_cluster._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["fleetMembership"] = "fleet_membership_value"
+    jsonified_request["platformVersion"] = "platform_version_value"
+    jsonified_request["distribution"] = "distribution_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).import_attached_cluster._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "fleetMembership" in jsonified_request
+    assert jsonified_request["fleetMembership"] == "fleet_membership_value"
+    assert "platformVersion" in jsonified_request
+    assert jsonified_request["platformVersion"] == "platform_version_value"
+    assert "distribution" in jsonified_request
+    assert jsonified_request["distribution"] == "distribution_value"
+
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.import_attached_cluster(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_import_attached_cluster_rest_unset_required_fields():
+    transport = transports.AttachedClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.import_attached_cluster._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "fleetMembership",
+                "platformVersion",
+                "distribution",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_import_attached_cluster_rest_interceptors(null_interceptor):
+    transport = transports.AttachedClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AttachedClustersRestInterceptor(),
+    )
+    client = AttachedClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AttachedClustersRestInterceptor, "post_import_attached_cluster"
+    ) as post, mock.patch.object(
+        transports.AttachedClustersRestInterceptor, "pre_import_attached_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = attached_service.ImportAttachedClusterRequest.pb(
+            attached_service.ImportAttachedClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = attached_service.ImportAttachedClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.import_attached_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_import_attached_cluster_rest_bad_request(
+    transport: str = "rest", request_type=attached_service.ImportAttachedClusterRequest
+):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.import_attached_cluster(request)
+
+
+def test_import_attached_cluster_rest_flattened():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            fleet_membership="fleet_membership_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.import_attached_cluster(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/attachedClusters:import"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_import_attached_cluster_rest_flattened_error(transport: str = "rest"):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.import_attached_cluster(
+            attached_service.ImportAttachedClusterRequest(),
+            parent="parent_value",
+            fleet_membership="fleet_membership_value",
+        )
+
+
+def test_import_attached_cluster_rest_error():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.GetAttachedClusterRequest,
+        dict,
+    ],
+)
+def test_get_attached_cluster_rest(request_type):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/attachedClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = attached_resources.AttachedCluster(
+            name="name_value",
+            description="description_value",
+            platform_version="platform_version_value",
+            distribution="distribution_value",
+            cluster_region="cluster_region_value",
+            state=attached_resources.AttachedCluster.State.PROVISIONING,
+            uid="uid_value",
+            reconciling=True,
+            etag="etag_value",
+            kubernetes_version="kubernetes_version_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = attached_resources.AttachedCluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_attached_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, attached_resources.AttachedCluster)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.platform_version == "platform_version_value"
+    assert response.distribution == "distribution_value"
+    assert response.cluster_region == "cluster_region_value"
+    assert response.state == attached_resources.AttachedCluster.State.PROVISIONING
+    assert response.uid == "uid_value"
+    assert response.reconciling is True
+    assert response.etag == "etag_value"
+    assert response.kubernetes_version == "kubernetes_version_value"
+
+
+def test_get_attached_cluster_rest_required_fields(
+    request_type=attached_service.GetAttachedClusterRequest,
+):
+    transport_class = transports.AttachedClustersRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_attached_cluster._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_attached_cluster._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = attached_resources.AttachedCluster()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = attached_resources.AttachedCluster.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_attached_cluster(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_attached_cluster_rest_unset_required_fields():
+    transport = transports.AttachedClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_attached_cluster._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_attached_cluster_rest_interceptors(null_interceptor):
+    transport = transports.AttachedClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AttachedClustersRestInterceptor(),
+    )
+    client = AttachedClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AttachedClustersRestInterceptor, "post_get_attached_cluster"
+    ) as post, mock.patch.object(
+        transports.AttachedClustersRestInterceptor, "pre_get_attached_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = attached_service.GetAttachedClusterRequest.pb(
+            attached_service.GetAttachedClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = attached_resources.AttachedCluster.to_json(
+            attached_resources.AttachedCluster()
+        )
+
+        request = attached_service.GetAttachedClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = attached_resources.AttachedCluster()
+
+        client.get_attached_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_attached_cluster_rest_bad_request(
+    transport: str = "rest", request_type=attached_service.GetAttachedClusterRequest
+):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/attachedClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_attached_cluster(request)
+
+
+def test_get_attached_cluster_rest_flattened():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = attached_resources.AttachedCluster()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/attachedClusters/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = attached_resources.AttachedCluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_attached_cluster(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/attachedClusters/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_attached_cluster_rest_flattened_error(transport: str = "rest"):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_attached_cluster(
+            attached_service.GetAttachedClusterRequest(),
+            name="name_value",
+        )
+
+
+def test_get_attached_cluster_rest_error():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.ListAttachedClustersRequest,
+        dict,
+    ],
+)
+def test_list_attached_clusters_rest(request_type):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = attached_service.ListAttachedClustersResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = attached_service.ListAttachedClustersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_attached_clusters(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAttachedClustersPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_attached_clusters_rest_required_fields(
+    request_type=attached_service.ListAttachedClustersRequest,
+):
+    transport_class = transports.AttachedClustersRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_attached_clusters._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_attached_clusters._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = attached_service.ListAttachedClustersResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = attached_service.ListAttachedClustersResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_attached_clusters(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_attached_clusters_rest_unset_required_fields():
+    transport = transports.AttachedClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_attached_clusters._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_attached_clusters_rest_interceptors(null_interceptor):
+    transport = transports.AttachedClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AttachedClustersRestInterceptor(),
+    )
+    client = AttachedClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AttachedClustersRestInterceptor, "post_list_attached_clusters"
+    ) as post, mock.patch.object(
+        transports.AttachedClustersRestInterceptor, "pre_list_attached_clusters"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = attached_service.ListAttachedClustersRequest.pb(
+            attached_service.ListAttachedClustersRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            attached_service.ListAttachedClustersResponse.to_json(
+                attached_service.ListAttachedClustersResponse()
+            )
+        )
+
+        request = attached_service.ListAttachedClustersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = attached_service.ListAttachedClustersResponse()
+
+        client.list_attached_clusters(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_attached_clusters_rest_bad_request(
+    transport: str = "rest", request_type=attached_service.ListAttachedClustersRequest
+):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_attached_clusters(request)
+
+
+def test_list_attached_clusters_rest_flattened():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = attached_service.ListAttachedClustersResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = attached_service.ListAttachedClustersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_attached_clusters(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/attachedClusters"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_attached_clusters_rest_flattened_error(transport: str = "rest"):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_attached_clusters(
+            attached_service.ListAttachedClustersRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_attached_clusters_rest_pager(transport: str = "rest"):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[
+                    attached_resources.AttachedCluster(),
+                    attached_resources.AttachedCluster(),
+                    attached_resources.AttachedCluster(),
+                ],
+                next_page_token="abc",
+            ),
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[],
+                next_page_token="def",
+            ),
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[
+                    attached_resources.AttachedCluster(),
+                ],
+                next_page_token="ghi",
+            ),
+            attached_service.ListAttachedClustersResponse(
+                attached_clusters=[
+                    attached_resources.AttachedCluster(),
+                    attached_resources.AttachedCluster(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            attached_service.ListAttachedClustersResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_attached_clusters(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, attached_resources.AttachedCluster) for i in results)
+
+        pages = list(client.list_attached_clusters(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.DeleteAttachedClusterRequest,
+        dict,
+    ],
+)
+def test_delete_attached_cluster_rest(request_type):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/attachedClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_attached_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_attached_cluster_rest_required_fields(
+    request_type=attached_service.DeleteAttachedClusterRequest,
+):
+    transport_class = transports.AttachedClustersRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_attached_cluster._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_attached_cluster._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "allow_missing",
+            "etag",
+            "ignore_errors",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_attached_cluster(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_attached_cluster_rest_unset_required_fields():
+    transport = transports.AttachedClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_attached_cluster._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowMissing",
+                "etag",
+                "ignoreErrors",
+                "validateOnly",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_attached_cluster_rest_interceptors(null_interceptor):
+    transport = transports.AttachedClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AttachedClustersRestInterceptor(),
+    )
+    client = AttachedClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AttachedClustersRestInterceptor, "post_delete_attached_cluster"
+    ) as post, mock.patch.object(
+        transports.AttachedClustersRestInterceptor, "pre_delete_attached_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = attached_service.DeleteAttachedClusterRequest.pb(
+            attached_service.DeleteAttachedClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = attached_service.DeleteAttachedClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_attached_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_attached_cluster_rest_bad_request(
+    transport: str = "rest", request_type=attached_service.DeleteAttachedClusterRequest
+):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/attachedClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_attached_cluster(request)
+
+
+def test_delete_attached_cluster_rest_flattened():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/attachedClusters/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_attached_cluster(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/attachedClusters/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_attached_cluster_rest_flattened_error(transport: str = "rest"):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_attached_cluster(
+            attached_service.DeleteAttachedClusterRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_attached_cluster_rest_error():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.GetAttachedServerConfigRequest,
+        dict,
+    ],
+)
+def test_get_attached_server_config_rest(request_type):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/attachedServerConfig"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = attached_resources.AttachedServerConfig(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = attached_resources.AttachedServerConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_attached_server_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, attached_resources.AttachedServerConfig)
+    assert response.name == "name_value"
+
+
+def test_get_attached_server_config_rest_required_fields(
+    request_type=attached_service.GetAttachedServerConfigRequest,
+):
+    transport_class = transports.AttachedClustersRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_attached_server_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_attached_server_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = attached_resources.AttachedServerConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = attached_resources.AttachedServerConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_attached_server_config(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_attached_server_config_rest_unset_required_fields():
+    transport = transports.AttachedClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_attached_server_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_attached_server_config_rest_interceptors(null_interceptor):
+    transport = transports.AttachedClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AttachedClustersRestInterceptor(),
+    )
+    client = AttachedClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AttachedClustersRestInterceptor, "post_get_attached_server_config"
+    ) as post, mock.patch.object(
+        transports.AttachedClustersRestInterceptor, "pre_get_attached_server_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = attached_service.GetAttachedServerConfigRequest.pb(
+            attached_service.GetAttachedServerConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = attached_resources.AttachedServerConfig.to_json(
+            attached_resources.AttachedServerConfig()
+        )
+
+        request = attached_service.GetAttachedServerConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = attached_resources.AttachedServerConfig()
+
+        client.get_attached_server_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_attached_server_config_rest_bad_request(
+    transport: str = "rest",
+    request_type=attached_service.GetAttachedServerConfigRequest,
+):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/attachedServerConfig"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_attached_server_config(request)
+
+
+def test_get_attached_server_config_rest_flattened():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = attached_resources.AttachedServerConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/attachedServerConfig"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = attached_resources.AttachedServerConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_attached_server_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/attachedServerConfig}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_attached_server_config_rest_flattened_error(transport: str = "rest"):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_attached_server_config(
+            attached_service.GetAttachedServerConfigRequest(),
+            name="name_value",
+        )
+
+
+def test_get_attached_server_config_rest_error():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.GenerateAttachedClusterInstallManifestRequest,
+        dict,
+    ],
+)
+def test_generate_attached_cluster_install_manifest_rest(request_type):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = attached_service.GenerateAttachedClusterInstallManifestResponse(
+            manifest="manifest_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = (
+            attached_service.GenerateAttachedClusterInstallManifestResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.generate_attached_cluster_install_manifest(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, attached_service.GenerateAttachedClusterInstallManifestResponse
+    )
+    assert response.manifest == "manifest_value"
+
+
+def test_generate_attached_cluster_install_manifest_rest_required_fields(
+    request_type=attached_service.GenerateAttachedClusterInstallManifestRequest,
+):
+    transport_class = transports.AttachedClustersRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["attached_cluster_id"] = ""
+    request_init["platform_version"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "attachedClusterId" not in jsonified_request
+    assert "platformVersion" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_attached_cluster_install_manifest._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "attachedClusterId" in jsonified_request
+    assert jsonified_request["attachedClusterId"] == request_init["attached_cluster_id"]
+    assert "platformVersion" in jsonified_request
+    assert jsonified_request["platformVersion"] == request_init["platform_version"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["attachedClusterId"] = "attached_cluster_id_value"
+    jsonified_request["platformVersion"] = "platform_version_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_attached_cluster_install_manifest._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "attached_cluster_id",
+            "platform_version",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "attachedClusterId" in jsonified_request
+    assert jsonified_request["attachedClusterId"] == "attached_cluster_id_value"
+    assert "platformVersion" in jsonified_request
+    assert jsonified_request["platformVersion"] == "platform_version_value"
+
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = attached_service.GenerateAttachedClusterInstallManifestResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = (
+                attached_service.GenerateAttachedClusterInstallManifestResponse.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.generate_attached_cluster_install_manifest(request)
+
+            expected_params = [
+                (
+                    "attachedClusterId",
+                    "",
+                ),
+                (
+                    "platformVersion",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_generate_attached_cluster_install_manifest_rest_unset_required_fields():
+    transport = transports.AttachedClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.generate_attached_cluster_install_manifest._get_unset_required_fields(
+            {}
+        )
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "attachedClusterId",
+                "platformVersion",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "attachedClusterId",
+                "platformVersion",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_attached_cluster_install_manifest_rest_interceptors(null_interceptor):
+    transport = transports.AttachedClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AttachedClustersRestInterceptor(),
+    )
+    client = AttachedClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AttachedClustersRestInterceptor,
+        "post_generate_attached_cluster_install_manifest",
+    ) as post, mock.patch.object(
+        transports.AttachedClustersRestInterceptor,
+        "pre_generate_attached_cluster_install_manifest",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = attached_service.GenerateAttachedClusterInstallManifestRequest.pb(
+            attached_service.GenerateAttachedClusterInstallManifestRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            attached_service.GenerateAttachedClusterInstallManifestResponse.to_json(
+                attached_service.GenerateAttachedClusterInstallManifestResponse()
+            )
+        )
+
+        request = attached_service.GenerateAttachedClusterInstallManifestRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            attached_service.GenerateAttachedClusterInstallManifestResponse()
+        )
+
+        client.generate_attached_cluster_install_manifest(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_generate_attached_cluster_install_manifest_rest_bad_request(
+    transport: str = "rest",
+    request_type=attached_service.GenerateAttachedClusterInstallManifestRequest,
+):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.generate_attached_cluster_install_manifest(request)
+
+
+def test_generate_attached_cluster_install_manifest_rest_flattened():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = attached_service.GenerateAttachedClusterInstallManifestResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            attached_cluster_id="attached_cluster_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = (
+            attached_service.GenerateAttachedClusterInstallManifestResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.generate_attached_cluster_install_manifest(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}:generateAttachedClusterInstallManifest"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_generate_attached_cluster_install_manifest_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.generate_attached_cluster_install_manifest(
+            attached_service.GenerateAttachedClusterInstallManifestRequest(),
+            parent="parent_value",
+            attached_cluster_id="attached_cluster_id_value",
+        )
+
+
+def test_generate_attached_cluster_install_manifest_rest_error():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AttachedClustersGrpcTransport(
@@ -3047,6 +5610,7 @@ def test_transport_get_channel():
     [
         transports.AttachedClustersGrpcTransport,
         transports.AttachedClustersGrpcAsyncIOTransport,
+        transports.AttachedClustersRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -3061,6 +5625,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -3206,6 +5771,7 @@ def test_attached_clusters_transport_auth_adc(transport_class):
     [
         transports.AttachedClustersGrpcTransport,
         transports.AttachedClustersGrpcAsyncIOTransport,
+        transports.AttachedClustersRestTransport,
     ],
 )
 def test_attached_clusters_transport_auth_gdch_credentials(transport_class):
@@ -3303,11 +5869,40 @@ def test_attached_clusters_grpc_transport_client_cert_source_for_mtls(transport_
             )
 
 
+def test_attached_clusters_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.AttachedClustersRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_attached_clusters_rest_lro_client():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_attached_clusters_host_no_port(transport_name):
@@ -3318,7 +5913,11 @@ def test_attached_clusters_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("gkemulticloud.googleapis.com:443")
+    assert client.transport._host == (
+        "gkemulticloud.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://gkemulticloud.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -3326,6 +5925,7 @@ def test_attached_clusters_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_attached_clusters_host_with_port(transport_name):
@@ -3336,7 +5936,54 @@ def test_attached_clusters_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("gkemulticloud.googleapis.com:8000")
+    assert client.transport._host == (
+        "gkemulticloud.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://gkemulticloud.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_attached_clusters_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = AttachedClustersClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = AttachedClustersClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_attached_cluster._session
+    session2 = client2.transport.create_attached_cluster._session
+    assert session1 != session2
+    session1 = client1.transport.update_attached_cluster._session
+    session2 = client2.transport.update_attached_cluster._session
+    assert session1 != session2
+    session1 = client1.transport.import_attached_cluster._session
+    session2 = client2.transport.import_attached_cluster._session
+    assert session1 != session2
+    session1 = client1.transport.get_attached_cluster._session
+    session2 = client2.transport.get_attached_cluster._session
+    assert session1 != session2
+    session1 = client1.transport.list_attached_clusters._session
+    session2 = client2.transport.list_attached_clusters._session
+    assert session1 != session2
+    session1 = client1.transport.delete_attached_cluster._session
+    session2 = client2.transport.delete_attached_cluster._session
+    assert session1 != session2
+    session1 = client1.transport.get_attached_server_config._session
+    session2 = client2.transport.get_attached_server_config._session
+    assert session1 != session2
+    session1 = client1.transport.generate_attached_cluster_install_manifest._session
+    session2 = client2.transport.generate_attached_cluster_install_manifest._session
+    assert session1 != session2
 
 
 def test_attached_clusters_grpc_transport_channel():
@@ -3688,6 +6335,238 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_cancel_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
+):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = "{}"
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
+):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.DeleteOperationRequest,
+        dict,
+    ],
+)
+def test_delete_operation_rest(request_type):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = "{}"
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
+):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
+):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
 
 
 def test_delete_operation(transport: str = "grpc"):
@@ -4260,6 +7139,7 @@ async def test_list_operations_from_dict_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -4277,6 +7157,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
